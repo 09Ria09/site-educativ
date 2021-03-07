@@ -1,0 +1,56 @@
+.homeStartContainer {
+    width: auto;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.homeStart {
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(9, 11.11%);
+    grid-template-rows: repeat(9, 11.11%);
+    background-color: var(--darkslateblue);
+    color: var(--columbiablue);
+    transform-style: preserve-3d;
+}
+
+.leftSide {
+    margin-left: 50px;
+    display: grid;
+    grid-template-rows: repeat(9, 11.11%);
+    padding-left: 50px;
+    padding-right: 50px;
+    height: 100%;
+    width: auto;
+}
+
+.title {
+    grid-row: 3/4;
+    text-align: center;
+    font-size: 2em;
+}
+
+.startText {
+    grid-row: 4/6;
+    text-align: justify;
+    font-size: 1.5em;
+}
+
+.startButton {
+    grid-row: 6/7;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.circle {
+    height: max(40vw, 40vh);
+    width: max(40vw, 40vh);
+    border-radius: 50%;
+    background-color: var(--mantis);
+}
+
+.square {
+    height: max(20vw, 20vh);
+    width: max(20vw, 20vh);
+    background-color: var(--greenblue);
+}

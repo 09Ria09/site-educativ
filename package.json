@@ -6,9 +6,11 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.1",
+    "animate.css": "^4.1.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.2",
+    "rellax": "^1.12.1",
     "web-vitals": "^1.1.0"
   },
   "scripts": {
@@ -34,5 +36,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-animate-on-scroll": "^2.1.5",
+    "react-router-dom": "^5.2.0",
+    "react-transition-group": "^4.4.1"
   }
 }

@@ -1,25 +1,25 @@
-import logo from './logo.svg';
+import React from "react";
+import {HashRouter, Route} from "react-router-dom";
 import './App.css';
+import Home from "./components/js/Home";
+import loginBox from "./components/js/loginBox";
+
+const routes = [
+    {path: '/', name: 'Home', Component: Home},
+    {path: '/login', name: 'Login', Component: loginBox}];
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <HashRouter>
+            <React.Fragment>
+                {routes.map(({path, name, Component}) => (
+                    <Route key={name} exact path={path}>
+                        <Component/>
+                    </Route>
+                ))}
+            </React.Fragment>
+        </HashRouter>
+    );
 }
 
 export default App;
