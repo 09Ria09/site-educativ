@@ -5,9 +5,7 @@ import Content from "./Content";
 
 function Home() {
     useEffect(() => {
-        new Rellax('.rellax', {
-            center: true
-        });
+        new Rellax('.rellax');
     });
     return (
         <React.Fragment>

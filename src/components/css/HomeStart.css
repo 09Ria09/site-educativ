@@ -6,7 +6,6 @@
 
 .homeStart {
     height: 100%;
-    display: grid;
     grid-template-columns: repeat(9, 11.11%);
     grid-template-rows: repeat(9, 11.11%);
     background-color: var(--darkslateblue);
@@ -15,13 +14,14 @@
 }
 
 .leftSide {
-    margin-left: 50px;
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     grid-template-rows: repeat(9, 11.11%);
-    padding-left: 50px;
-    padding-right: 50px;
-    height: 100%;
-    width: auto;
+    padding: 0 100px;
+    height: 60vh;
+    max-width: 500px;
 }
 
 .title {
@@ -43,14 +43,29 @@
 }
 
 .circle {
-    height: max(40vw, 40vh);
-    width: max(40vw, 40vh);
+    --animate-duration: 2s;
+    height: min(80vw, 80vh);
+    width: min(80vw, 80vh);
     border-radius: 50%;
     background-color: var(--mantis);
 }
 
 .square {
-    height: max(20vw, 20vh);
-    width: max(20vw, 20vh);
+    --animate-duration: 2s;
+    height: min(25vw, 25vh);
+    width: min(25vw, 25vh);
     background-color: var(--greenblue);
+}
+
+.circle.animate__animated.animate__fadeInRightBig,
+.square.animate__animated.animate__fadeInUpBig {
+
+    animation-duration: 1.5s;
+}
+
+@media screen and (max-width: 699px) {
+    .leftSide {
+        padding: 25px;
+        max-width: none;
+    }
 }

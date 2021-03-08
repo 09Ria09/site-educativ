@@ -8,7 +8,8 @@ function HomeStart() {
     return (
         <div className={'homeStartContainer'}>
             <div className={'homeStart'}>
-                <article className={'rellax'} data-rellax-zindex="2" style={{gridRow: '1/10', gridColumn: '1/5'}}>
+                <article className={'rellax'} data-rellax-zindex="2"
+                         style={{position: 'absolute', left: 0, right: 0, top: 0}}>
                     <ScrollAnimation className={'leftSide'} animateIn={'animate__fadeIn'} animateOnce={true} delay={200}
                                      duration={0.4}>
                         <h1 className={'title'}>Brainer</h1>
@@ -17,22 +18,26 @@ function HomeStart() {
                         <Link className={'btn startButton'} to={'/login'}>Sign Up</Link>
                     </ScrollAnimation>
                 </article>
-                <div className={'rellax'} data-rellax-speed="-6" style={{gridRow: '5/10', gridColumn: '7/10'}}>
-                    <ScrollAnimation className={'circle'} animateIn={'animate__fadeInRightBig'}
-                                     animateOnce={true}
-                                     duration={2}/>
+                <div className={'rellax'} data-rellax-speed="-6" style={{
+                    position: 'absolute',
+                    right: 'calc(min(80vw, 80vh) * (-0.2))',
+                    bottom: 'calc(min(80vw, 80vh) * (-0.5))'
+                }}>
+                    <div className={'circle animate__animated animate__fadeInRightBig'}/>
                 </div>
-                <div className={'rellax'} data-rellax-zindex="1" data-rellax-speed="3"
-                     style={{gridRow: '4/10', gridColumn: '8/10'}}>
-                    <ScrollAnimation className={'square'}
-                                     animateIn={'animate__fadeInUpBig'} animateOnce={true}
-                                     duration={2} delay={500}/>
+                <div className={'rellax'} data-rellax-zindex="3" data-rellax-speed="-4" style={{
+                    position: 'absolute',
+                    right: 'calc(min(25vw, 25vh) * 0.15)',
+                    bottom: 'calc(min(25vw, 25vh) * 0.8'
+                }}>
+                    <div className={'square animate__animated animate__fadeInUpBig'}/>
                 </div>
-                <div className={'rellax'} data-rellax-zindex="1" data-rellax-speed="2"
-                     style={{gridRow: '6/10', gridColumn: '6/10'}}>
-                    <ScrollAnimation className={'square'}
-                                     animateIn={'animate__fadeInUpBig'} animateOnce={true}
-                                     duration={2} delay={500}/>
+                <div className={'rellax'} data-rellax-zindex="2" data-rellax-speed="-4" style={{
+                    position: 'absolute',
+                    right: 'calc(min(25vw, 25vh) * 1.3)',
+                    bottom: 'calc(min(25vw, 25vh) * 0.4'
+                }}>
+                    <div className={'square animate__animated animate__fadeInUpBig'}/>
                 </div>
             </div>
         </div>

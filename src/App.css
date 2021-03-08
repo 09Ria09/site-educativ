@@ -15,4 +15,10 @@
     background-color: var(--oxfordblue);
     color: var(--columbiablue);
     text-decoration: none;
+    transition-duration: 400ms;
+}
+
+.btn:hover, .btn:focus {
+    background-color: var(--columbiablue);
+    color: var(--oxfordblue);
 }
