@@ -6,12 +6,11 @@
     top: calc(50% - 200px);
     left: calc(50% - 200px);
     border-radius: 1.5em;
-    box-shadow: 0 11px 35px 2px rgba(0, 0, 0, 0.13);
 }
 
 .sign {
     padding-top: 40px;
-    color: #2366b7;
+    color: var(--greenblue);
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
     font-size: 23px;
@@ -48,7 +47,7 @@ form.form1 {
     cursor: pointer;
     border-radius: 5em;
     color: #fff;
-    background: #2366b7;
+    background: var(--greenblue);
     border: 0;
     padding-left: 40px;
     padding-right: 40px;
@@ -69,4 +68,9 @@ a {
     text-shadow: 0 0 3px rgba(117, 117, 117, 0.12);
     color: #E1BEE7;
     text-decoration: none
+}
+.bkg {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--greenblue);
 }
