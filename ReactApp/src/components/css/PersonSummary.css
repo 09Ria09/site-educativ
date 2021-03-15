@@ -1,0 +1,9 @@
+.person {
+    background-color: var(--columbiablue);
+    color: var(--oxfordblue);
+    height: 40vh;
+    max-width: 800px;
+    border-radius: 10px;
+    padding: 50px;
+    margin: 50px;
+}

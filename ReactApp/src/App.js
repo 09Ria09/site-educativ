@@ -3,15 +3,24 @@ import {HashRouter, Route} from "react-router-dom";
 import './App.css';
 import Home from "./components/js/Home";
 import loginBox from "./components/js/loginBox";
+import SkyCanvas from "./components/js/SkyCanvas";
+import Discover from "./components/js/Discover";
 
 const routes = [
     {path: '/', name: 'Home', Component: Home},
+    {path: '/discover', name: 'Discover', Component: Discover},
     {path: '/login', name: 'Login', Component: loginBox}];
 
 function App() {
     return (
         <HashRouter>
             <React.Fragment>
+                <SkyCanvas style={{
+                    width: '100vw',
+                    height: '100vh',
+                    position: 'fixed',
+                    zIndex: '-1',
+                }}/>
                 {routes.map(({path, name, Component}) => (
                     <Route key={name} exact path={path}>
                         <Component/>

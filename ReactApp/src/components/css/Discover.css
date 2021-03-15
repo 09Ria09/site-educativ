@@ -1,0 +1,4 @@
+.people {
+    overflow: auto;
+    flex-grow: 2;
+}
