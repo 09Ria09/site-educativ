@@ -5,6 +5,7 @@ import Home from "./components/js/Home";
 import loginBox from "./components/js/loginBox";
 import SkyCanvas from "./components/js/SkyCanvas";
 import Discover from "./components/js/Discover";
+import {CSSTransition} from "react-transition-group";
 
 const routes = [
     {path: '/', name: 'Home', Component: Home},
@@ -23,7 +24,21 @@ function App() {
                 }}/>
                 {routes.map(({path, name, Component}) => (
                     <Route key={name} exact path={path}>
-                        <Component/>
+                        {({match}) => (<CSSTransition
+                            classNames={{
+                                enterActive: 'animate__animated animate__fadeIn animate__faster',
+                                exit: 'displayNone',
+                            }}
+                            onEnter={() => {
+                                window.scrollTo(0, 0);
+                            }}
+                            timeout={1000}
+                            in={match != null}
+                            unmountOnExit>
+                            <div>
+                                <Component/>
+                            </div>
+                        </CSSTransition>)}
                     </Route>
                 ))}
             </React.Fragment>

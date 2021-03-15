@@ -7,6 +7,10 @@
     --mantis: #78BC61;
 }
 
+.displayNone {
+    display: none;
+}
+
 .btn {
     text-align: center;
     height: max-content;

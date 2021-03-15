@@ -13,7 +13,7 @@
     transform-style: preserve-3d;
 }
 
-.leftSide {
+.homeStartCenter {
     display: flex;
     flex-direction: column;
     justify-content: center;

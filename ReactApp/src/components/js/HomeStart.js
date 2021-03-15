@@ -10,7 +10,8 @@ function HomeStart() {
             <div className={'homeStart'}>
                 <article className={'rellax'} data-rellax-zindex="3"
                          style={{position: 'absolute', left: 0, right: 0, top: 0}}>
-                    <ScrollAnimation className={'leftSide'} animateIn={'animate__fadeIn'} animateOnce={true} delay={200}
+                    <ScrollAnimation className={'homeStartCenter'} animateIn={'animate__fadeIn'} animateOnce={true}
+                                     delay={200}
                                      duration={0.4}>
                         <h1 className={'title'}>Brainer</h1>
                         <h2 className={'startText'}>I'm something new entirely. With my own set of rules. I'm Dexter.
