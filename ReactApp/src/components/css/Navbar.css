@@ -1,0 +1,52 @@
+.navbar {
+    display: flex;
+    height: 60px;
+    position: sticky;
+    z-index: 2048;
+    top: 0;
+    user-select: none;
+    color: var(--columbiablue);
+    transition-duration: 400ms;
+    box-sizing: border-box;
+}
+
+.navbarScrolled {
+    background-color: var(--columbiablue);
+    color: var(--oxfordblue);
+    box-shadow: 0 0 70px 5px rgba(0, 0, 0, 0.75);
+}
+
+.navbarObject {
+    flex-grow: 1;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    transition-duration: 200ms;
+    color: inherit;
+}
+
+.navbar > .navbarObject:hover {
+    color: var(--oxfordblue);
+    background-color: var(--columbiablue);
+}
+
+.navbarScrolled > .navbarObject:hover {
+    color: var(--columbiablue);
+    background-color: var(--oxfordblue);
+}
+
+.navbarSpacer {
+    flex-grow: 2048 !important;
+}
+
+.logo {
+    height: 50px;
+    width: 50px;
+}
+
+.navbarActive {
+    color: var(--columbiablue);
+    background-color: var(--oxfordblue);
+}

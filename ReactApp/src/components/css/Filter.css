@@ -1,17 +1,44 @@
 .filter {
-    background-color: var(--columbiablue);
-    color: var(--oxfordblue);
-    height: 90vh;
-    width: 200px;
-    border-radius: 10px;
+    background-color: var(--oxfordblue);
+    color: var(--columbiablue) !important;
+    height: 100vh;
+    min-width: 200px;
     box-sizing: border-box;
-    margin: 5vh 10px;
-    padding: 15px;
-    bottom: 0;
     position: sticky;
+    top: 0;
+    margin-top: -60px;
     align-self: flex-start;
+    padding-top: 60px;
 }
 
-.filter > div {
-    margin: 15px 25%;
+.filter > h3, .filter > h4 {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.filter > h4 {
+    background-color: rgba(0, 0, 0, 0.3);
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.filter > div > label {
+    display: block;
+    padding: 2px 60px;
+    transition-duration: 200ms;
+    user-select: none;
+}
+
+.filter > div > label:hover {
+    background-color: var(--darkslateblue);
+}
+
+.applyFilters {
+    width: 110px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin-left: auto;
+    margin-right: auto;
 }

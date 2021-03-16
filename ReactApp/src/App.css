@@ -21,6 +21,7 @@
     color: var(--columbiablue);
     text-decoration: none;
     transition-duration: 400ms;
+    user-select: none;
 }
 
 .btn:hover, .btn:focus {
