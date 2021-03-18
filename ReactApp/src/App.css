@@ -1,10 +1,10 @@
 /* https://coolors.co/78bc61-c9f0ff-0a122a-2366b7-4f359b */
 :root {
-    --oxfordblue: #0A122A;
-    --darkslateblue: #4F359B;
-    --greenblue: #2366B7;
-    --columbiablue: #c9f0ff;
-    --mantis: #78BC61;
+    --oxfordblue: 10, 18, 42;
+    --darkslateblue: 79, 53, 155;
+    --greenblue: 35, 102, 183;
+    --columbiablue: 201, 240, 255;
+    --mantis: 120, 188, 97;
 }
 
 .displayNone {
@@ -17,14 +17,14 @@
     width: max-content;
     margin: 20px 0;
     padding: 20px 25px;
-    background-color: var(--darkslateblue);
-    color: var(--columbiablue);
+    background-color: rgb(var(--darkslateblue));
+    color: rgb(var(--columbiablue));
     text-decoration: none;
     transition-duration: 400ms;
     user-select: none;
 }
 
 .btn:hover, .btn:focus {
-    background-color: var(--columbiablue);
-    color: var(--oxfordblue);
+    background-color: rgb(var(--columbiablue));
+    color: rgb(var(--oxfordblue));
 }

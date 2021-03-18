@@ -24,7 +24,7 @@ function Navbar() {
     }, [location]);
 
     return (
-        <div ref={navbar} className={'navbar' + (scrolled === true ? ' navbarScrolled' : '')}>
+        <div ref={navbar} className={'navbar' + (scrolled === true ? ' navbarOpaque' : '')}>
             <NavLink to={'/'} isActive={(match, location) => {
                 if (!location) return false;
                 const {pathname} = location;
@@ -34,8 +34,10 @@ function Navbar() {
             <div className={'navbarSpacer'}/>
             <NavLink to={'/discover'} className={'navbarObject'}
                      activeClassName={scrolled === true ? 'navbarActive' : ''}>Discover</NavLink>
-            <NavLink to={'/login'} className={'navbarObject'} activeClassName={scrolled === true ? 'navbarActive' : ''}>Sign
-                Up</NavLink>
+            <NavLink to={'/signIn'} className={'navbarObject'}
+                     activeClassName={scrolled === true ? 'navbarActive' : ''}>Sign In</NavLink>
+            <NavLink to={'/signUp'} className={'navbarObject'}
+                     activeClassName={scrolled === true ? 'navbarActive' : ''}>Sign Up</NavLink>
         </div>
     );
 }

@@ -1,6 +1,6 @@
 .filter {
-    background-color: var(--oxfordblue);
-    color: var(--columbiablue) !important;
+    background-color: rgb(var(--oxfordblue));
+    color: rgb(var(--columbiablue)) !important;
     height: 100vh;
     min-width: 200px;
     box-sizing: border-box;
@@ -30,7 +30,7 @@
 }
 
 .filter > div > label:hover {
-    background-color: var(--darkslateblue);
+    background-color: rgb(var(--darkslateblue));
 }
 
 .applyFilters {

@@ -2,16 +2,20 @@ import React from "react";
 import {HashRouter, Route} from "react-router-dom";
 import './App.css';
 import Home from "./components/js/Home";
-import loginBox from "./components/js/LoginBox";
 import SkyCanvas from "./components/js/SkyCanvas";
 import Discover from "./components/js/Discover";
 import {CSSTransition} from "react-transition-group";
 import Navbar from "./components/js/Navbar";
+import SignUp from "./components/js/SignUp";
+import SignIn from "./components/js/SignIn";
+import ForgotPassword from "./components/js/ForgotPassword";
 
 const routes = [
     {path: '/', name: 'Home', Component: Home},
     {path: '/discover', name: 'Discover', Component: Discover},
-    {path: '/login', name: 'Login', Component: loginBox}];
+    {path: '/forgotPassword', name: 'Forgot Password', Component: ForgotPassword},
+    {path: '/signUp', name: 'Sign Up', Component: SignUp},
+    {path: '/signIn', name: 'Sign In', Component: SignIn}];
 
 function App() {
     return (

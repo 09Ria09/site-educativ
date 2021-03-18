@@ -42,7 +42,7 @@ function SkyCanvas(props) {
     })
 
     return (<canvas className={props.className} ref={canvasRef}
-                    style={{...{backgroundColor: 'var(--oxfordblue)'}, ...props.style}}/>);
+                    style={{...{backgroundColor: 'rgb(var(--oxfordblue)'}, ...props.style}}/>);
 }
 
 export default SkyCanvas;

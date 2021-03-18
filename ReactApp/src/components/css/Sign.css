@@ -1,0 +1,88 @@
+.signContainer {
+    width: 100%;
+    height: calc(100vh - 60px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signMain {
+    background-color: rgb(var(--columbiablue));
+    box-sizing: border-box;
+    width: 400px;
+    border-radius: 1.5em;
+    padding: 20px 50px;
+}
+
+.signMain > p {
+    color: rgb(var(--oxfordblue));
+    text-align: center;
+    margin: 15px;
+}
+
+.sign {
+    color: rgb(var(--greenblue));
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    font-size: 23px;
+    text-align: center;
+}
+
+.un {
+    color: rgb(var(--oxfordblue));
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    background: rgba(136, 126, 126, 0.04);
+    padding: 10px 20px;
+    border-radius: 20px;
+    outline: none;
+    box-sizing: border-box;
+    border: 2px solid rgba(0, 0, 0, 0.02);
+    text-align: center;
+    margin-bottom: 27px;
+    font-family: 'Ubuntu', sans-serif;
+    width: 100%;
+    caret-color: rgba(0, 0, 0, 0.27);
+}
+
+.un:focus {
+    border: 2px solid rgba(0, 0, 0, 0.18) !important;
+
+}
+
+.submit {
+    cursor: pointer;
+    border-radius: 5em;
+    color: rgb(var(--columbiablue));
+    background: rgb(var(--greenblue));
+    border: 0;
+    padding: 10px 40px;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 13px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+    width: max-content;
+    display: block;
+    margin: auto;
+    transition-duration: 200ms;
+}
+
+.submit:hover {
+    background-color: rgb(var(--darkslateblue));
+}
+
+.forgot, .goToSignIn {
+    text-shadow: 0 0 3px rgba(117, 117, 117, 0.12);
+    color: rgb(var(--greenblue));
+    padding-top: 15px;
+    width: max-content;
+    display: block;
+    margin: auto;
+    text-decoration: none;
+    transition-duration: 200ms;
+    user-select: none;
+}
+
+.forgot:hover, .goToSignIn:hover {
+    color: rgb(var(--darkslateblue));
+}

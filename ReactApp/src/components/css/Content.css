@@ -10,28 +10,28 @@
 }
 
 .contentContainerA {
-    color: var(--oxfordblue);
-    background: var(--columbiablue);
+    color: rgb(var(--oxfordblue));
+    background: rgb(var(--columbiablue));
 }
 
 .contentContainerB {
-    color: var(--oxfordblue);
-    background: var(--mantis);
+    color: rgb(var(--oxfordblue));
+    background: rgb(var(--mantis));
 }
 
 .contentContainerC {
-    color: var(--columbiablue);
-    background: var(--greenblue);
+    color: rgb(var(--columbiablue));
+    background: rgb(var(--greenblue));
 }
 
 .contentContainerD {
-    color: var(--columbiablue);
-    background: var(--darkslateblue);
+    color: rgb(var(--columbiablue));
+    background: rgb(var(--darkslateblue));
 }
 
 .contentContainerE {
-    color: var(--columbiablue);
-    background: var(--oxfordblue);
+    color: rgb(var(--columbiablue));
+    background: rgb(var(--oxfordblue));
 }
 
 .content {
