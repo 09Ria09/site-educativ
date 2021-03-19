@@ -7,10 +7,11 @@ app.config['MYSQL_HOST'] = '85.186.118.126'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = '4tzainfo_root'
 app.config['MYSQL_DB'] = 'brainerdb'
+app.config['MYSQL_PORT'] = '3306'
 
 @app.route("/", methods=["POST", "GET"])
 def my_index():
-    if request,method="POST":
+    if request.method =="POST":
         test = request.form["t"]
     cursor = mysql.connection.cursor()
     cursor.execute('''SELECT * from users ''')
