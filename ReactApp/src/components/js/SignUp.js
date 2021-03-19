@@ -9,7 +9,7 @@ function SignUp() {
             <div className={'signMain'}>
                 <h1 className={'sign'}>Sign Up</h1>
                 <form action={'#/signUp'} method={'post'}>
-                    <input className={'un'} type={'text'}
+                    <input className={'t'} type={'text'}
                            placeholder='Username'/>
                     <input className={'un'} type={'text'}
                            placeholder='Prenume'/>
