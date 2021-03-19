@@ -15,7 +15,7 @@ def my_index():
     cursor = mysql.connection.cursor()
     cursor.execute('''SELECT * from users ''')
     temp= cursor.fetchall()
-    print(temp)
+    print(test)
     print(type(temp))
     return render_template("index.html", flask_token= temp[1][1])
 app.run(debug=True)
