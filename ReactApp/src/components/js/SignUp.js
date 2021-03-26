@@ -8,18 +8,18 @@ function SignUp() {
         <div className={'signContainer'}>
             <div className={'signMain'}>
                 <h1 className={'sign'}>Sign Up</h1>
-                <form action={'#/signUp'} method={'post'}>
-                    <input className={'un'} type={'text'}
+                <form enctype="multipart/form-data" action={'/SignUpSubmit'} method={'post'}>
+                    <input name="username" className={'un'} type={'text'}
                            placeholder='Username'/>
-                    <input className={'un'} type={'text'}
+                    <input name="prenume" className={'un'} type={'text'}
                            placeholder='Prenume'/>
-                    <input className={'un'} type={'text'}
+                    <input name="nume" className={'un'} type={'text'}
                            placeholder='Nume'/>
-                    <input className={'un'} type={'text'}
+                    <input name="email" className={'un'} type={'text'}
                            placeholder='Email'/>
-                    <input className={'un'} type={'password'}
+                    <input name="password" className={'un'} type={'password'}
                            placeholder='Parola'/>
-                    <input className={'un'} type={'password'}
+                    <input name="passwordAgain" className={'un'} type={'password'}
                            placeholder='Parola încă odată'/>
                     <input className={'submit'} type={'submit'} value={'Sign Up'}/>
                     <Link className={'goToSignIn'} to={'/signIn'}>Ai deja un cont?</Link>
