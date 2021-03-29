@@ -3,7 +3,8 @@ import hashlib
 SPECIAL= [',','.','-','_']
 PAS=" !#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
 MAIL="!#$%&'*+-/=?^_`{|}~@."
-s="fw_dâășĂS@ßx.ßA"
+
+#USE NFC FOR COMPARING AND NFD FOR PROCESSING
 
 #Only for comparisons
 def nfc(s):
