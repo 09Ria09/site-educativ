@@ -15,7 +15,7 @@ def nfd(s):
     return unicodedata.normalize("NFD",s) 
 
 def valid(s,special):
-    if len(s):
+    if not len(s):
         return False
     for c in s:
         if not c in special and not c.isalnum() : return False

@@ -10,7 +10,7 @@ app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = '4tzainfo_root'
 app.config['MYSQL_DB'] = 'brainerdb'
-#app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 
 
@@ -23,7 +23,7 @@ def my_index():
     return render_template("index.html")
 @app.route("/SignUpSubmit", methods=["POST", "GET"])
 def signUp():
-    print(334)
+    print("Start")
 
     if request.method=="POST":
         cursor = mysql.connection.cursor()
@@ -38,15 +38,21 @@ def signUp():
         erori = v.validare(username,nume,prenume,email,password,passwordAgain)
         
         if erori==[]:
-            cursor.execute('''insert into users values (NULL, %s, %s, %s, 1, 1, %s, "1")''', (username, nume, prenume,email))
+            cursor.execute('''insert into users values (NULL, %s, %s, %s, 1, 1, %s, "1")''', (v.nfc(username), nume, prenume,email))
             con.commit()
-            cursor.execute('''select id from users where username = %s''', v.nfc(username))
-            userId = cursor.fetchall()
-           #cursor.execute('''insert into passwords values (NULL, %s, %s)''', (userId, v.hashPas(v.nfc(password))))
+            print("Added to database")
+            
+            cursor.execute('''select id from users where username=%s;''', [v.nfc(username)])
+            userId=cursor.fetchall()[0]["id"] 
+       
+            print("Am adaugat user-ul cu id-ul: %s" % userId)
+
+            cursor.execute('''insert into passwords values ( %s, %s);''', (userId, v.hashPas(v.nfc(password))))
+            con.commit()
             
         else :
             print(erori)
         #print(cursor.fetchall())
-        print(11)
+        print("End")
     return render_template("index.html",erori = erori)
 app.run(debug=True)
