@@ -38,10 +38,10 @@ def signUp():
         erori = v.validare(username,nume,prenume,email,password,passwordAgain)
         
         if erori==[]:
-            cursor.execute('''insert into users values (NULL, %s, %s, %s, 1, 1, %s, "1")''', (v.nfc(username), nume, prenume,email))
+            cursor.execute('''insert into users values (NULL, %s, %s, %s, 1, 1, %s, "1")''', (username, nume, prenume,email))
             con.commit()
-           # cursor.execute('''select id from users where user = %s''',username)
-           # userId = cursor.fetchall()
+            cursor.execute('''select id from users where username = %s''', v.nfc(username))
+            userId = cursor.fetchall()
            #cursor.execute('''insert into passwords values (NULL, %s, %s)''', (userId, v.hashPas(v.nfc(password))))
             
         else :
