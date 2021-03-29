@@ -1,6 +1,7 @@
+
 from flask import (Flask, render_template, request)
 from flask_mysqldb import MySQL
-
+import ver as v
 app = Flask("__main__")
 mysql= MySQL(app)
 
@@ -19,27 +20,31 @@ def my_index():
     cursor = mysql.connection.cursor()
     cursor.execute('''SELECT * from users ''')
     temp= cursor.fetchall()
-    #print(temp)
-    #print(type(temp))
     return render_template("index.html")
 @app.route("/SignUpSubmit", methods=["POST", "GET"])
-def test():
+def signUp():
     print(334)
+
     if request.method=="POST":
         cursor = mysql.connection.cursor()
         con = mysql.connection
         username = request.form['username']
         nume = request.form['nume']
         prenume = request.form['prenume']
-        password = request.form['password']
         email = request.form['email']
+        password = request.form['password']
         passwordAgain = request.form['passwordAgain']
-        if password != passwordAgain:
-            return render_template("index.html")
-        print(111)
-        cursor.execute('''insert into users values (NULL, %s, %s, %s, 1, 1, %s, "1")''', (username, nume, prenume,email))
-        con.commit()
-        #cursor.execute('''SELECT * from materii ''')
+        
+        erori = v.validare(username,nume,prenume,email,password,passwordAgain)
+        print(erori)
+        if erori==[]:
+            cursor.execute('''insert into users values (NULL, %s, %s, %s, 1, 1, %s, "1")''', (v.nfc(username), nume, prenume,email))
+            con.commit()
+           # cursor.execute('''select id from users where user =%s''',username)
+           # userId=cursor.fetchall()
+           #cursor.execute('''insert into passwords values (NULL, %s, %s)''', (userId, v.hashPas(v.nfc(password))))
+            
+        else :print(erori)
         #print(cursor.fetchall())
         print(11)
     return render_template("index.html")
