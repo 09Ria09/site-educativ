@@ -21,6 +21,7 @@ function App() {
     return (
         <HashRouter>
             <React.Fragment>
+            <p>{window.token}</p>
                 <SkyCanvas style={{
                     width: '100vw',
                     height: '100vh',
