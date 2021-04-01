@@ -40,7 +40,7 @@
     box-sizing: border-box;
     border: 2px solid rgba(0, 0, 0, 0.02);
     text-align: center;
-    margin-bottom: 27px;
+    margin-bottom: 20px;
     font-family: 'Ubuntu', sans-serif;
     width: 100%;
     caret-color: rgba(0, 0, 0, 0.27);
@@ -74,10 +74,11 @@
 .forgot, .goToSignIn {
     text-shadow: 0 0 3px rgba(117, 117, 117, 0.12);
     color: rgb(var(--greenblue));
-    padding-top: 15px;
+    margin-top: 15px;
     width: max-content;
     display: block;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
     text-decoration: none;
     transition-duration: 200ms;
     user-select: none;
@@ -85,4 +86,11 @@
 
 .forgot:hover, .goToSignIn:hover {
     color: rgb(var(--darkslateblue));
+}
+
+.errors {
+    margin-top: -18px;
+    margin-bottom: 3px;
+    margin-left: 22px;
+    color: rgba(var(--oxfordblue), 0.8);
 }

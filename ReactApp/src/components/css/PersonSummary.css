@@ -16,7 +16,7 @@
     top: 0;
     right: 0;
     z-index: 1024;
-    transition-duration: 400ms;
+    transition-duration: 100ms;
     transform-origin: top right;
 }
 

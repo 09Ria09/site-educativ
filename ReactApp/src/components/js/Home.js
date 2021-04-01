@@ -3,13 +3,13 @@ import Rellax from "rellax";
 import HomeStart from "./HomeStart";
 import Content from "./Content";
 
-function Home() {
+function Home(props) {
     useEffect(() => {
         new Rellax('.rellax');
     });
     return (
         <React.Fragment>
-            <HomeStart/>
+            <HomeStart signedIn={props.signedIn}/>
             <Content type={'A'} style={{marginBottom: '20vh'}}>
                 <h3>Cops, another community I'm not part of.</h3>
                 <p>Tell him time is of the essence. Pretend. You pretend the feelings are there, for the world, for the

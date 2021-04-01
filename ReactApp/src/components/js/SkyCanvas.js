@@ -16,28 +16,44 @@ function SkyCanvas(props) {
     useEffect(() => {
 
         let then = 0;
-        const FPS = 7;
+        const FPS = 7, ROTATIONFPS = 7;
         const fpsInterval = 1000 / FPS;
+        const rotationFpsInterval = 1000 / ROTATIONFPS;
 
         function draw() {
-            requestAnimationFrame(draw);
-            if (Date.now() - then < fpsInterval || canvasRef.current === null) return;
-            width = canvasRef.current.clientWidth;
-            height = canvasRef.current.clientHeight;
+            if (Date.now() - then < rotationFpsInterval) {
+                requestAnimationFrame(draw);
+                return;
+            }
+
+            width = 1.5 * canvasRef.current.clientWidth;
+            height = 1.5 * canvasRef.current.clientHeight;
             canvas.width = width;
             canvas.height = height;
+            let wh = Math.sqrt(width * width + height * height);
+            //TODO: Replace with css
+            ctx.translate(width / 2, height / 2);
+            ctx.rotate(rotationCounter);
+            ctx.translate(-width / 2, -height / 2);
             ctx.fillStyle = ctx.createPattern(b[counter], "repeat");
 
-            ctx.fillRect(0, 0, width, height);
+            ctx.fillRect(-(wh - width) / 2, -(wh - height) / 2, wh, wh);
+            rotationCounter += Math.PI / (1 << 14);
+
+            if (Date.now() - then < fpsInterval) {
+                requestAnimationFrame(draw);
+                return;
+            }
             ++counter;
             counter %= 7;
             then = Date.now();
+            requestAnimationFrame(draw);
         }
 
         let width = 0, height = 0;
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
-        let counter = 0;
+        let counter = 0, rotationCounter = 0;
         draw();
     })
 

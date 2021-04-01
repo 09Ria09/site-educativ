@@ -1,0 +1,14 @@
+.profile {
+    background-color: rgb(var(--greenblue), 0.6);
+    color: rgb(var(--columbiablue));
+    max-width: 800px;
+    border-radius: 5px;
+    padding: 50px;
+    position: relative;
+    margin-top: -60px;
+    padding: 80px;
+    margin-right: auto;
+    margin-left: auto;
+    box-sizing: border-box;
+    height: 100vh;
+}

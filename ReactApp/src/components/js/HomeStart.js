@@ -3,7 +3,7 @@ import '../css/HomeStart.css';
 import {Link} from "react-router-dom";
 
 
-function HomeStart() {
+function HomeStart(props) {
     return (
         <div className={'homeStartContainer'}>
             <div className={'homeStart'}>
@@ -13,7 +13,9 @@ function HomeStart() {
                         <h1 className={'title'}>Brainer</h1>
                         <h2 className={'startText'}>I'm something new entirely. With my own set of rules. I'm Dexter.
                             Boo.</h2>
-                        <Link className={'btn startButton animate__animated animate__rubberBand'} to={'/signUp'}>Sign
+                        <Link
+                            className={'btn startButton animate__animated animate__rubberBand' + (props.signedIn === true ? ' displayNone' : '')}
+                            to={'/signUp'}>Sign
                             Up</Link>
                     </div>
                 </article>

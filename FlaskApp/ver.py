@@ -25,14 +25,23 @@ def mailValid(mail):
     if valid(mail,MAIL) and mail.count('@')==1 and mail.count('..')==0 : return 1
     return 0
 
+def validareUE(usernameOrEmail,password):
+    erori={}
+    if usernameOrEmail.count('@') == 0:
+        if not valid(usernameOrEmail,SPECIAL): erori["usernameInvalid"]=True
+    else :
+        if not mailValid(usernameOrEmail): erori["mailInvalid"]=True
+    if not valid(password,PAS): erori["passwordInvalid"]=True
+    return erori
+
 def validare(username,nume,prenume,mail,password,passwordAgain):
-    erori=[]
-    if not valid(username,SPECIAL): erori.append("usernameInvalid")
-    if not valid(nume,SPECIAL): erori.append("numeInvalid")
-    if not valid(prenume,SPECIAL): erori.append("prenumeInvalid")
-    if not valid(password,PAS): erori.append("passwordInvalid")
-    if not nfd(password)==nfd(passwordAgain): erori.append("passwordMismatch")
-    if not mailValid(mail): erori.append("mailInvalid")
+    erori={}
+    if not valid(username,SPECIAL): erori["usernameInvalid"]=True
+    if not valid(nume,SPECIAL): erori["numeInvalid"]=True
+    if not valid(prenume,SPECIAL): erori["prenumeInvalid"]=True
+    if not valid(password,PAS): erori["passwordInvalid"]=True
+    if not nfd(password)==nfd(passwordAgain): erori["passwordMismatch"]=True
+    if not mailValid(mail): erori["mailInvalid"]=True
     return erori
 
 def hashPas(password):

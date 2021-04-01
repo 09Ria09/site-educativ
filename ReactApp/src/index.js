@@ -4,9 +4,16 @@ import "animate.css/animate.min.css";
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import SkyCanvas from "./components/js/SkyCanvas";
 
 ReactDOM.render(
     <React.StrictMode>
+        <SkyCanvas style={{
+            width: '100vw',
+            height: '100vh',
+            position: 'fixed',
+            zIndex: '-1',
+        }}/>
         <App/>
     </React.StrictMode>,
     document.getElementById('root')
