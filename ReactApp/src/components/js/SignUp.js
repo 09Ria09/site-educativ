@@ -25,7 +25,8 @@ function SignUp() {
                     <Link className={'goToSignIn'} to={'/signIn'}>Ai deja un cont?</Link>
                 </form>
             </div>
-        </div>
+            <p>{window.token}</p>
+        </div> 
     )
 }
 
