@@ -2,8 +2,10 @@ import React, {useState} from 'react';
 import '../css/Sign.css';
 import {Link, Redirect} from 'react-router-dom';
 import axios from "axios";
+import Cookies from "universal-cookie";
 
 function SignUp(props) {
+    const cookies = new Cookies();
     const [errors, setErrors] = useState({
         usernameInvalid: false,
         numeInvalid: false,
@@ -25,11 +27,15 @@ function SignUp(props) {
 
         }).then(res => {
             let tmp = JSON.parse(res.request.response);
-            props.setSignedIn(tmp.success);
+            if (tmp.success === true) {
+                props.setSignedIn(tmp.success);
+                cookies.set('signed-in', true, {sameSite: true});
+            }
             setErrors(tmp.erori);
         });
     }
 
+    //TODO: add cookies warning
     if (props.signedIn === true)
         return (<Redirect to='/profile'/>);
     return (

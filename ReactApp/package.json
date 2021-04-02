@@ -158,5 +158,8 @@
       "react-app"
     ]
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "http://localhost:5000",
+  "devDependencies": {
+    "universal-cookie": "^4.0.4"
+  }
 }

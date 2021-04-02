@@ -2,9 +2,12 @@ import React from "react";
 import '../css/Discover.css';
 import PersonSummary from "./PersonSummary";
 import Filter from "./Filter";
+import {Redirect} from "react-router-dom";
 
-function Discover() {
+function Discover(props) {
 
+    if (props.signedIn === false)
+        return (<Redirect to='/'/>);
     return (
         <div className={'discover'}>
             <Filter/>

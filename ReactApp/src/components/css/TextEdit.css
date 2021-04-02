@@ -1,0 +1,66 @@
+.textContainer {
+    position: relative;
+    display: flex;
+}
+
+.textareaContainer {
+    min-height: 300px;
+}
+
+.inputContainer {
+    height: 32px;
+    align-items: center;
+}
+
+.textContainer > textarea, .textContainer > input {
+    color: rgb(var(--columbiablue));
+    border-color: rgba(var(--oxfordblue), 0.7);
+    padding: 3px 4px;
+    width: 100%;
+    font-family: inherit;
+    font-size: inherit;
+    resize: none;
+    background-color: rgba(var(--greenblue), 0.7);
+}
+
+.inputContainer > input {
+    height: 100%;
+}
+
+.cogwheelContainer {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
+.inputContainer > .cogwheelContainer {
+    top: 0;
+}
+
+.settled {
+    margin: 6px;
+}
+
+.cogwheel {
+    height: 32px;
+}
+
+.cogwheel:hover {
+    animation-name: rotate;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+.textErrors {
+    margin-top: 0;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
