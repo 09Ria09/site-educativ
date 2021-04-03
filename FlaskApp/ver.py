@@ -29,7 +29,8 @@ def valid(s, special):
 
 
 def mail_valid(mail):
-    if valid(mail, MAIL) and mail.count('@') == 1 and mail.count('..') == 0:
+    cuv = mail.split('@')
+    if valid(mail, MAIL) and mail.count('@') == 1 and cuv[1].count('.') == 1 and not mail.count('..') and len(mail) <= 256 :
         return 1
     return 0
 
