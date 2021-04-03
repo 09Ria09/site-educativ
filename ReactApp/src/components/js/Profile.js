@@ -23,12 +23,16 @@ function Profile(props) {
         return (<Redirect to='/'/>);
     else if (waitingResponse === false)
         return (
-            <article className={'profile'}>
-                <TextEdit type={'input'} where={'username'} text={profile['username']}/>
-                <h3>{profile['prenume'] + ' ' + profile['nume']}</h3>
-                <h4>{profile['mail']}</h4>
-                <TextEdit type={'textarea'} where={'descriere'} text={profile['descriere']}/>
-            </article>
+            <div className={'profileContainerContainer'}>
+                <div className={'profileContainer'}>
+                    <article className={'profile'}>
+                        <h1><TextEdit type={'input'} where={'username'} maxlength={16} text={profile['username']}/></h1>
+                        <h2>{profile['prenume'] + ' ' + profile['nume']}</h2>
+                        <h3>{profile['mail']}</h3>
+                        <TextEdit type={'textarea'} where={'descriere'} maxlength={2048} text={profile['descriere']}/>
+                    </article>
+                </div>
+            </div>
         );
     else return (
             <article className={'person'}>loading</article>

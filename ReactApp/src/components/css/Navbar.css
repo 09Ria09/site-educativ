@@ -35,7 +35,7 @@
 
 .navbarOpaque > .navbarObject:hover {
     color: rgb(var(--columbiablue));
-    background-color: rgb(var(--greenblue));
+    background-color: rgba(var(--darkslateblue));
 }
 
 .navbarSpacer {

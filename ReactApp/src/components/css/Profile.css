@@ -1,13 +1,27 @@
+.profileContainerContainer {
+    background-color: rgb(var(--darkslateblue));
+}
+
+.profileContainer {
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    min-height: 100vh;
+    margin-top: -60px;
+    padding-top: 60px;
+    align-items: center;
+    box-sizing: border-box;
+}
+
 .profile {
-    background-color: rgb(var(--greenblue), 0.6);
+    flex-grow: 1;
+    box-sizing: border-box;
+    min-height: calc(100vh - 60px - (2 * 30px));
+    background-color: rgb(var(--oxfordblue));
     color: rgb(var(--columbiablue));
     max-width: 800px;
-    border-radius: 5px;
+    border-radius: 30px;
     position: relative;
-    margin-top: -60px;
     padding: 80px;
-    margin-right: auto;
-    margin-left: auto;
-    box-sizing: border-box;
-    height: 100vh;
+    margin: 30px auto;
+    height: max-content;
 }

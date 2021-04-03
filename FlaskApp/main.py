@@ -37,8 +37,8 @@ def sign_up():
         if user_id != ():
             erori["usernameTaken"] = True
         cursor.execute('''select id from users where mail=%s;''', [v.nfc(email)])
-        user_id = cursor.fetchall()
-        if user_id != ():
+        email = cursor.fetchall()
+        if email != ():
             erori["mailTaken"] = True
         if erori == {}:
             cursor.execute('''insert into users values (NULL, %s, %s, %s, 1, 1, %s, "1")''',
@@ -72,8 +72,8 @@ def sign_in():
 
         if username_or_email.count('@'):
             cursor.execute('''select id from users where mail=%s;''', [v.nfc(username_or_email)])
-            user_id = cursor.fetchall()
-            if user_id == ():
+            email = cursor.fetchall()
+            if email == ():
                 erori["mailNonexistent"] = True
         else:
             cursor.execute('''select id from users where username=%s;''', [v.nfc(username_or_email)])
@@ -128,8 +128,8 @@ def is_signed_in():
     return {'signedIn': True}
 
 
-@app.route("/SubmitTextarea", methods=["POST"])
-def submit_textarea():
+@app.route("/SubmitTextEdit", methods=["POST"])
+def submit_text_edit():
     if session.get('user_id') is None:
         return {'invalid': False}
     cursor = mysql.connection.cursor()
@@ -137,9 +137,9 @@ def submit_textarea():
     rq = request.get_json()
     if rq['type'] == 'descriere':
 
-        #TODO: create correct valid function
-        if not v.valid(rq['value'], v.PAS):
-            return {'invalid': 'Conține caractere invalide.'}
+        #TODO: create correct valid function, also check for length
+        #if not v.valid(rq['value'], v.PAS):
+        #    return {'invalid': 'Conține caractere invalide.'}
 
         cursor.execute('''select id from extra where user_id=%s''', [session.get('user_id')])
         if cursor.fetchall() == ():
@@ -162,6 +162,7 @@ def submit_textarea():
         cursor.execute('''update users set username=%s where id=%s''',
                        (rq['value'], session.get('user_id')))
         con.commit()
+
     return {'invalid': ''}
 
 

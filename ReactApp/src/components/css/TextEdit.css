@@ -4,7 +4,6 @@
 }
 
 .textareaContainer {
-    min-height: 300px;
 }
 
 .inputContainer {
@@ -13,23 +12,40 @@
 }
 
 .textContainer > textarea, .textContainer > input {
+    border-radius: 25px;
     color: rgb(var(--columbiablue));
-    border-color: rgba(var(--oxfordblue), 0.7);
-    padding: 3px 4px;
+    border: none;
+    padding: 5px 25px;
+    margin: -5px -25px;
     width: 100%;
     font-family: inherit;
     font-size: inherit;
+    text-decoration: inherit;
+    font-weight: inherit;
     resize: none;
-    background-color: rgba(var(--greenblue), 0.7);
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.textContainer > textarea {
+    min-height: 300px;
+    height: max-content;
+    margin-top: -10px;
+    padding-top: 10px;
 }
 
 .inputContainer > input {
     height: 100%;
 }
 
+.textContainer > textarea:focus, .textContainer > input:focus {
+    -webkit-box-shadow: 0 0 0 3px rgba(var(--darkslateblue), 0.3);
+    box-shadow: 0 0 0 3px rgba(var(--darkslateblue), 0.3);
+    outline-style: none !important;
+}
+
 .cogwheelContainer {
     position: absolute;
-    right: 5px;
+    right: 0;
     top: 5px;
 }
 
@@ -38,7 +54,10 @@
 }
 
 .settled {
-    margin: 6px;
+    margin: 0;
+    text-align: justify;
+    white-space: pre-line;
+    width: 100%;
 }
 
 .cogwheel {
@@ -54,6 +73,12 @@
 
 .textErrors {
     margin-top: 0;
+}
+
+.textareaToolbar {
+    position: absolute;
+    top: 0;
+    transform: translateY(-100%);
 }
 
 @keyframes rotate {

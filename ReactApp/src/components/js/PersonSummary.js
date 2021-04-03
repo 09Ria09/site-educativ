@@ -8,13 +8,10 @@ function PersonSummary(props) {
             <img src={props.image}/>
             <p>{props.children}</p>
             <div>
-                <div className={'personButton'}>Like</div>
-                <div className={'line'}/>
-                <div className={'personButton'}>Dislike</div>
-                <div className={'line'}/>
-                <div className={'personButton'}>Follow</div>
-                <div className={'line'}/>
-                <div className={'personButton'}>Block</div>
+                <div className={'btn personButton '}>Like</div>
+                <div className={'btn personButton'}>Dislike</div>
+                <div className={'btn personButton'}>Follow</div>
+                <div className={'btn personButton'}>Block</div>
             </div>
         </article>
     );

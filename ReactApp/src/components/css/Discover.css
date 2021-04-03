@@ -1,12 +1,15 @@
 .discover {
     display: flex;
-    background-color: #0A122A;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.discoverContainer {
+    background-color: rgb(var(--darkslateblue));
 }
 
 .people {
     overflow: auto;
     flex-grow: 2;
-    background-color: rgba(0, 0, 0, 0.3);
     padding-left: 50px;
     padding-right: 50px;
 }
