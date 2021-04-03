@@ -18,6 +18,11 @@ def nfc(s):
 def nfd(s):
     return unicodedata.normalize("NFD", s)
 
+def normalizare_email(email):
+    elements = email.split('@')
+    nume = elements[0].split('.')
+    nume_normalizat = ''.join(map(str, nume))    
+    return nume_normalizat
 
 def valid(s, special):
     if not len(s):

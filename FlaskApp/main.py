@@ -2,6 +2,28 @@ from flask import (Flask, request, session)
 from flask_mysqldb import MySQL
 from flask_cors import CORS
 import ver as v
+import smtplib, ssl
+
+#Initizare bot gmail
+smtp_server = "smtp.gmail.com"
+port = 587 
+sender_email = "brainerofficialro@gmail.com"
+password = "4tzainfo_root"
+
+context = ssl.create_default_context()
+
+def mail_verificare(recipient)
+    try:
+        server = smtplib.SMTP(smtp_server,port)
+        server.starttls(context=context) # Secure the connection
+        server.login(sender_email, password)
+        message = "TEST"
+        server.sendmail(sender_email, recipient, message)
+    except Exception as e:
+        print(e)
+    finally:
+        server.quit() 
+
 
 app = Flask("__main__")
 app.secret_key = '6398715B0D903F28D7BBF08370156D9557DDFAE4CBB1A610A9A535F960CF994D' \
