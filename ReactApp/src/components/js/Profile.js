@@ -4,6 +4,7 @@ import axios from "axios";
 import '../css/Profile.css';
 import TextEdit from "./TextEdit";
 import CustomSelect from "./CustomSelect";
+import Loading from "./Loading";
 
 function Profile(props) {
     const [profile, setProfile] = useState({});
@@ -97,25 +98,28 @@ function Profile(props) {
                         <CustomSelect initialValue={profile['materii']} setValue={valueHandler}
                                       editing={editing} errors={errors['invalidM']}
                                       marginOffset={'-25px'} name={'materii'} options={[
-                            {value: '1', label: 'Matematică'},
-                            {value: '2', label: 'Română'},
-                            {value: '3', label: 'Engleză'},
-                            {value: '4', label: 'Fizică'},
-                            {value: '5', label: 'Biologie'},
-                            {value: '6', label: 'Chimie'},
-                            {value: '7', label: 'Religie'},
-                            {value: '8', label: 'Germană'},
-                            {value: '9', label: 'Franceză'},
-                            {value: '10', label: 'Informatică'},
-                            {value: '11', label: 'Geografie'},
-                            {value: '12', label: 'Economie'},
+                            {value: '0', label: 'Matematică'},
+                            {value: '1', label: 'Română'},
+                            {value: '2', label: 'Engleză'},
+                            {value: '3', label: 'Fizică'},
+                            {value: '4', label: 'Biologie'},
+                            {value: '5', label: 'Chimie'},
+                            {value: '6', label: 'Religie'},
+                            {value: '7', label: 'Germană'},
+                            {value: '8', label: 'Franceză'},
+                            {value: '9', label: 'Informatică'},
+                            {value: '10', label: 'Geografie'},
+                            {value: '11', label: 'Economie'},
                         ]}/>
                     </article>
                 </div>
             </div>
         );
     else return (
-            <article className={'person'}>loading</article>
+            <div className={'profileContainerContainer'}>
+                <div className={'profileContainer'}><Loading/>
+                </div>
+            </div>
         );
 }
 

@@ -1,6 +1,6 @@
-import unicodedata
 import hashlib
 import json
+import unicodedata
 
 SPECIAL = [',', '.', '-', '_']
 PAS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
@@ -19,11 +19,13 @@ def nfc(s):
 def nfd(s):
     return unicodedata.normalize("NFD", s)
 
+
 def normalizare_email(email):
     elements = email.split('@')
     nume = elements[0].split('.')
-    nume_normalizat = ''.join(map(str, nume))    
+    nume_normalizat = ''.join(map(str, nume))
     return nume_normalizat
+
 
 def valid(s, special):
     if not len(s):
@@ -36,7 +38,8 @@ def valid(s, special):
 
 def mail_valid(mail):
     cuv = mail.split('@')
-    if valid(mail, MAIL) and mail.count('@') == 1 and cuv[1].count('.') == 1 and not mail.count('..') and len(mail) <= 256 :
+    if valid(mail, MAIL) and mail.count('@') == 1 and cuv[1].count('.') == 1 and not mail.count('..') and len(
+            mail) <= 256:
         return 1
     return 0
 
@@ -93,7 +96,6 @@ def verify_profile(mysql, session, rq):
 
 
 def verify_profile_helper(mysql, session, ptype, value):
-
     tmp = {'valid': True}
 
     if session.get('user_id') is None:

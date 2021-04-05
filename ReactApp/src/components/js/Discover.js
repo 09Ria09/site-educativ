@@ -1,18 +1,45 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import '../css/Discover.css';
 import PersonSummary from "./PersonSummary";
 import Filter from "./Filter";
 import {Redirect} from "react-router-dom";
+import axios from "axios";
 
 function Discover(props) {
+    const [summaries, setSummaries] = useState([]);
+    const [waitingResponse, setWaitingResponse] = useState(true);
+
+    useEffect(() => {
+        console.log(summaries)
+    }, [summaries])
+
+    function update(filter) {
+        setWaitingResponse(true);
+        console.log(filter)
+        axios({
+            method: 'post',
+            url: '/GetSummaries',
+            data: filter
+        }).then(res => {
+            console.log(JSON.parse(res.request.response))
+            setSummaries(JSON.parse(res.request.response))
+            setWaitingResponse(false)
+        });
+    }
 
     if (props.signedIn === false)
         return (<Redirect to='/'/>);
     return (
         <div className={'discoverContainer'}>
             <div className={'discover'}>
-                <Filter/>
+                <Filter filterHandler={update}/>
                 <div className={'people'}>
+                    {//summaries.map((x, y)=>{
+                        //   return (
+                        //       <PersonSummary name={(x['prenume'] + ' ' + x['nume'])}>{x['descriere']}</PersonSummary>
+                        //   );
+                        //})
+                    }
                     <PersonSummary name={'Dexter Morgan'} image={'placeholder.jpg'}>This man is a knight in shining
                         armor.
                         I'm real proud of you for coming, bro. I know you hate funerals. This man is a knight in shining

@@ -28,3 +28,12 @@
     background-color: rgb(var(--columbiablue));
     color: rgb(var(--oxfordblue));
 }
+
+@keyframes rotate {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

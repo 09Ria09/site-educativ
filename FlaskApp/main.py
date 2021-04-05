@@ -1,29 +1,33 @@
-from flask import (Flask, request, session)
-from flask_mysqldb import MySQL
-from flask_cors import CORS
 import json
-import ver as v
-import smtplib, ssl
+import smtplib
+import ssl
 
-#Initizare bot gmail
+from flask import (Flask, request, session)
+from flask_cors import CORS
+from flask_mysqldb import MySQL
+
+import ver as v
+
+# Initizare bot gmail
 smtp_server = "smtp.gmail.com"
-port = 587 
+port = 587
 sender_email = "brainerofficialro@gmail.com"
 password = "4tzainfo_root"
 
 context = ssl.create_default_context()
 
-def mail_verificare(recipient)
+
+def mail_verificare(recipient):
     try:
-        server = smtplib.SMTP(smtp_server,port)
-        server.starttls(context=context) # Secure the connection
+        server = smtplib.SMTP(smtp_server, port)
+        server.starttls(context=context)  # Secure the connection
         server.login(sender_email, password)
         message = "TEST"
         server.sendmail(sender_email, recipient, message)
     except Exception as e:
         print(e)
     finally:
-        server.quit() 
+        server.quit()
 
 
 app = Flask("__main__")
@@ -186,6 +190,32 @@ def submit_profile():
 @app.route("/CheckProfile", methods=["POST"])
 def check_profile():
     return v.verify_profile(mysql, session, request.get_json())
+
+
+@app.route("/GetSummaries", methods=["POST"])
+def get_summaries():
+    cursor = mysql.connection.cursor()
+    con = mysql.connection
+    rq = request.get_json()
+    print(rq)
+    return {}
+    if 'materii' in rq:
+        cursor.execute('''SELECT * FROM brainerdb.users WHERE materii like %s;''',
+                       ['%'+json.dumps(rq['materii'], ensure_ascii=False)+'%'])
+        print('%'+json.dumps(rq['materii'], ensure_ascii=False)+'%')
+        return con.commit()
+
+    elif 'clasa' in rq:
+        cursor.execute('''SELECT * FROM brainerdb.users WHERE clasa like '%"%s"%';''',
+                       [json.dumps(rq['materii'], ensure_ascii=False)])
+        return con.commit()
+
+    elif 'materii' in rq and 'clasa' in rq:
+        cursor.execute('''SELECT * FROM brainerdb.users WHERE materii like '%"%s"%' AND clasa like '%"%s"%';''',
+                       [json.dumps(rq['materii'], ensure_ascii=False),
+                        json.dumps(rq['clasa'], ensure_ascii=False)])
+        return con.commit()
+    return {}
 
 
 @app.errorhandler(404)

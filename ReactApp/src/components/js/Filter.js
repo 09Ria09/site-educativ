@@ -1,14 +1,24 @@
-import React from "react";
+import React, {useState} from "react";
 import '../css/Filter.css';
 import CustomSelect from "./CustomSelect";
 
-function Filter() {
+function Filter(props) {
+    const [filters, setFilters] = useState({});
+
+    function filtersHandler(t, v) {
+        setFilters(s => {
+            let tmp = s;
+            tmp[t] = v;
+            return tmp
+        })
+    }
 
     return (
         <div className={'filterContainer'}>
             <div className={'filter'}>
                 <h3>Filtru : </h3>
-                <CustomSelect placeholder={'Materii'} editing={true} name={'materii'} options={[
+                <CustomSelect setValue={filtersHandler}
+                              placeholder={'Materii'} editing={true} name={'materii'} options={[
                     {value: '0', label: 'Matematică'},
                     {value: '1', label: 'Română'},
                     {value: '2', label: 'Engleză'},
@@ -22,7 +32,8 @@ function Filter() {
                     {value: '10', label: 'Geografie'},
                     {value: '11', label: 'Economie'},
                 ]}/>
-                <CustomSelect placeholder={'Clasa'} editing={true} name={'materii'} options={[
+                <CustomSelect setValue={filtersHandler}
+                              placeholder={'Clasa'} editing={true} name={'clasa'} options={[
                     {value: '5', label: '5'},
                     {value: '6', label: '6'},
                     {value: '7', label: '7'},
@@ -32,7 +43,7 @@ function Filter() {
                     {value: '11', label: '11'},
                     {value: '12', label: '12'}
                 ]}/>
-                <div className={'applyFilters btn'}>Apply</div>
+                <a className={'applyFilters btn'} onClick={() => props.filterHandler(filters)}>Apply</a>
             </div>
         </div>
     );
