@@ -3,15 +3,12 @@
     display: flex;
 }
 
-.textareaContainer {
-}
-
 .inputContainer {
     height: 32px;
     align-items: center;
 }
 
-.textContainer > textarea, .textContainer > input {
+.inputContainer > input {
     border-radius: 25px;
     color: rgb(var(--columbiablue));
     border: none;
@@ -24,33 +21,66 @@
     font-weight: inherit;
     resize: none;
     background-color: rgba(0, 0, 0, 0.3);
-}
-
-.textContainer > textarea {
-    min-height: 300px;
-    height: max-content;
-    margin-top: -10px;
-    padding-top: 10px;
-}
-
-.inputContainer > input {
     height: 100%;
 }
 
-.textContainer > textarea:focus, .textContainer > input:focus {
-    -webkit-box-shadow: 0 0 0 3px rgba(var(--darkslateblue), 0.3);
-    box-shadow: 0 0 0 3px rgba(var(--darkslateblue), 0.3);
+.textareaWrapper {
+    width: 100% !important;
+    margin-left: -1px !important;
+}
+
+.textareaEditor {
+    border-radius: 25px !important;
+    color: rgb(var(--columbiablue)) !important;
+    border: none !important;
+    padding: 5px 25px !important;
+    margin: -5px -25px !important;
+    height: max-content !important;
+    box-sizing: content-box !important;
+    width: 100% !important;
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+.textareaEditorReadOnly {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.textareaToolbar {
+    background-color: #070d1d !important;
+    color: black !important;
+    position: absolute !important;
+    top: 0 !important;
+    z-index: 256 !important;
+    transform: translateY(-100%) translateY(-15px) translateX(-25px) !important;
+    width: 100% !important;
+    border-radius: 25px !important;
+    border: none !important;
+    padding: 15px 25px !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+.public-DraftStyleDefault-ltr {
+    text-align: inherit !important;
+}
+
+.rdw-justify-aligned-block > .public-DraftStyleDefault-block {
+    white-space: normal !important;
+}
+
+.textareaToolbarOnFocus {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.inputContainer > input, .textareaEditor, .textareaToolbar {
+    transition: box-shadow 100ms, -webkit-box-shadow 100ms !important;
+}
+
+.textContainer > input:focus, .textareaEditorOnFocus, .textareaToolbar {
+    -webkit-box-shadow: 0 0 0 3px #1f1d4c !important;
+    box-shadow: 0 0 0 3px #1f1d4c !important;
     outline-style: none !important;
-}
-
-.cogwheelContainer {
-    position: absolute;
-    right: 0;
-    top: 5px;
-}
-
-.inputContainer > .cogwheelContainer {
-    top: 0;
 }
 
 .settled {
@@ -60,32 +90,8 @@
     width: 100%;
 }
 
-.cogwheel {
-    height: 32px;
-}
-
-.cogwheel:hover {
-    animation-name: rotate;
-    animation-duration: 2s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-}
-
 .textErrors {
-    margin-top: 0;
-}
-
-.textareaToolbar {
-    position: absolute;
-    top: 0;
-    transform: translateY(-100%);
-}
-
-@keyframes rotate {
-    from {
-        transform: rotate(0);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+    margin-top: 3px;
+    font-size: medium;
+    font-weight: normal;
 }

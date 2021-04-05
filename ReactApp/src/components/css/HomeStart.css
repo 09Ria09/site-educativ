@@ -41,6 +41,7 @@
     margin-right: auto;
     backface-visibility: hidden;
     animation-delay: 1250ms;
+    border-radius: 10px;
 }
 
 .circle {

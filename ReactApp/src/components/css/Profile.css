@@ -21,7 +21,34 @@
     max-width: 800px;
     border-radius: 30px;
     position: relative;
-    padding: 80px;
+    padding: 80px 80px 40px;
     margin: 30px auto;
     height: max-content;
+}
+
+.cogwheelContainer {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    user-select: none;
+}
+
+.cogwheel {
+    height: 32px;
+}
+
+.cogwheel:hover, .rotateCogwheel {
+    animation-name: rotate;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }

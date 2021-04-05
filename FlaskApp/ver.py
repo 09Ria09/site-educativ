@@ -1,5 +1,6 @@
 import unicodedata
 import hashlib
+import json
 
 SPECIAL = [',', '.', '-', '_']
 PAS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
@@ -66,3 +67,62 @@ def validare(username, nume, prenume, mail, password, password_again):
 
 def hash_pas(password):
     return hashlib.sha512(password.encode()).hexdigest()
+
+
+def verify_profile(mysql, session, rq):
+    tmp = {'valid': True}
+    invalid = False
+    if 'username' in rq:
+        tmp = {**tmp, **verify_profile_helper(mysql, session, 'username', rq['username'])}
+    if not tmp['valid']:
+        invalid = True
+    if 'descriere' in rq:
+        tmp = {**tmp, **verify_profile_helper(mysql, session, 'descriere', rq['descriere'])}
+    if not tmp['valid']:
+        invalid = True
+    if 'materii' in rq:
+        tmp = {**tmp, **verify_profile_helper(mysql, session, 'materii', rq['materii'])}
+    tmp['valid'] &= (not invalid)
+    return tmp
+
+
+def verify_profile_helper(mysql, session, ptype, value):
+
+    tmp = {'valid': True}
+
+    if session.get('user_id') is None:
+        tmp['valid'] = False
+        return tmp
+
+    cursor = mysql.connection.cursor()
+    con = mysql.connection
+
+    if ptype == 'username':
+        if not valid(value, SPECIAL):
+            tmp['valid'] = False
+            tmp['invalidUN'] = 'Username-ul este invalid.'
+            return tmp
+
+        cursor.execute('''select username from users where id=%s;''', [session.get('user_id')])
+        if cursor.fetchall()[0]['username'] == value:
+            return tmp
+
+        cursor.execute('''select id from users where username=%s;''', [nfc(value)])
+        if cursor.fetchall() != ():
+            tmp['valid'] = False
+            tmp['invalidUN'] = 'Există deja un alt cont cu acest username.'
+            return tmp
+
+    elif ptype == 'descriere':
+        if len(json.dumps(value, ensure_ascii=False)) > 2048:
+            tmp['valid'] = False
+            tmp['invalidD'] = 'Textul este prea lung.'
+            return tmp
+
+    elif ptype == 'materii':
+        if len(json.dumps(value, ensure_ascii=False)) > 512:
+            tmp['valid'] = False
+            tmp['invalidM'] = 'Prea Multe Taguri.'
+            return tmp
+
+    return tmp

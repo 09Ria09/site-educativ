@@ -1,6 +1,7 @@
 from flask import (Flask, request, session)
 from flask_mysqldb import MySQL
 from flask_cors import CORS
+import json
 import ver as v
 
 app = Flask("__main__")
@@ -33,12 +34,10 @@ def sign_up():
 
     if erori == {}:
         cursor.execute('''select id from users where username=%s;''', [v.nfc(username)])
-        user_id = cursor.fetchall()
-        if user_id != ():
+        if cursor.fetchall() != ():
             erori["usernameTaken"] = True
         cursor.execute('''select id from users where mail=%s;''', [v.nfc(email)])
-        email = cursor.fetchall()
-        if email != ():
+        if cursor.fetchall() != ():
             erori["mailTaken"] = True
         if erori == {}:
             cursor.execute('''insert into users values (NULL, %s, %s, %s, 1, 1, %s, "1")''',
@@ -72,8 +71,8 @@ def sign_in():
 
         if username_or_email.count('@'):
             cursor.execute('''select id from users where mail=%s;''', [v.nfc(username_or_email)])
-            email = cursor.fetchall()
-            if email == ():
+            user_id = cursor.fetchall()
+            if user_id == ():
                 erori["mailNonexistent"] = True
         else:
             cursor.execute('''select id from users where username=%s;''', [v.nfc(username_or_email)])
@@ -128,42 +127,43 @@ def is_signed_in():
     return {'signedIn': True}
 
 
-@app.route("/SubmitTextEdit", methods=["POST"])
-def submit_text_edit():
-    if session.get('user_id') is None:
-        return {'invalid': False}
+@app.route("/SubmitProfile", methods=["POST"])
+def submit_profile():
     cursor = mysql.connection.cursor()
     con = mysql.connection
     rq = request.get_json()
-    if rq['type'] == 'descriere':
 
-        #TODO: create correct valid function, also check for length
-        #if not v.valid(rq['value'], v.PAS):
-        #    return {'invalid': 'Conține caractere invalide.'}
+    ver = v.verify_profile(mysql, session, rq)
 
+    if not ver['valid']:
+        return ver
+
+    if 'username' in rq:
+        cursor.execute('''update users set username=%s where id=%s''',
+                       (rq['username'], session.get('user_id')))
+        con.commit()
+
+    if 'descriere' in rq:
         cursor.execute('''select id from extra where user_id=%s''', [session.get('user_id')])
         if cursor.fetchall() == ():
-            cursor.execute('''insert ignore into extra (user_id,descriere) values(%s,%s)''',
-                           (session.get('user_id'), rq['value']))
+            cursor.execute('''insert into extra (user_id,descriere) values(%s,%s)''',
+                           (session.get('user_id'), (json.dumps(rq['descriere'], ensure_ascii=False))))
         else:
             cursor.execute('''update extra set descriere=%s where user_id=%s''',
-                           (rq['value'], session.get('user_id')))
+                           (json.dumps(rq['descriere'], ensure_ascii=False), session.get('user_id')))
         con.commit()
 
-    if rq['type'] == 'username':
-
-        if not v.valid(rq['value'], v.SPECIAL):
-            return {'invalid': 'Username-ul este invalid.'}
-
-        cursor.execute('''select id from users where username=%s;''', [v.nfc(rq['value'])])
-        if cursor.fetchall() != ():
-            return {'invalid': 'Există deja un alt cont cu acest username.'}
-
-        cursor.execute('''update users set username=%s where id=%s''',
-                       (rq['value'], session.get('user_id')))
+    if 'materii' in rq:
+        cursor.execute('''update users set materii=%s where id=%s''',
+                       (json.dumps(rq['materii'], ensure_ascii=False), session.get('user_id')))
         con.commit()
 
-    return {'invalid': ''}
+    return ver
+
+
+@app.route("/CheckProfile", methods=["POST"])
+def check_profile():
+    return v.verify_profile(mysql, session, request.get_json())
 
 
 @app.errorhandler(404)

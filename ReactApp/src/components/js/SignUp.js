@@ -78,7 +78,7 @@ function SignUp(props) {
                 </form>
             </div>
             <p>{window.token}</p>
-        </div> 
+        </div>
     )
 }
 

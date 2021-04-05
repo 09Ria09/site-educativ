@@ -55,20 +55,20 @@
     cursor: pointer;
     border-radius: 5em;
     color: rgb(var(--columbiablue));
-    background: rgb(var(--greenblue));
     border: 0;
     padding: 10px 40px;
     font-family: 'Ubuntu', sans-serif;
     font-size: 13px;
-    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
     width: max-content;
     display: block;
     margin: auto;
     transition-duration: 200ms;
+    background-color: rgb(var(--greenblue));
 }
 
 .submit:hover {
-    background-color: rgb(var(--darkslateblue));
+    background-color: rgb(var(--oxfordblue));
+    box-shadow: 0 0 rgba(var(--greenblue), 0.4);
 }
 
 .forgot, .goToSignIn {
@@ -93,4 +93,6 @@
     margin-bottom: 3px;
     margin-left: 22px;
     color: rgba(var(--oxfordblue), 0.8);
+    font-size: medium;
+    font-weight: normal;
 }

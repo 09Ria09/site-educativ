@@ -22,7 +22,7 @@
 }
 
 .person > img:hover {
-    transform: scale(2.195);
+    transform: scale(2);
 }
 
 .person > h1 {
