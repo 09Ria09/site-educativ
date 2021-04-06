@@ -13,3 +13,15 @@
     padding-left: 50px;
     padding-right: 50px;
 }
+
+@media screen and (max-width: 769px) {
+
+    .discover {
+        flex-direction: column;
+    }
+
+    .people {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}

@@ -19,10 +19,11 @@
     margin-left: auto;
     height: 100%;
     width: 100%;
+    border-radius: 0 0 0 25px;
 }
 
 .personDiv1 > img:hover {
-    transform: scale(2.5);
+    transform: scale(1.75);
 }
 
 .personDiv1 > h1 {
@@ -91,8 +92,10 @@
     }
 
     .personDiv1 > img {
-        max-height: unset;
-        max-width: unset;
+        max-height: 300px;
+        max-width: 300px;
+        margin-left: unset;
+        border-radius: 25px;
     }
 
     .personDiv1 > h1 {
