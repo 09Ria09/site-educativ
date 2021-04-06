@@ -11,6 +11,7 @@ import ForgotPassword from "./components/js/ForgotPassword";
 import Profile from "./components/js/Profile";
 import Cookies from 'universal-cookie';
 import axios from "axios";
+import SkyCanvas from "./components/js/SkyCanvas";
 
 function App() {
     const routes = [
@@ -43,33 +44,41 @@ function App() {
         }
 
         checkIfSignedIn();
-        const checkIfSignedInInterval = setInterval(checkIfSignedIn, 1000);
+        const checkIfSignedInInterval = setInterval(checkIfSignedIn, 100000);
         return () => clearInterval(checkIfSignedInInterval);
     }, []);
 
     return (
-        <HashRouter>
-            <Navbar signedIn={signedIn} setSignedIn={setSignedIn}/>
-            {routes.map(({path, name, Component}) => (
-                <Route key={name} exact path={path}>
-                    {({match}) => (<CSSTransition
-                        classNames={{
-                            enterActive: 'animate__animated animate__fadeIn animate__faster',
-                            exit: 'displayNone',
-                        }}
-                        onEnter={() => {
-                            window.scrollTo(0, 0);
-                        }}
-                        timeout={500}
-                        in={match != null}
-                        unmountOnExit>
-                        <div>
-                            <Component signedIn={signedIn} setSignedIn={setSignedIn}/>
-                        </div>
-                    </CSSTransition>)}
-                </Route>
-            ))}
-        </HashRouter>
+        <React.Fragment>
+            <SkyCanvas style={{
+                width: '100vw',
+                height: '100vh',
+                position: 'fixed',
+                zIndex: '-1',
+            }}/>
+            <HashRouter>
+                <Navbar signedIn={signedIn} setSignedIn={setSignedIn}/>
+                {routes.map(({path, name, Component}) => (
+                    <Route key={name} exact path={path}>
+                        {({match}) => (<CSSTransition
+                            classNames={{
+                                enterActive: 'animate__animated animate__fadeIn animate__faster',
+                                exit: 'displayNone',
+                            }}
+                            onEnter={() => {
+                                window.scrollTo(0, 0);
+                            }}
+                            timeout={500}
+                            in={match != null}
+                            unmountOnExit>
+                            <div>
+                                <Component signedIn={signedIn} setSignedIn={setSignedIn}/>
+                            </div>
+                        </CSSTransition>)}
+                    </Route>
+                ))}
+            </HashRouter>
+        </React.Fragment>
     );
 }
 

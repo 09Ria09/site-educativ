@@ -1,55 +1,61 @@
 .person {
     background-color: rgb(var(--oxfordblue));
     color: rgb(var(--columbiablue));
-    height: 40vh;
+    min-height: 45vh;
     max-width: 800px;
     border-radius: 30px;
-    padding: 50px;
     position: relative;
     margin: 50px auto;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
-.person > img {
-    height: 200px;
-    width: 200px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1024;
+.personDiv1 > img {
+    max-height: 200px;
+    max-width: 200px;
     transition-duration: 100ms;
     transform-origin: top right;
+    margin-left: auto;
+    height: 100%;
+    width: 100%;
 }
 
-.person > img:hover {
-    transform: scale(2);
+.personDiv1 > img:hover {
+    transform: scale(2.5);
 }
 
-.person > h1 {
+.personDiv1 > h1 {
     margin-top: 35px;
+    margin-left: 50px;
+    margin-right: 20px;
 }
 
 .person > p {
-    margin-top: 125px;
     text-align: justify;
+    margin-left: 50px;
+    margin-right: 50px;
 }
 
-.person > div {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+.person > .personDiv1 {
     display: flex;
-    width: 100%;
-    padding-left: 15%;
-    padding-right: 15%;
-    box-sizing: border-box;
+}
+
+.person > .personDiv2 {
+    margin-top: auto;
+    display: flex;
+}
+
+.person > .personDiv2 > div {
+    flex-grow: 1;
+    min-width: 2%;
 }
 
 .personButton {
     height: 40px;
-    margin: 20px auto;
-    width: 130px;
+    max-width: 130px;
+    width: 100%;
+    padding: 0 10px;
     user-select: none;
     display: flex;
     align-items: center;
@@ -58,7 +64,12 @@
     border-radius: 25px;
     background-color: rgb(var(--darkslateblue));
     box-shadow: 0 6px rgba(var(--darkslateblue), 0.6);
-    padding: 0;
+    border:none;
+    font:inherit;
+    text-decoration:inherit;
+    outline: none!important;
+    box-sizing: content-box;
+    margin: 20px min(20px, 2%);
 }
 
 .line {
@@ -67,7 +78,48 @@
     width: 0;
 }
 
-.personButton:hover {
+.personButton:hover, .personButton:focus-visible {
     transform: translateY(4px);
     box-shadow: 0 0 rgba(var(--darkslateblue), 0.4);
+}
+
+@media screen and (max-width: 769px) {
+
+    .personDiv1 {
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+
+    .personDiv1 > img {
+        max-height: unset;
+        max-width: unset;
+    }
+
+    .personDiv1 > h1 {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .person > p {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .personDiv1 > img:hover {
+        transform: none;
+    }
+
+    .personDiv2 {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .personButton{
+        margin-top: 0;
+        margin-bottom: 15px;
+    }
+
+    .person > div > div {
+        display: none;
+    }
 }

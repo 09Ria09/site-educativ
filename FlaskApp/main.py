@@ -2,7 +2,7 @@ import json
 import smtplib
 import ssl
 
-from flask import (Flask, request, session)
+from flask import (Flask, request, session, jsonify)
 from flask_cors import CORS
 from flask_mysqldb import MySQL
 
@@ -66,7 +66,7 @@ def sign_up():
         if cursor.fetchall() != ():
             erori["mailTaken"] = True
         if erori == {}:
-            cursor.execute('''insert into users values (NULL, %s, %s, %s, 1, 1, %s, "1")''',
+            cursor.execute('''insert into users values (NULL, %s, %s, %s, NULL, %s, NULL)''',
                            (v.nfc(username), nume, prenume, v.nfc(email)))
             con.commit()
             cursor.execute('''select id from users where username=%s;''', [v.nfc(username)])
@@ -123,18 +123,30 @@ def sign_in():
 def get_profile():
     if session.get('user_id') is None:
         return {}
-    cursor = mysql.connection.cursor()
+    return get_profile_helper(session['user_id'])
 
-    cursor.execute('''SELECT * FROM brainerdb.users WHERE id=%s;''', [session['user_id']])
+
+def get_profile_helper(user_id):
+    profile = {}
+    cursor = mysql.connection.cursor()
+    cursor.execute('''SELECT * FROM brainerdb.users WHERE id=%s;''', [user_id])
     tmp = cursor.fetchall()
     if tmp != ():
         profile = tmp[0]
 
-    cursor.execute('''SELECT * FROM brainerdb.extra WHERE user_id=%s;''', [session['user_id']])
+    cursor.execute('''SELECT * FROM brainerdb.extra WHERE user_id=%s;''', [user_id])
     tmp = cursor.fetchall()
     if tmp != ():
         profile = {**tmp[0], **profile}
 
+    cursor.execute('''SELECT materie_id FROM brainerdb.materii WHERE user_id=%s;''', [user_id])
+    tmp = cursor.fetchall()
+    tmpm = []
+    for x in tmp:
+        tmpm.append(x['materie_id'])
+    print(tmpm)
+    if tmp:
+        profile['materii'] = tmpm
     return profile
 
 
@@ -149,7 +161,6 @@ def sign_out():
 def is_signed_in():
     if session.get('user_id') is None:
         return {'signedIn': False}
-        print('it is')
     return {'signedIn': True}
 
 
@@ -179,10 +190,13 @@ def submit_profile():
                            (json.dumps(rq['descriere'], ensure_ascii=False), session.get('user_id')))
         con.commit()
 
-    if 'materii' in rq:
-        cursor.execute('''update users set materii=%s where id=%s''',
-                       (json.dumps(rq['materii'], ensure_ascii=False), session.get('user_id')))
+    if 'materii' in rq and type(rq['materii']) == list:
+        cursor.execute('''delete from materii where user_id=%s''', [session.get('user_id')])
         con.commit()
+        for materie in rq['materii']:
+            cursor.execute('''insert into materii values (NULL, %s, %s)''',
+                           (session.get('user_id'), materie))
+            con.commit()
 
     return ver
 
@@ -194,28 +208,45 @@ def check_profile():
 
 @app.route("/GetSummaries", methods=["POST"])
 def get_summaries():
-    cursor = mysql.connection.cursor()
-    con = mysql.connection
     rq = request.get_json()
-    print(rq)
-    return {}
-    if 'materii' in rq:
-        cursor.execute('''SELECT * FROM brainerdb.users WHERE materii like %s;''',
-                       ['%'+json.dumps(rq['materii'], ensure_ascii=False)+'%'])
-        print('%'+json.dumps(rq['materii'], ensure_ascii=False)+'%')
-        return con.commit()
+    if type(rq) != dict:
+        return {}
+    users = set()
+    response = []
+    if 'materii' in rq and type(rq['materii']) == list:
+        users = get_summaries_helper(users, 'materie_id', rq['materii'], True)
+        print(users)
 
-    elif 'clasa' in rq:
-        cursor.execute('''SELECT * FROM brainerdb.users WHERE clasa like '%"%s"%';''',
-                       [json.dumps(rq['materii'], ensure_ascii=False)])
-        return con.commit()
+    elif 'clasa' in rq and type(rq['clasa']) == list:
+        users = get_summaries_helper(users, 'materie_id', rq['materii'], False)
 
-    elif 'materii' in rq and 'clasa' in rq:
-        cursor.execute('''SELECT * FROM brainerdb.users WHERE materii like '%"%s"%' AND clasa like '%"%s"%';''',
-                       [json.dumps(rq['materii'], ensure_ascii=False),
-                        json.dumps(rq['clasa'], ensure_ascii=False)])
-        return con.commit()
-    return {}
+    cu = session.get('user_id')
+    for user in users:
+        if user == cu:
+            continue
+        tmp = get_profile_helper(user)
+        tmp.pop('numar', None)
+        tmp.pop('mail', None)
+        response.append(tmp)
+    return jsonify(response)
+
+
+def get_summaries_helper(users, column, rq, first):
+    cursor = mysql.connection.cursor()
+
+    for x in rq:
+        cursor.execute('''SELECT user_id FROM brainerdb.materii WHERE ''' + column + '''=%s;''',
+                       [x])
+        tmp0 = set()
+        tmp1 = cursor.fetchall()
+        for y in tmp1:
+            tmp0.add(y['user_id'])
+        if first is True:
+            users = tmp0
+            first = False
+        else:
+            users &= tmp0
+    return users
 
 
 @app.errorhandler(404)

@@ -4,6 +4,8 @@ import PersonSummary from "./PersonSummary";
 import Filter from "./Filter";
 import {Redirect} from "react-router-dom";
 import axios from "axios";
+import {Editor} from "react-draft-wysiwyg";
+import {convertFromRaw, EditorState} from "draft-js";
 
 function Discover(props) {
     const [summaries, setSummaries] = useState([]);
@@ -34,11 +36,19 @@ function Discover(props) {
             <div className={'discover'}>
                 <Filter filterHandler={update}/>
                 <div className={'people'}>
-                    {//summaries.map((x, y)=>{
-                        //   return (
-                        //       <PersonSummary name={(x['prenume'] + ' ' + x['nume'])}>{x['descriere']}</PersonSummary>
-                        //   );
-                        //})
+                    {summaries.map((x, y) => {
+                        return (
+                            <PersonSummary name={(x['prenume'] + ' ' + x['nume'])}>
+                                <Editor wrapperClassName="textareaWrapper"
+                                        editorClassName={"textareaEditor textareaEditorReadOnly"}
+                                        toolbarClassName={"textareaToolbar"}
+                                        editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(x['descriere'])))}
+                                        editorStyle={{textAlign: 'justify'}}
+                                        readOnly={true}
+                                />
+                            </PersonSummary>
+                        );
+                    })
                     }
                     <PersonSummary name={'Dexter Morgan'} image={'placeholder.jpg'}>This man is a knight in shining
                         armor.

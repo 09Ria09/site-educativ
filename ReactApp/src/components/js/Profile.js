@@ -97,19 +97,19 @@ function Profile(props) {
                                   onBlur={() => setCheckProfile(true)}/>
                         <CustomSelect initialValue={profile['materii']} setValue={valueHandler}
                                       editing={editing} errors={errors['invalidM']}
-                                      marginOffset={'-25px'} name={'materii'} options={[
-                            {value: '0', label: 'Matematică'},
-                            {value: '1', label: 'Română'},
-                            {value: '2', label: 'Engleză'},
-                            {value: '3', label: 'Fizică'},
-                            {value: '4', label: 'Biologie'},
-                            {value: '5', label: 'Chimie'},
-                            {value: '6', label: 'Religie'},
-                            {value: '7', label: 'Germană'},
-                            {value: '8', label: 'Franceză'},
-                            {value: '9', label: 'Informatică'},
-                            {value: '10', label: 'Geografie'},
-                            {value: '11', label: 'Economie'},
+                                      marginOffset={'-25px'} name={'materii'} isMulti options={[
+                            {value: 0, label: 'Matematică'},
+                            {value: 1, label: 'Română'},
+                            {value: 2, label: 'Engleză'},
+                            {value: 3, label: 'Fizică'},
+                            {value: 4, label: 'Biologie'},
+                            {value: 5, label: 'Chimie'},
+                            {value: 6, label: 'Religie'},
+                            {value: 7, label: 'Germană'},
+                            {value: 8, label: 'Franceză'},
+                            {value: 9, label: 'Informatică'},
+                            {value: 10, label: 'Geografie'},
+                            {value: 11, label: 'Economie'},
                         ]}/>
                     </article>
                 </div>

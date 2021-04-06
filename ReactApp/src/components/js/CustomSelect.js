@@ -3,12 +3,12 @@ import Select from "react-select";
 
 
 function CustomSelect(props) {
-    const [value, setValue] = useState([]);
+    const [value, setValue] = useState(() => (props.isMulti === true ? [] : null));
     const [errors, setErrors] = useState('');
     useEffect(() => {
         let tmp = [];
         if (props.initialValue !== undefined && props.initialValue !== null)
-            JSON.parse(props.initialValue).forEach((x, y) => {
+            props.initialValue.forEach((x, y) => {
                 props.options.forEach((z, w) => {
                     if (x === z['value'])
                         tmp.push(z);
@@ -18,8 +18,17 @@ function CustomSelect(props) {
     }, []);
 
     useEffect(() => {
+        console.log(value)
         if (props.setValue === undefined)
             return
+        if (value === null) {
+            props.setValue(props.name, null);
+            return;
+        }
+        if (props.isMulti !== true) {
+            props.setValue(props.name, value['value']);
+            return;
+        }
         let tmp = [];
         value.forEach((x, y) => tmp.push(x['value']))
         if (props.setValue !== undefined)
@@ -97,6 +106,11 @@ function CustomSelect(props) {
             paddingLeft: '15px',
             paddingRight: '15px'
         }),
+        singleValue: (provided, state) => ({
+            ...provided,
+            marginLeft: '15px',
+            color: 'rgb(var(--columbiablue))'
+        }),
         multiValue: (provided, state) => ({
             ...provided,
             backgroundColor: 'rgb(var(--darkslateblue))',
@@ -131,9 +145,11 @@ function CustomSelect(props) {
                     onChange={(e) => setValue(e)}
                     options={props.options}
                     menuPlacement={'auto'}
-                    placeholder={props.placeholder != null ? props.placeholder : 'Select...'}
+                    placeholder={props.placeholder}
                     styles={styles}
-                    isMulti/>
+                    isSearchable={props.isSearchable}
+                    isClearable={props.isClearable}
+                    isMulti={props.isMulti}/>
                 <p style={{
                     display: (errors === '' ? 'none' : ''),
                     marginTop: '3px',
@@ -145,7 +161,7 @@ function CustomSelect(props) {
     else
         return (<div style={{display: 'flex'}}>
             <span style={{whiteSpace: 'nowrap', marginRight: '5px'}}>Știu foarte bine: </span>
-            <span>{value.map((x, y) => (<span style={{
+            <span>{value.map((x, y) => (<span key={y} style={{
                 margin: '2px',
                 padding: '6px 10px',
                 backgroundColor: 'rgb(var(--darkslateblue))',

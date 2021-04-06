@@ -24,7 +24,7 @@
     user-select: none;
 }
 
-.btn:hover, .btn:focus {
+.btn:hover, .btn:focus-visible {
     background-color: rgb(var(--columbiablue));
     color: rgb(var(--oxfordblue));
 }
