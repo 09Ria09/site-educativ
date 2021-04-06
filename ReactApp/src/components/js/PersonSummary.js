@@ -4,14 +4,18 @@ import '../css/PersonSummary.css';
 function PersonSummary(props) {
     return (
         <article className={'person'}>
-            <h1>{props.name}</h1>
-            <img src={props.image}/>
+            <div className={'personDiv1'}>
+                <h1>{props.name}</h1>
+                <img src={props.image}/>
+            </div>
             <p>{props.children}</p>
-            <div>
-                <div className={'btn personButton '}>Like</div>
-                <div className={'btn personButton'}>Dislike</div>
-                <div className={'btn personButton'}>Follow</div>
-                <div className={'btn personButton'}>Block</div>
+            <div className={'personDiv2'}>
+                <div/>
+                <button className={'btn personButton'}>Like</button>
+                <button className={'btn personButton'}>Dislike</button>
+                <button className={'btn personButton'}>Follow</button>
+                <button className={'btn personButton'}>Block</button>
+                <div/>
             </div>
         </article>
     );

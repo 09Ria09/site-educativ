@@ -3,15 +3,15 @@ import {HashRouter, Route} from "react-router-dom";
 import './App.css';
 import Home from "./components/js/Home";
 import Discover from "./components/js/Discover";
-import {CSSTransition} from "react-transition-group";
 import Navbar from "./components/js/Navbar";
 import SignUp from "./components/js/SignUp";
 import SignIn from "./components/js/SignIn";
 import ForgotPassword from "./components/js/ForgotPassword";
 import Profile from "./components/js/Profile";
+import SkyCanvas from "./components/js/SkyCanvas";
+import {CSSTransition} from "react-transition-group";
 import Cookies from 'universal-cookie';
 import axios from "axios";
-import SkyCanvas from "./components/js/SkyCanvas";
 
 function App() {
     const routes = [
