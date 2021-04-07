@@ -17,17 +17,28 @@ password = "4tzainfo_root"
 context = ssl.create_default_context()
 
 
-def mail_verificare(recipient):
+def mail_verificare(recipient,code,cont_sau_parola):
     try:
-        server = smtplib.SMTP(smtp_server, port)
-        server.starttls(context=context)  # Secure the connection
+        if  cont_sau_parola=="cont":
+            cont_sau_parola = "Validare cont"
+        else cont_sau_parola = "Schimbare Parola"
+        server = smtplib.SMTP(smtp_server,port)
+        server.starttls(context=context) 
         server.login(sender_email, password)
-        message = "TEST"
-        server.sendmail(sender_email, recipient, message)
+        message = "Codul Dumneavoastra este :"+code+"\n"
+        headers = "\r\n".join(["from: " + sender_email, 
+                            "subject: " + cont_sau_parola, 
+                            "to: " + recipient, 
+                            "mime-version: 1.0", 
+                            "content-type: text/html"]) 
+
+        content = headers + "\r\n\r\n" + message
+        server.sendmail(sender_email, recipient, content)
     except Exception as e:
         print(e)
     finally:
-        server.quit()
+        print("Sent email")
+        server.quit() 
 
 
 app = Flask("__main__")
@@ -283,6 +294,63 @@ def get_summaries_helper(users, table, column, rq):
             tmp0.add(y['user_id'])
         users &= tmp0
     return users
+
+@app.route("/VerifyMail/Cont", methods=["POST"])
+def verificare_mail():
+    succes = False
+    match = False
+    cursor = mysql.connection.cursor()
+    cod= request.form['cod'].upper()
+    user_id=session.get('user_id')
+    if cod==session["cod"]:
+        match= True
+        cursor.execute('''select id from extra where user_id=%s''', [user_id])
+        if cursor.fetchall() == ():
+           cursor.execute('''insert ignore into extra (user_id,descriere,validare) values(%s,%s)''',
+                         (user_id,"Aici vine descrierea ta",True)
+        else :
+            cursor.execute('''update brainerdb.extra set verified=True where user_id=%s''',[user_id])
+        con.commit()
+
+        session['active']=True
+        print("Verified :{}".format(user_id))
+    succes = True
+   return {"succes": succes,"match": match}
+
+@app.route("/ForgotPassword", methods=["POST"])
+def schimbare_parola():
+    succes = False
+    erori={}
+    if not temp:
+        cursor = mysql.connection.cursor()
+        temp= ''.join(random.choice(string.ascii_uppercase+string.digits) for x in range(5))
+        email =v.normalizare_email(request.form['email'])
+        cursor.execute('''select id from users where mail=%s;''', [email])
+        email_id = cursor.fetchall()
+        if email_id == ():
+            erori["mailNonexistent"] = True
+        if erori=={}:
+            mail_verificare(email,temp,"parola")
+            print("Mail trimis catre {}".format(email))
+            session['cod']=temp
+        else:
+            print("Nu s-a trimis mail-ul")
+        temp=''
+    else:
+        print("Temp not NULL")
+    return {'erori': erori}
+@app.route("/NewPassword", methods=["POST"])
+def verificare_mail2():
+    if not temp:
+        succes= False
+        match =False
+        cod= request.form['cod'].upper()
+        password = v.nfd(request.form['password'])
+        password_again = v.nfd(request.form['passwordAgain'])
+        #WORK IN PROGRESS
+        temp=''
+    else:
+        print("Temp not NULL")
 
 
 @app.errorhandler(404)

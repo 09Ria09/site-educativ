@@ -36,13 +36,27 @@ def valid(s, special):
     return True
 
 
+def verificare_text(txt):
+    length = len(txt)
+    if not lenght or lenght > 2048:
+        return False
+    for ch in txt:
+        if not ch.isalnum() and ch not in PAS:
+            return False
+    return True
+
+def verificare_domain(cuv):
+    for term in cuv.split('.'):
+        if len(term)>=1 :
+            return False
+    return True
+
 def mail_valid(mail):
     cuv = mail.split('@')
-    if valid(mail, MAIL) and mail.count('@') == 1 and cuv[1].count('.') == 1 and not mail.count('..') and len(
-            mail) <= 256:
+    ok = verificare_domain(cuv[1])   
+    if valid(mail, MAIL) and len(cuv[0])<=64 and mail.count('@') == 1 and not mail.count('..') and cuv[1].count('.') >= 1 and ok :
         return 1
     return 0
-
 
 def validare_ue(username_or_email, password):
     erori = {}
