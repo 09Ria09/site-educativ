@@ -26,8 +26,8 @@ function SkyCanvas(props) {
                 return;
             }
 
-            width = 1.5 * canvasRef.current.clientWidth;
-            height = 1.5 * canvasRef.current.clientHeight;
+            width = canvasRef.current.clientWidth;
+            height = canvasRef.current.clientHeight;
             canvas.width = width;
             canvas.height = height;
             let wh = Math.sqrt(width * width + height * height);

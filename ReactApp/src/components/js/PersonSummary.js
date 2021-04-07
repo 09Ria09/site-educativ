@@ -8,13 +8,12 @@ function PersonSummary(props) {
                 <h1>{props.name}</h1>
                 <img src={props.image}/>
             </div>
-            <p>{props.children}</p>
+            <div className={'personChildren'}>{props.children}</div>
             <div className={'personDiv2'}>
                 <div/>
-                <button className={'btn personButton'}>Like</button>
-                <button className={'btn personButton'}>Dislike</button>
-                <button className={'btn personButton'}>Follow</button>
-                <button className={'btn personButton'}>Block</button>
+                <button className={'btn personButton'}>Invită</button>
+                <button className={'btn personButton'}>Ascunde</button>
+                <button className={'btn personButton'}>Raportează</button>
                 <div/>
             </div>
         </article>

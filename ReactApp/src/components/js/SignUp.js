@@ -29,7 +29,11 @@ function SignUp(props) {
             let tmp = JSON.parse(res.request.response);
             if (tmp.success === true) {
                 props.setSignedIn(tmp.success);
+                props.setVerified(tmp.verified);
+                props.setCompletedProfile(tmp.completed_profile);
                 cookies.set('signed-in', true, {sameSite: true});
+                cookies.set('verified', tmp.verified, {sameSite: true});
+                cookies.set('completed-profile', tmp.completed_profile, {sameSite: true});
             }
             setErrors(tmp.erori);
         });

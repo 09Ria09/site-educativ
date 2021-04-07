@@ -6,47 +6,75 @@ import {Redirect} from "react-router-dom";
 import axios from "axios";
 import {Editor} from "react-draft-wysiwyg";
 import {convertFromRaw, EditorState} from "draft-js";
+import CustomSelect from "./CustomSelect";
+import Loading from "./Loading";
 
 function Discover(props) {
     const [summaries, setSummaries] = useState([]);
+    const [filters, setFilters] = useState({});
     const [waitingResponse, setWaitingResponse] = useState(true);
 
     useEffect(() => {
-        console.log(summaries)
-    }, [summaries])
-
-    function update(filter) {
         setWaitingResponse(true);
-        console.log(filter)
         axios({
             method: 'post',
             url: '/GetSummaries',
-            data: filter
+            data: filters
         }).then(res => {
             console.log(JSON.parse(res.request.response))
             setSummaries(JSON.parse(res.request.response))
             setWaitingResponse(false)
         });
-    }
+    }, [filters])
 
     if (props.signedIn === false)
         return (<Redirect to='/'/>);
+    if (props.completedProfile === false)
+        return (<Redirect to='/Profile'/>);
+    if (waitingResponse === true)
+        return (
+            <div className={'discoverContainer'}>
+                <div className={'discover'}>
+                    <Filter filterHandler={(filters) => setFilters(filters)}/>
+                    <div className={'people'}>
+                        <Loading/>
+                    </div>
+                </div>
+            </div>
+        );
     return (
         <div className={'discoverContainer'}>
             <div className={'discover'}>
-                <Filter filterHandler={update}/>
+                <Filter filterHandler={(filters) => setFilters(filters)}/>
                 <div className={'people'}>
-                    {summaries.map((x, y) => {
-                        return (
-                            <PersonSummary name={(x['prenume'] + ' ' + x['nume'])}>
-                                <Editor wrapperClassName="textareaWrapper"
-                                        editorClassName={"textareaEditor textareaEditorReadOnly"}
-                                        toolbarClassName={"textareaToolbar"}
-                                        editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(x['descriere'])))}
-                                        editorStyle={{textAlign: 'justify'}}
-                                        readOnly={true}
-                                />
-                            </PersonSummary>
+                    {summaries === null ? ('') :
+                        summaries.map((x, y) => {
+                            return (
+                                <PersonSummary image={'placeholder.jpg'} key={y}
+                                               name={(x['prenume'] + ' ' + x['nume'])}>
+                                    <Editor wrapperClassName="textareaWrapper"
+                                            editorClassName={"textareaEditor textareaEditorReadOnly"}
+                                            toolbarClassName={"textareaToolbar"}
+                                            editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(x['descriere'])))}
+                                            editorStyle={{textAlign: 'justify'}}
+                                            readOnly={true}
+                                    />
+                                    <CustomSelect initialValue={x['materii']}
+                                                  editing={false} options={[
+                                        {value: 0, label: 'Matematică'},
+                                        {value: 1, label: 'Română'},
+                                        {value: 2, label: 'Engleză'},
+                                        {value: 3, label: 'Fizică'},
+                                        {value: 4, label: 'Biologie'},
+                                        {value: 5, label: 'Chimie'},
+                                        {value: 6, label: 'Religie'},
+                                        {value: 7, label: 'Germană'},
+                                        {value: 8, label: 'Franceză'},
+                                        {value: 9, label: 'Informatică'},
+                                        {value: 10, label: 'Geografie'},
+                                        {value: 11, label: 'Economie'},
+                                    ]}/>
+                                </PersonSummary>
                         );
                     })
                     }

@@ -1,6 +1,7 @@
 .navbar {
     display: flex;
     height: 60px;
+    /**height: 6vh;**/
     position: sticky;
     z-index: 2048;
     top: 0;
@@ -55,4 +56,15 @@
 .navbarOpaque > .navbarActive:hover {
     color: rgb(var(--columbiablue)) !important;
     background-color: rgb(var(--oxfordblue)) !important;
+}
+
+@media screen and (max-width: 769px) {
+    .navbarObject {
+        font-size: 20px;
+        justify-content: center;
+    }
+
+    .navbarSpacer {
+        display: none;
+    }
 }

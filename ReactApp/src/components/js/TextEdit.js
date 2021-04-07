@@ -16,7 +16,7 @@ function TextEdit(props) {
                 return '';
             return props.initialValue;
         }
-        if (props.initialValue === undefined)
+        if (props.initialValue === undefined || props.initialValue === null || JSON.parse(props.initialValue) === null)
             return EditorState.createEmpty();
         return EditorState.createWithContent(convertFromRaw(JSON.parse(props.initialValue)));
     }
@@ -55,6 +55,7 @@ function TextEdit(props) {
                                 editorStyle={{textAlign: 'justify'}}
                                 onFocus={() => (props.editing === true ? setOnFocus(true) : '')}
                                 onBlur={() => setOnFocus(false)}
+                                placeholder={props.placeholder}
                                 readOnly={!props.editing}
                                 toolbar={{
                                     options: ['inline', 'fontSize', 'list',

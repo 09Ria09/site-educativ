@@ -24,14 +24,14 @@
     color: rgb(var(--greenblue));
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
-    font-size: 23px;
+    font-size: 2em;
     text-align: center;
 }
 
 .un {
     color: rgb(var(--oxfordblue));
     font-weight: 700;
-    font-size: 14px;
+    font-size: 1.1em;
     letter-spacing: 1px;
     background: rgba(136, 126, 126, 0.04);
     padding: 10px 20px;
@@ -58,7 +58,7 @@
     border: 0;
     padding: 10px 40px;
     font-family: 'Ubuntu', sans-serif;
-    font-size: 13px;
+    font-size: 1.1em;
     width: max-content;
     display: block;
     margin: auto;
@@ -82,6 +82,7 @@
     text-decoration: none;
     transition-duration: 200ms;
     user-select: none;
+    font-size: 1.1em;
 }
 
 .forgot:hover, .goToSignIn:hover {
@@ -95,4 +96,24 @@
     color: rgba(var(--oxfordblue), 0.8);
     font-size: medium;
     font-weight: normal;
+}
+
+@media screen and (max-width: 769px) {
+    .signMain {
+        width: 100%;
+        min-height: calc(100vh - 60px);
+        border-radius: unset;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .sign {
+        font-size: 2.5em;
+    }
+
+    .un, .submit, .forgot, .goToSignIn {
+        font-size: 1.5em;
+    }
 }

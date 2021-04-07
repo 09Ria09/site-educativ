@@ -25,8 +25,12 @@ function SignIn(props) {
         }).then(res => {
             let tmp = JSON.parse(res.request.response);
             if (tmp.success) {
-                props.setSignedIn();
+                props.setSignedIn(true);
+                props.setVerified(tmp.verified);
+                props.setCompletedProfile(tmp.completed_profile);
                 cookies.set('signed-in', true, {sameSite: true});
+                cookies.set('verified', tmp.verified, {sameSite: true});
+                cookies.set('completed-profile', tmp.completed_profile, {sameSite: true});
             }
             setErrors(tmp.erori);
         });

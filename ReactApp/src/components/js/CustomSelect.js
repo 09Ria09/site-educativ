@@ -3,19 +3,28 @@ import Select from "react-select";
 
 
 function CustomSelect(props) {
-    const [value, setValue] = useState(() => (props.isMulti === true ? [] : null));
+    const [value, setValue] = useState(setInitialValue);
     const [errors, setErrors] = useState('');
-    useEffect(() => {
+
+    function setInitialValue() {
         let tmp = [];
-        if (props.initialValue !== undefined && props.initialValue !== null)
-            props.initialValue.forEach((x, y) => {
+        if (props.initialValue !== undefined && props.initialValue !== null) {
+            if (props.isMulti !== true) {
                 props.options.forEach((z, w) => {
-                    if (x === z['value'])
-                        tmp.push(z);
+                    if (props.initialValue === z['value'])
+                        tmp = z;
+                });
+            } else {
+                props.initialValue.forEach((x, y) => {
+                    props.options.forEach((z, w) => {
+                        if (x === z['value'])
+                            tmp.push(z);
+                    })
                 })
-            })
-        setValue(tmp)
-    }, []);
+            }
+        }
+        return tmp;
+    }
 
     useEffect(() => {
         console.log(value)
@@ -94,7 +103,8 @@ function CustomSelect(props) {
             webkitBoxShadow: '0 0 0 3px #1f1d4c !important',
             boxShadow: '0 0 0 3px #1f1d4c !important',
             borderRadius: '20px',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            zIndex: '1024'
         }),
         menuList: (provided, state) => ({
             ...provided,
@@ -159,17 +169,27 @@ function CustomSelect(props) {
             </React.Fragment>
         );
     else
-        return (<div style={{display: 'flex'}}>
-            <span style={{whiteSpace: 'nowrap', marginRight: '5px'}}>Știu foarte bine: </span>
-            <span>{value.map((x, y) => (<span key={y} style={{
-                margin: '2px',
-                padding: '6px 10px',
-                backgroundColor: 'rgb(var(--darkslateblue))',
-                borderRadius: '25px',
-                fontSize: '85%',
-                display: 'inline-block'
-            }}>{x['label']}</span>))}
-            </span></div>);
+        return value === null ? ('') :
+            (props.isMulti === true ?
+                (<div className={'customSelectSettled'} style={{display: 'flex'}}>
+                    <span style={{whiteSpace: 'nowrap', marginRight: '5px'}}>{props.ikw}</span>
+                    <span>{value.map((x, y) => (<span key={y} style={{
+                        margin: '2px',
+                        padding: '6px 10px',
+                        backgroundColor: 'rgb(var(--darkslateblue))',
+                        borderRadius: '25px',
+                        fontSize: '85%',
+                        display: 'inline-block'
+                    }}>{x['label']}</span>))}
+            </span></div>)
+                : (
+                    <React.Fragment>
+                        <span style={{
+                            whiteSpace: 'nowrap',
+                            marginRight: '5px'
+                        }}>{props.ikw}</span><span>{value['label']}</span>
+                    </React.Fragment>
+                ));
 }
 
 export default CustomSelect;

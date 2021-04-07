@@ -17,9 +17,12 @@
     transition-duration: 100ms;
     transform-origin: top right;
     margin-left: auto;
+    margin-bottom: 20px;
     height: 100%;
     width: 100%;
     border-radius: 0 0 0 25px;
+    position: relative;
+    z-index: 1024;
 }
 
 .personDiv1 > img:hover {
@@ -32,10 +35,14 @@
     margin-right: 20px;
 }
 
-.person > p {
+.personChildren {
     text-align: justify;
     margin-left: 50px;
     margin-right: 50px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-bottom: 20px;
 }
 
 .person > .personDiv1 {
@@ -65,12 +72,17 @@
     border-radius: 25px;
     background-color: rgb(var(--darkslateblue));
     box-shadow: 0 6px rgba(var(--darkslateblue), 0.6);
-    border:none;
-    font:inherit;
-    text-decoration:inherit;
-    outline: none!important;
+    border: none;
+    font: inherit;
+    text-decoration: inherit;
+    outline: none !important;
     box-sizing: content-box;
     margin: 20px min(20px, 2%);
+}
+
+.personChildren > .customSelectSettled {
+    margin-top: auto;
+    text-align: center;
 }
 
 .line {
@@ -96,6 +108,7 @@
         max-width: 300px;
         margin-left: unset;
         border-radius: 25px;
+        margin-bottom: unset;
     }
 
     .personDiv1 > h1 {
@@ -103,13 +116,13 @@
         margin-right: auto;
     }
 
-    .person > p {
+    .personChildren {
         margin-left: 20px;
         margin-right: 20px;
     }
 
     .personDiv1 > img:hover {
-        transform: none;
+        transform: unset;
     }
 
     .personDiv2 {

@@ -66,22 +66,30 @@ def sign_up():
         if cursor.fetchall() != ():
             erori["mailTaken"] = True
         if erori == {}:
-            cursor.execute('''insert into users values (NULL, %s, %s, %s, NULL, %s, NULL)''',
+            cursor.execute('''insert into users values (NULL, %s, %s, %s, NULL, %s, NULL, 0, 0)''',
                            (v.nfc(username), nume, prenume, v.nfc(email)))
             con.commit()
             cursor.execute('''select id from users where username=%s;''', [v.nfc(username)])
             user_id = cursor.fetchall()[0]["id"]
+            cursor.execute('''insert into extra values (NULL, %s, NULL)''', [user_id])
+            con.commit()
             print("Am adaugat user-ul cu id-ul: {}".format(user_id))
             cursor.execute('''insert into passwords values ( %s, %s);''', (user_id, v.hash_pas(v.nfc(password))))
             con.commit()
             print("Am adaugat parola user-ului cu id-ul: {}".format(user_id))
             session.clear()
             session['user_id'] = user_id
+            session['verified'] = False
+            session['completed_profile'] = False
             success = True
         else:
             print("Nu am adaugat nimic in baza")
     print(erori)
-    return {'erori': erori, 'success': success}
+    if success:
+        return {'erori': erori, 'success': success, 'verified': session.get('verified'),
+                'completed_profile': session.get('completed_profile')}
+    else:
+        return {'erori': erori, 'success': success}
 
 
 @app.route("/SignInSubmit", methods=["POST"])
@@ -111,12 +119,20 @@ def sign_in():
             if correct_password[0]['hash'] == v.hash_pas(v.nfc(password)):
                 session.clear()
                 session['user_id'] = user_id[0]["id"]
+                cursor.execute('''select verified from users where id=%s;''',  [user_id[0]["id"]])
+                session['verified'] = cursor.fetchall()[0]["verified"]
+                cursor.execute('''select completed_profile from users where id=%s;''',  [user_id[0]["id"]])
+                session['completed_profile'] = cursor.fetchall()[0]["completed_profile"]
                 print("Am logat user cu id-ul: {}".format(user_id))
                 success = True
             else:
                 erori["wrongPassword"] = True
     print(erori)
-    return {'erori': erori, 'success': success}
+    if success:
+        return {'erori': erori, 'success': success, 'verified': session.get('verified'),
+                'completed_profile': session.get('completed_profile')}
+    else:
+        return {'erori': erori, 'success': success}
 
 
 @app.route("/GetProfile", methods=["POST"])
@@ -161,11 +177,21 @@ def sign_out():
 def is_signed_in():
     if session.get('user_id') is None:
         return {'signedIn': False}
-    return {'signedIn': True}
+
+    cursor = mysql.connection.cursor()
+    cursor.execute('''select verified from users where id=%s;''',  [session.get('user_id')])
+    session['verified'] = cursor.fetchall()[0]["verified"]
+    cursor.execute('''select completed_profile from users where id=%s;''',  [session.get('user_id')])
+    session['completed_profile'] = cursor.fetchall()[0]["completed_profile"]
+    print(session.get('completed_profile'))
+    return {'signedIn': True, 'verified': session.get('verified'), 'completed_profile': session.get('completed_profile')}
 
 
 @app.route("/SubmitProfile", methods=["POST"])
 def submit_profile():
+    d = False
+    m = False
+    c = False
     cursor = mysql.connection.cursor()
     con = mysql.connection
     rq = request.get_json()
@@ -181,14 +207,10 @@ def submit_profile():
         con.commit()
 
     if 'descriere' in rq:
-        cursor.execute('''select id from extra where user_id=%s''', [session.get('user_id')])
-        if cursor.fetchall() == ():
-            cursor.execute('''insert into extra (user_id,descriere) values(%s,%s)''',
-                           (session.get('user_id'), (json.dumps(rq['descriere'], ensure_ascii=False))))
-        else:
-            cursor.execute('''update extra set descriere=%s where user_id=%s''',
-                           (json.dumps(rq['descriere'], ensure_ascii=False), session.get('user_id')))
+        cursor.execute('''update extra set descriere=%s where user_id=%s''',
+                       (json.dumps(rq['descriere'], ensure_ascii=False), session.get('user_id')))
         con.commit()
+        d=True
 
     if 'materii' in rq and type(rq['materii']) == list:
         cursor.execute('''delete from materii where user_id=%s''', [session.get('user_id')])
@@ -197,6 +219,20 @@ def submit_profile():
             cursor.execute('''insert into materii values (NULL, %s, %s)''',
                            (session.get('user_id'), materie))
             con.commit()
+        m=True
+
+    if 'clasa' in rq:
+        print(rq['clasa'])
+        cursor.execute('''update users set clasa=%s where id=%s''',
+                       (rq['clasa'], session.get('user_id')))
+        con.commit()
+        c = True
+
+    if d and m and c and (not session.get('completed_profile')):
+        cursor.execute('''update users set completed_profile=%s where id=%s''',
+                       (1, session.get('user_id')))
+        con.commit()
+        session['completed_profile'] = True
 
     return ver
 
@@ -213,12 +249,16 @@ def get_summaries():
         return {}
     users = set()
     response = []
+    cursor = mysql.connection.cursor()
+    cursor.execute('''SELECT id FROM brainerdb.users WHERE completed_profile=1''')
+    tmp = cursor.fetchall()
+    for y in tmp:
+        users.add(y['id'])
     if 'materii' in rq and type(rq['materii']) == list:
-        users = get_summaries_helper(users, 'materie_id', rq['materii'], True)
-        print(users)
+        users = get_summaries_helper(users, 'brainerdb.materii', 'materie_id', rq['materii'])
 
-    elif 'clasa' in rq and type(rq['clasa']) == list:
-        users = get_summaries_helper(users, 'materie_id', rq['materii'], False)
+    if 'clasa' in rq and type(rq['clasa']) == list:
+        users = get_summaries_helper(users, 'brainerdb.users', 'clasa', rq['clasa'])
 
     cu = session.get('user_id')
     for user in users:
@@ -231,21 +271,17 @@ def get_summaries():
     return jsonify(response)
 
 
-def get_summaries_helper(users, column, rq, first):
+def get_summaries_helper(users, table, column, rq):
     cursor = mysql.connection.cursor()
 
     for x in rq:
-        cursor.execute('''SELECT user_id FROM brainerdb.materii WHERE ''' + column + '''=%s;''',
+        cursor.execute('''SELECT user_id FROM''' + table + '''WHERE ''' + column + '''=%s;''',
                        [x])
         tmp0 = set()
         tmp1 = cursor.fetchall()
         for y in tmp1:
             tmp0.add(y['user_id'])
-        if first is True:
-            users = tmp0
-            first = False
-        else:
-            users &= tmp0
+        users &= tmp0
     return users
 
 

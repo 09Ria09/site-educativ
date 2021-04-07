@@ -43,3 +43,20 @@
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
+
+@media screen and (max-width: 769px) {
+    .profileContainer {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border-radius: unset;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .profile {
+        margin: 0;
+        font-size: 1.5em;
+    }
+}

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {HashRouter, Route} from "react-router-dom";
 import './App.css';
 import Home from "./components/js/Home";
@@ -8,7 +8,6 @@ import SignUp from "./components/js/SignUp";
 import SignIn from "./components/js/SignIn";
 import ForgotPassword from "./components/js/ForgotPassword";
 import Profile from "./components/js/Profile";
-import SkyCanvas from "./components/js/SkyCanvas";
 import {CSSTransition} from "react-transition-group";
 import Cookies from 'universal-cookie';
 import axios from "axios";
@@ -24,8 +23,8 @@ function App() {
 
     const cookies = new Cookies();
     const [signedIn, setSignedIn] = useState(cookies.get('signed-in') === 'true');
-    const signedInRef = useRef(signedIn);
-    signedInRef.current = signedIn;
+    const [verified, setVerified] = useState(cookies.get('verified') === 'true');
+    const [completedProfile, setCompletedProfile] = useState(cookies.get('completed-profile') === 'true');
 
     useEffect(() => {
 
@@ -34,28 +33,31 @@ function App() {
                 method: 'post',
                 url: '/IsSignedIn'
             }).then(res => {
-                let tmp = JSON.parse(res.request.response).signedIn;
-                if (signedInRef.current !== tmp) {
-                    setSignedIn(tmp)
-                    if (tmp === true)
+                let tmp = JSON.parse(res.request.response);
+                if (tmp.signedIn === true) {
+                    if (signedIn !== tmp.signedIn) {
+                        setSignedIn(tmp.signedIn)
                         cookies.set('signed-in', true, {sameSite: true});
+                    }
+                    if (verified !== Boolean(tmp.verified)) {
+                        setVerified(Boolean(tmp.verified));
+                        cookies.set('verified', Boolean(tmp.verified), {sameSite: true});
+                    }
+                    if (completedProfile !== Boolean(tmp.completed_profile)) {
+                        setCompletedProfile(Boolean(tmp.completed_profile));
+                        cookies.set('completed-profile', Boolean(tmp.completed_profile), {sameSite: true});
+                    }
                 }
             })
         }
 
         checkIfSignedIn();
-        const checkIfSignedInInterval = setInterval(checkIfSignedIn, 100000);
+        const checkIfSignedInInterval = setInterval(checkIfSignedIn, 1000);
         return () => clearInterval(checkIfSignedInInterval);
     }, []);
 
     return (
         <React.Fragment>
-            <SkyCanvas style={{
-                width: '100vw',
-                height: '100vh',
-                position: 'fixed',
-                zIndex: '-1',
-            }}/>
             <HashRouter>
                 <Navbar signedIn={signedIn} setSignedIn={setSignedIn}/>
                 {routes.map(({path, name, Component}) => (
@@ -72,7 +74,10 @@ function App() {
                             in={match != null}
                             unmountOnExit>
                             <div>
-                                <Component signedIn={signedIn} setSignedIn={setSignedIn}/>
+                                <Component signedIn={signedIn} setSignedIn={setSignedIn}
+                                           verified={verified} setVerified={setVerified}
+                                           completedProfile={completedProfile} setCompletedProfile={setCompletedProfile}
+                                />
                             </div>
                         </CSSTransition>)}
                     </Route>
