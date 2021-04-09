@@ -54,6 +54,8 @@ app.config['MYSQL_PASSWORD'] = '4tzainfo_root'
 app.config['MYSQL_DB'] = 'brainerdb'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
+#VARIABILE
+temp = ""
 
 @app.route("/SignUpSubmit", methods=["POST"])
 def sign_up():
@@ -71,36 +73,39 @@ def sign_up():
 
     if erori == {}:
         cursor.execute('''select id from users where username=%s;''', [v.nfc(username)])
-        if cursor.fetchall() != ():
+        user_id = cursor.fetchall()
+        if user_id != ():
             erori["usernameTaken"] = True
-        cursor.execute('''select id from users where mail=%s;''', [v.nfc(email)])
-        if cursor.fetchall() != ():
+        cursor.execute('''select id from users where mail=%s;''', [v.normalizare_email(email)])
+        email_id = cursor.fetchall()
+        if email_id != ():
             erori["mailTaken"] = True
         if erori == {}:
-            cursor.execute('''insert into users values (NULL, %s, %s, %s, NULL, %s, NULL,0,0)''',
-                           (v.nfc(username), nume, prenume, v.nfc(email)))
+            cursor.execute('''insert into users values (NULL, %s, %s, %s, 1, 1, %s, "1")''',
+                           (v.nfc(username), nume, prenume, v.normalizare_email(email)))
             con.commit()
             cursor.execute('''select id from users where username=%s;''', [v.nfc(username)])
             user_id = cursor.fetchall()[0]["id"]
-            cursor.execute('''insert into extra values (NULL, %s, NULL)''', [user_id])
-            con.commit()
             print("Am adaugat user-ul cu id-ul: {}".format(user_id))
             cursor.execute('''insert into passwords values ( %s, %s);''', (user_id, v.hash_pas(v.nfc(password))))
             con.commit()
             print("Am adaugat parola user-ului cu id-ul: {}".format(user_id))
             session.clear()
+            if not temp:
+                
+                temp= ''.join(random.choice(string.ascii_uppercase+string.digits) for x in range(5))
+                mail_verificare(v.normalizare_email(email),temp,"cont") 
+                session["temp_mail"] = email
+                session["cod"] = temp
+                temp=''
+            else:
+                print("Temp not NULL")
             session['user_id'] = user_id
-            session['verified'] = False
-            session['completed_profile'] = False
             success = True
         else:
             print("Nu am adaugat nimic in baza")
     print(erori)
-    if success:
-        return {'erori': erori, 'success': success, 'verified': session.get('verified'),
-                'completed_profile': session.get('completed_profile')}
-    else:
-        return {'erori': erori, 'success': success}
+    return {'erori': erori, 'success': success}
 
 
 @app.route("/SignInSubmit", methods=["POST"])
