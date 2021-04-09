@@ -47,15 +47,16 @@ def verificare_text(txt):
 
 def verificare_domain(cuv):
     for term in cuv.split('.'):
-        if len(term)>=1 :
+        if not len(term)>=1 :
             return False
     return True
 
 def mail_valid(mail):
-    cuv = mail.split('@')
-    ok = verificare_domain(cuv[1])   
-    if valid(mail, MAIL) and len(cuv[0])<=64 and mail.count('@') == 1 and not mail.count('..') and cuv[1].count('.') >= 1 and ok :
-        return 1
+    if mail.count('@') == 1:
+        cuv = mail.split('@')
+        ok = verificare_domain(cuv[1])   
+        if valid(mail, MAIL) and len(cuv[0])<=64 and not mail.count('..') and cuv[1].count('.') >= 1 and ok :
+            return 1
     return 0
 
 def validare_ue(username_or_email, password):

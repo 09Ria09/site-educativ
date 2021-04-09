@@ -21,7 +21,7 @@ def mail_verificare(recipient,code,cont_sau_parola):
     try:
         if  cont_sau_parola=="cont":
             cont_sau_parola = "Validare cont"
-        else cont_sau_parola = "Schimbare Parola"
+        else :cont_sau_parola = "Schimbare Parola"
         server = smtplib.SMTP(smtp_server,port)
         server.starttls(context=context) 
         server.login(sender_email, password)
@@ -77,7 +77,7 @@ def sign_up():
         if cursor.fetchall() != ():
             erori["mailTaken"] = True
         if erori == {}:
-            cursor.execute('''insert into users values (NULL, %s, %s, %s, NULL, %s, NULL, 0, 0)''',
+            cursor.execute('''insert into users values (NULL, %s, %s, %s, NULL, %s, NULL,0,0)''',
                            (v.nfc(username), nume, prenume, v.nfc(email)))
             con.commit()
             cursor.execute('''select id from users where username=%s;''', [v.nfc(username)])
@@ -188,7 +188,6 @@ def sign_out():
 def is_signed_in():
     if session.get('user_id') is None:
         return {'signedIn': False}
-
     cursor = mysql.connection.cursor()
     cursor.execute('''select verified from users where id=%s;''',  [session.get('user_id')])
     session['verified'] = cursor.fetchall()[0]["verified"]
@@ -306,16 +305,15 @@ def verificare_mail():
         match= True
         cursor.execute('''select id from extra where user_id=%s''', [user_id])
         if cursor.fetchall() == ():
-           cursor.execute('''insert ignore into extra (user_id,descriere,validare) values(%s,%s)''',
-                         (user_id,"Aici vine descrierea ta",True)
-        else :
+            cursor.execute('''insert ignore into extra (user_id,descriere,validare) values(%s,%s)''',(user_id,"Aici vine descrierea ta",True))
+        else:
             cursor.execute('''update brainerdb.extra set verified=True where user_id=%s''',[user_id])
         con.commit()
 
         session['active']=True
         print("Verified :{}".format(user_id))
     succes = True
-   return {"succes": succes,"match": match}
+    return {"succes": succes,"match": match}
 
 @app.route("/ForgotPassword", methods=["POST"])
 def schimbare_parola():
