@@ -332,7 +332,7 @@ def mail_parola():
         erori["mailNonexistent"]=True 
         print("Nu s-a trimis mail-ul,nu exista")
     else:
-        temp= s.dumps(email,salt="cont")
+        temp= s.dumps(email,salt="parola")
         mail_verificare(email,url_for("schimbare_parola",token=temp,_external=True),"parola") 
         print("Mail trimis catre {}".format(email))
         succes=True
