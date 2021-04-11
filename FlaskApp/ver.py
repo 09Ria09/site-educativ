@@ -23,7 +23,7 @@ def nfd(s):
 def normalizare_email(email):
     elements = email.split('@')
     nume = elements[0].split('.')
-    nume_normalizat = ''.join(map(str, nume))
+    nume_normalizat = ''.join(map(str, nume))+'@'+elements[1]
     return nume_normalizat
 
 
@@ -45,17 +45,17 @@ def verificare_text(txt):
             return False
     return True
 
-def verificare_domain(cuv):
-    for term in cuv.split('.'):
-        if not len(term)>=1 :
-            return False
-    return True
+# def verificare_domain(cuv):
+#     for term in cuv.split('.'):
+#         if not len(term)>=1 :
+#             return False
+#     return True
 
 def mail_valid(mail):
     if mail.count('@') == 1:
         cuv = mail.split('@')
-        ok = verificare_domain(cuv[1])   
-        if valid(mail, MAIL) and len(cuv[0])<=64 and not mail.count('..') and cuv[1].count('.') >= 1 and ok :
+        #ok = verificare_domain(cuv[1])   
+        if valid(mail, MAIL) and len(cuv[0])<=64 and not mail.count('..') and cuv[1].count('.') >= 1 :
             return 1
     return 0
 

@@ -2,9 +2,10 @@ import json
 import smtplib
 import ssl
 
-from flask import (Flask, request, session, jsonify)
+from flask import Flask, jsonify, request, session, url_for
 from flask_cors import CORS
 from flask_mysqldb import MySQL
+from itsdangerous import SignatureExpired, URLSafeTimedSerializer
 
 import ver as v
 
@@ -25,7 +26,7 @@ def mail_verificare(recipient,code,cont_sau_parola):
         server = smtplib.SMTP(smtp_server,port)
         server.starttls(context=context) 
         server.login(sender_email, password)
-        message = "Codul Dumneavoastra este :"+code+"\n"
+        message = "Linkul Dumneavoastra este :\n"+code+"\n"
         headers = "\r\n".join(["from: " + sender_email, 
                             "subject: " + cont_sau_parola, 
                             "to: " + recipient, 
@@ -45,6 +46,8 @@ app = Flask("__main__")
 app.secret_key = '6398715B0D903F28D7BBF08370156D9557DDFAE4CBB1A610A9A535F960CF994D' \
                  '8325FCB6CD4C0D980469698435125C6359526E7D17B7BAFE89AA32B6B1361C73'
 mysql = MySQL(app)
+s= URLSafeTimedSerializer('6398715B0D903F28D7BBF08370156D9557DDFAE4CBB1A610A9A535F960CF994D' \
+                 '8325FCB6CD4C0D980469698435125C6359526E7D17B7BAFE89AA32B6B1361C73')
 CORS(app)
 
 app.config['MYSQL_HOST'] = 'localhost'
@@ -55,51 +58,47 @@ app.config['MYSQL_DB'] = 'brainerdb'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 #VARIABILE
-temp = ""
 
 @app.route("/SignUpSubmit", methods=["POST"])
 def sign_up():
     success = False
     cursor = mysql.connection.cursor()
     con = mysql.connection
-    username = request.form['username']
-    nume = request.form['nume']
-    prenume = request.form['prenume']
-    email = request.form['email']
-    password = request.form['password']
-    password_again = request.form['passwordAgain']
+    username =v.nfc(request.form['username'])
+    nume =v.nfc(request.form['nume'])
+    prenume =v.nfc(request.form['prenume'])
+    email = v.normalizare_email(request.form['email'])
+    password =v.nfc(request.form['password'])
+    password_again =v.nfc(request.form['passwordAgain'])
 
     erori = v.validare(username, nume, prenume, email, password, password_again)
 
     if erori == {}:
-        cursor.execute('''select id from users where username=%s;''', [v.nfc(username)])
+        cursor.execute('''select id from users where username=%s;''', [username])
         user_id = cursor.fetchall()
         if user_id != ():
             erori["usernameTaken"] = True
-        cursor.execute('''select id from users where mail=%s;''', [v.normalizare_email(email)])
+        cursor.execute('''select id from users where mail=%s;''', [email])
         email_id = cursor.fetchall()
         if email_id != ():
             erori["mailTaken"] = True
         if erori == {}:
-            cursor.execute('''insert into users values (NULL, %s, %s, %s, 1, 1, %s, "1")''',
-                           (v.nfc(username), nume, prenume, v.normalizare_email(email)))
+            cursor.execute('''insert into users values (NULL, %s, %s, %s, NULL, %s, NULL,0,0)''',
+                           (username, nume, prenume,email))
             con.commit()
-            cursor.execute('''select id from users where username=%s;''', [v.nfc(username)])
+            cursor.execute('''select id from users where username=%s;''', [username])
             user_id = cursor.fetchall()[0]["id"]
             print("Am adaugat user-ul cu id-ul: {}".format(user_id))
-            cursor.execute('''insert into passwords values ( %s, %s);''', (user_id, v.hash_pas(v.nfc(password))))
+            cursor.execute('''insert into passwords values ( %s, %s);''', (user_id, v.hash_pas(password)))
             con.commit()
             print("Am adaugat parola user-ului cu id-ul: {}".format(user_id))
             session.clear()
-            if not temp:
-                
-                temp= ''.join(random.choice(string.ascii_uppercase+string.digits) for x in range(5))
-                mail_verificare(v.normalizare_email(email),temp,"cont") 
-                session["temp_mail"] = email
-                session["cod"] = temp
-                temp=''
+            if erori == {}:
+                temp= s.dumps(email,salt="cont")
+                mail_verificare(email,url_for("verificare_mail",token=temp,_external=True),"cont") 
+                print("Mail trimis catre {}".format(email))
             else:
-                print("Temp not NULL")
+                print("Nu am trimis mail")
             session['user_id'] = user_id
             success = True
         else:
@@ -299,62 +298,66 @@ def get_summaries_helper(users, table, column, rq):
         users &= tmp0
     return users
 
-@app.route("/VerifyMail/Cont", methods=["POST"])
-def verificare_mail():
-    succes = False
-    match = False
-    cursor = mysql.connection.cursor()
-    cod= request.form['cod'].upper()
-    user_id=session.get('user_id')
-    if cod==session["cod"]:
-        match= True
-        cursor.execute('''select id from extra where user_id=%s''', [user_id])
-        if cursor.fetchall() == ():
-            cursor.execute('''insert ignore into extra (user_id,descriere,validare) values(%s,%s)''',(user_id,"Aici vine descrierea ta",True))
-        else:
-            cursor.execute('''update brainerdb.extra set verified=True where user_id=%s''',[user_id])
-        con.commit()
-
-        session['active']=True
-        print("Verified :{}".format(user_id))
-    succes = True
-    return {"succes": succes,"match": match}
-
-@app.route("/ForgotPassword", methods=["POST"])
-def schimbare_parola():
+@app.route("/VerifyMail/Cont/<token>", methods=["GET"])
+def verificare_mail(token):
     succes = False
     erori={}
-    if not temp:
-        cursor = mysql.connection.cursor()
-        temp= ''.join(random.choice(string.ascii_uppercase+string.digits) for x in range(5))
-        email =v.normalizare_email(request.form['email'])
-        cursor.execute('''select id from users where mail=%s;''', [email])
-        email_id = cursor.fetchall()
-        if email_id == ():
-            erori["mailNonexistent"] = True
-        if erori=={}:
-            mail_verificare(email,temp,"parola")
-            print("Mail trimis catre {}".format(email))
-            session['cod']=temp
-        else:
-            print("Nu s-a trimis mail-ul")
-        temp=''
-    else:
-        print("Temp not NULL")
-    return {'erori': erori}
-@app.route("/NewPassword", methods=["POST"])
-def verificare_mail2():
-    if not temp:
-        succes= False
-        match =False
-        cod= request.form['cod'].upper()
-        password = v.nfd(request.form['password'])
-        password_again = v.nfd(request.form['passwordAgain'])
-        #WORK IN PROGRESS
-        temp=''
-    else:
-        print("Temp not NULL")
+    cursor = mysql.connection.cursor()
+    con = mysql.connection
+    try:
+        email=s.loads(token,salt="cont",max_age=1000000)
+    except SignatureExpired:
+        erori["tokenExpirat"]=True
+        print("token expired")
+    if erori=={}:
+        cursor.execute('''select id from users where mail=%s''', [email])
+        user_id=cursor.fetchall()[0]["id"]
+        cursor.execute('''update brainerdb.users set verified=True where id=%s''',[user_id])
+        con.commit()
+        print("Verified :{}".format(user_id))
+        succes = True
+    return {"succes": succes, 'erori':erori}
 
+@app.route("/ForgotPassword", methods=["POST"])
+def mail_parola():
+    succes = False
+    erori={}
+    cursor = mysql.connection.cursor()
+    con = mysql.connection
+    email =v.normalizare_email(request.form['email'])
+
+    cursor.execute('''select id from users where mail=%s''', [email])
+    user_id=cursor.fetchall()
+    if user_id == ():
+        erori["mailNonexistent"]=True 
+        print("Nu s-a trimis mail-ul,nu exista")
+    else:
+        temp= s.dumps(email,salt="cont")
+        mail_verificare(email,url_for("schimbare_parola",token=temp,_external=True),"parola") 
+        print("Mail trimis catre {}".format(email))
+        succes=True
+    return {'erori': erori,'succes':succes}
+@app.route("/NewPassword/<token>", methods=["POST"])
+def schimbare_parola(token):
+    succes = False
+    erori={}
+    cursor = mysql.connection.cursor()
+    con = mysql.connection
+    password=v.nfc(request.form['password'])
+    password_again=v.nfc(request.form['passwordAgain'])
+    try:
+        email=s.loads(token,salt="parola",max_age=1000)
+    except SignatureExpired:
+        erori["tokenExpirat"]=True
+        print("token expired")
+    if erori =={}:
+        if password==password_again:
+            cursor.execute('''select id from users where mail=%s''', [email])
+            user_id=cursor.fetchall()[0]["id"]
+            cursor.execute('''update brainerdb.passwords set hash=%s where user_id=%s''',(v.hash_pas(password),user_id))
+            con.commit()
+        else :erori["passwordMismatch"]=True
+    return {"succes":succes,'erori':erori}
 
 @app.errorhandler(404)
 def fof():
