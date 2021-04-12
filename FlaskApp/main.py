@@ -1,14 +1,17 @@
 import json
 import smtplib
 import ssl
+import os
+import time
 
-from flask import Flask, jsonify, request, session, url_for
+from flask import Flask, jsonify, request, session, url_for, redirect
 from flask_cors import CORS
 from flask_mysqldb import MySQL
 from itsdangerous import SignatureExpired, URLSafeTimedSerializer
+from werkzeug.utils import secure_filename
 
 import ver as v
-
+import auxiliary as a
 # Initizare bot gmail
 smtp_server = "smtp.gmail.com"
 port = 587
@@ -48,6 +51,7 @@ app.secret_key = '6398715B0D903F28D7BBF08370156D9557DDFAE4CBB1A610A9A535F960CF99
 mysql = MySQL(app)
 s= URLSafeTimedSerializer('6398715B0D903F28D7BBF08370156D9557DDFAE4CBB1A610A9A535F960CF994D' \
                  '8325FCB6CD4C0D980469698435125C6359526E7D17B7BAFE89AA32B6B1361C73')
+CACHE_PATH= "./assets/cache"
 CORS(app)
 
 app.config['MYSQL_HOST'] = 'localhost'
@@ -56,7 +60,7 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = '4tzainfo_root'
 app.config['MYSQL_DB'] = 'brainerdb'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-
+app.config['UPLOAD_FOLDER'] =  CACHE_PATH
 #VARIABILE
 
 @app.route("/SignUpSubmit", methods=["POST"])
@@ -359,6 +363,32 @@ def schimbare_parola(token):
         else :erori["passwordMismatch"]=True
     return {"succes":succes,'erori':erori}
 
+@app.route('/Upload/', methods=['GET','POST'])
+def upload_file():
+    url='static/assets/images/icons/default.jpg'
+    if request.method=='POST':
+        data=a.upload_wrapper(app,request,'profil')
+        #url='file:///'+os.path.join(app.static_folder,data['path'])
+        url =url_for('static',filename = data['path'].replace('\\','/')+'/')
+        print(data['erori'])
+    print(url)
+ 
+    c='''
+    <!doctype html>
+    <title>Upload new File</title>
+    <h1>Upload new File</h1>
+    <form method=post enctype=multipart/form-data>
+      <input type=file name=file >
+      <input type=submit value=Upload>
+    </form>
+    <img src="{}" >
+    <video width="320" height="240" controls>
+  <source src="" type="video/mp4"> 
+  </video>
+    '''.format(url)
+    #print(c)
+    time.sleep(1)
+    return c
 @app.errorhandler(404)
 def fof():
     return

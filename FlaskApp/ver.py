@@ -5,7 +5,9 @@ import unicodedata
 SPECIAL = [',', '.', '-', '_']
 PAS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 MAIL = "!#$%&'*+-/=?^_`{|}~@."
-
+PICS = {'png','jpg','jpeg','gif'}
+VIDS = {'mp4','mkv'}
+TEXT = {'txt', 'tex'}
 
 # USE NFC FOR COMPARING AND NFD FOR PROCESSING
 
@@ -149,3 +151,10 @@ def verify_profile_helper(mysql, session, ptype, value):
             return tmp
 
     return tmp
+
+def file_type(s):
+    s= s.rsplit('.',1)[1].lower()
+    if s in PICS: return ['pic',s]
+    elif s in VIDS: return ['vid',s]
+    elif s in TEXT: return ['txt',s]
+    else: return ['invalid',s]  
