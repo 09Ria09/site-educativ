@@ -38,6 +38,9 @@ function Filter(props) {
                     {value: 9, label: 'Informatică'},
                     {value: 10, label: 'Geografie'},
                     {value: 11, label: 'Economie'},
+                    {value: 12, label: 'Educatie Fizica'},
+                    {value: 13, label: 'Educatie Financiara'},
+                    
                 ]}/>
                 <CustomSelect setValue={filtersHandler}
                               placeholder={'Filtrează dupa clasă'} editing={true} name={'clasa'} isMulti options={[

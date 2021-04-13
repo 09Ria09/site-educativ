@@ -6,8 +6,8 @@ SPECIAL = [',', '.', '-', '_']
 PAS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 MAIL = "!#$%&'*+-/=?^_`{|}~@."
 PICS = {'png','jpg','jpeg','gif'}
-VIDS = {'mp4','mkv'}
-TEXT = {'txt', 'tex'}
+VIDS = {'mp4','ogg','webm'}
+TEXT = {'txt', 'docx','doc','pdf'}
 
 # USE NFC FOR COMPARING AND NFD FOR PROCESSING
 
@@ -156,5 +156,5 @@ def file_type(s):
     s= s.rsplit('.',1)[1].lower()
     if s in PICS: return ['pic',s]
     elif s in VIDS: return ['vid',s]
-    elif s in TEXT: return ['txt',s]
+   # elif s in TEXT: return ['txt',s]
     else: return ['invalid',s]  

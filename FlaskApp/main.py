@@ -9,6 +9,7 @@ from flask_cors import CORS
 from flask_mysqldb import MySQL
 from itsdangerous import SignatureExpired, URLSafeTimedSerializer
 from werkzeug.utils import secure_filename
+#import Whoosh
 
 import ver as v
 import auxiliary as a
@@ -51,6 +52,7 @@ app.secret_key = '6398715B0D903F28D7BBF08370156D9557DDFAE4CBB1A610A9A535F960CF99
 mysql = MySQL(app)
 s= URLSafeTimedSerializer('6398715B0D903F28D7BBF08370156D9557DDFAE4CBB1A610A9A535F960CF994D' \
                  '8325FCB6CD4C0D980469698435125C6359526E7D17B7BAFE89AA32B6B1361C73')
+PAS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 CACHE_PATH= "./assets/cache"
 CORS(app)
 
@@ -309,7 +311,7 @@ def verificare_mail(token):
     cursor = mysql.connection.cursor()
     con = mysql.connection
     try:
-        email=s.loads(token,salt="cont",max_age=1000000)
+        email=s.loads(token,salt="cont",max_age=2*60*60*1000)
     except SignatureExpired:
         erori["tokenExpirat"]=True
         print("token expired")
@@ -322,46 +324,72 @@ def verificare_mail(token):
         succes = True
     return {"succes": succes, 'erori':erori}
 
-@app.route("/ForgotPassword", methods=["POST"])
+@app.route("/ForgotPassword/", methods=["GET","POST"])
 def mail_parola():
-    succes = False
-    erori={}
-    cursor = mysql.connection.cursor()
-    con = mysql.connection
-    email =v.normalizare_email(request.form['email'])
+    #RETURN {ERORI"ERORI,'SIUCCES':SUCCESA}
+    if request.method=='POST':
+        succes = False
+        erori={}
+        cursor = mysql.connection.cursor()
+        con = mysql.connection
+        email =v.normalizare_email(request.form['email'])
 
-    cursor.execute('''select id from users where mail=%s''', [email])
-    user_id=cursor.fetchall()
-    if user_id == ():
-        erori["mailNonexistent"]=True 
-        print("Nu s-a trimis mail-ul,nu exista")
-    else:
-        temp= s.dumps(email,salt="parola")
-        mail_verificare(email,url_for("schimbare_parola",token=temp,_external=True),"parola") 
-        print("Mail trimis catre {}".format(email))
-        succes=True
-    return {'erori': erori,'succes':succes}
-@app.route("/NewPassword/<token>", methods=["POST"])
+        cursor.execute('''select id from users where mail=%s''', [email])
+        user_id=cursor.fetchall()
+        if user_id == ():
+            erori["mailNonexistent"]=True 
+            print("Nu s-a trimis mail-ul,nu exista")
+        else:
+            temp= s.dumps(email,salt="parola")
+            mail_verificare(email,url_for("schimbare_parola",token=temp,_external=True),"parola") 
+            print("Mail trimis catre {}".format(email))
+            succes=True
+    return  '''<!doctype html>
+    <title>Upload new File</title>
+    <h1>Upload new File</h1>
+    <form method=post enctype=multipart/form-data>
+      <input type="text" name="email" >
+      <input type=submit value=Upload>
+    </form>'''
+@app.route("/NewPassword/<token>", methods=["GET","POST"])
 def schimbare_parola(token):
-    succes = False
-    erori={}
-    cursor = mysql.connection.cursor()
-    con = mysql.connection
-    password=v.nfc(request.form['password'])
-    password_again=v.nfc(request.form['passwordAgain'])
-    try:
-        email=s.loads(token,salt="parola",max_age=1000)
-    except SignatureExpired:
-        erori["tokenExpirat"]=True
-        print("token expired")
-    if erori =={}:
+    c='''<!doctype html>
+        <title>Upload new File</title>
+        <h1>Upload new File</h1>
+        <form method=post enctype=multipart/form-data>
+            <input type="password" name="password" >
+            <input type="password" name="passwordAgain" >
+            <input type=submit value=Upload>
+        </form>'''
+    if request.method=='POST':
+        succes = False
+        erori={}
+        cursor = mysql.connection.cursor()
+        con = mysql.connection
+        password=v.nfc(request.form['password'])
+        password_again=v.nfc(request.form['passwordAgain'])
+        #VERIFICA PAROLA
+        
+        try:
+            email=s.loads(token,salt="parola",max_age=5*60*1000)
+        except SignatureExpired:
+            erori["tokenExpirat"]=True
+            print("token expired")
+            return c
+
         if password==password_again:
+
+            if not v.valid(password,PAS) or len(password)<6:
+                erori['parolaInvalida']=True
+                return c
+            
             cursor.execute('''select id from users where mail=%s''', [email])
             user_id=cursor.fetchall()[0]["id"]
             cursor.execute('''update brainerdb.passwords set hash=%s where user_id=%s''',(v.hash_pas(password),user_id))
             con.commit()
         else :erori["passwordMismatch"]=True
-    return {"succes":succes,'erori':erori}
+    return  c
+   
 
 @app.route('/Upload/', methods=['GET','POST'])
 def upload_file():
