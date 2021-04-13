@@ -48,7 +48,7 @@ function App() {
                         cookies.set('completed-profile', Boolean(tmp.completed_profile), {sameSite: true});
                     }
                 }
-            })
+            }).catch(() => clearInterval(checkIfSignedInInterval))
         }
 
         checkIfSignedIn();

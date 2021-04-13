@@ -11,10 +11,11 @@ import Loading from "./Loading";
 
 function Discover(props) {
     const [summaries, setSummaries] = useState([]);
-    const [filters, setFilters] = useState({});
     const [waitingResponse, setWaitingResponse] = useState(true);
 
-    useEffect(() => {
+    useEffect(() => update({}), []);
+
+    function update(filters) {
         setWaitingResponse(true);
         axios({
             method: 'post',
@@ -25,7 +26,7 @@ function Discover(props) {
             setSummaries(JSON.parse(res.request.response))
             setWaitingResponse(false)
         });
-    }, [filters])
+    }
 
     if (props.signedIn === false)
         return (<Redirect to='/'/>);
@@ -35,7 +36,7 @@ function Discover(props) {
         return (
             <div className={'discoverContainer'}>
                 <div className={'discover'}>
-                    <Filter filterHandler={(filters) => setFilters(filters)}/>
+                    <Filter filterHandler={update}/>
                     <div className={'people'}>
                         <Loading/>
                     </div>
@@ -45,7 +46,7 @@ function Discover(props) {
     return (
         <div className={'discoverContainer'}>
             <div className={'discover'}>
-                <Filter filterHandler={(filters) => setFilters(filters)}/>
+                <Filter filterHandler={update}/>
                 <div className={'people'}>
                     {summaries === null ? ('') :
                         summaries.map((x, y) => {

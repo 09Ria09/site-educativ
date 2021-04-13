@@ -53,7 +53,7 @@ function Filter(props) {
                     {value: 11, label: '11'},
                     {value: 12, label: '12'}
                 ]}/>
-                <button className={'applyFilters btn'} onClick={() => props.filterHandler(filters)}>Apply</button>
+                <button className={'applyFilters btn'} onClick={() => props.filterHandler(filters)}>Aplică</button>
             </div>
         </div>
     );

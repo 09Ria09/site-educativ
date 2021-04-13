@@ -203,7 +203,6 @@ def is_signed_in():
     session['verified'] = cursor.fetchall()[0]["verified"]
     cursor.execute('''select completed_profile from users where id=%s;''',  [session.get('user_id')])
     session['completed_profile'] = cursor.fetchall()[0]["completed_profile"]
-    print(session.get('completed_profile'))
     return {'signedIn': True, 'verified': session.get('verified'), 'completed_profile': session.get('completed_profile')}
 
 
@@ -275,10 +274,10 @@ def get_summaries():
     for y in tmp:
         users.add(y['id'])
     if 'materii' in rq and type(rq['materii']) == list:
-        users = get_summaries_helper(users, 'brainerdb.materii', 'materie_id', rq['materii'])
+        users = get_summaries_helper(users, 'user_id', 'brainerdb.materii', 'materie_id', rq['materii'])
 
     if 'clasa' in rq and type(rq['clasa']) == list:
-        users = get_summaries_helper(users, 'brainerdb.users', 'clasa', rq['clasa'])
+        users = get_summaries_helper(users, 'id','brainerdb.users', 'clasa', rq['clasa'])
 
     cu = session.get('user_id')
     for user in users:
@@ -291,16 +290,16 @@ def get_summaries():
     return jsonify(response)
 
 
-def get_summaries_helper(users, table, column, rq):
+def get_summaries_helper(users, what, table, column, rq):
     cursor = mysql.connection.cursor()
 
     for x in rq:
-        cursor.execute('''SELECT user_id FROM''' + table + '''WHERE ''' + column + '''=%s;''',
+        cursor.execute('''SELECT ''' + what +''' FROM ''' + table + ''' WHERE ''' + column + '''=%s;''',
                        [x])
         tmp0 = set()
         tmp1 = cursor.fetchall()
         for y in tmp1:
-            tmp0.add(y['user_id'])
+            tmp0.add(y[what])
         users &= tmp0
     return users
 
