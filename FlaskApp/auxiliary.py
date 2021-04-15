@@ -3,6 +3,9 @@ import os
 import uuid
 from flask import Flask, jsonify, request, session, url_for, redirect
 from werkzeug.utils import secure_filename
+from docx2pdf import convert
+import imghdr
+import mimetypes
 
 def list_to_dict(list):
     return dict( zip([num for num in range(0,len(list))]  ,[x for x in list] ) ) 
@@ -25,6 +28,7 @@ def upload_wrapper(app,request,where):
 
 
 def upload(app,request,file,where):
+    print(imghdr.what(file))
     erori={}
     tip='invalid'
     path=''
@@ -33,21 +37,31 @@ def upload(app,request,file,where):
             erori['noFile']=True
     if erori=={}:
         temp=v.file_type(file.filename)
-        tip=temp[1]
+        tip=temp[0]
         print(tip)
-        if tip=='invalid':
-            erori['tipInvalid']=True
+        #if tip=='invalid':
+         #   erori['tipInvalid']=True
         if where=='profil':
             path='assets/images/icons'
+            if(tip != 'pic') erori['tipInvalid'] = True
         elif where=='postare':
-            path='assets/images/posts'if tip=='pic' else 'assets/videos/posts'
+            if tip == "pic": path='assets/images/posts'
+            elif tip == "vid": path = 'assets/videos/posts'
+            elif tip == "txt": path = "assets/docs/posts"
+            else: path = "assets/texts/posts"
         nume=secure_filename(uuid.uuid4().hex)+'.'+temp[1]
         path=os.path.join(path,nume)
         erori['test']=tip
-        if file :
-            file.save('./static/'+path)
+        if file and not erori['tipInvalid'] :
+            file_path = './static/'+path
+            file.save(file_path)
+            if tip == "invalid":
+                file_path = os.path.join(app.static_folder,path)
+                file_path = file_path.replace('\\','/')
+                print(file_path)
+                if not mimetypes.guess_type(file_path)[0] == 'text/plain':
+                    os.remove(file_path)
+                    erori['tipInvalid'] = True
+
         else: return 0
     return {'erori':erori,'tip':tip,'path':path}
-list = [1,3,5,6]
-
-print(dictionar)

@@ -411,8 +411,10 @@ def upload_file():
     </form>
     <img src="" >
     <video width="320" height="240" controls>
-  <source src="{}" type="video/mp4"> 
+  <source src="" type="video/mp4"> 
   </video>
+  <object data="{}" type="text/plain"
+    width="500" style="height: 300px">
     '''.format(url)
     #print(c)
     time.sleep(1)
