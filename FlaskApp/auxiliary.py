@@ -4,6 +4,10 @@ import uuid
 from flask import Flask, jsonify, request, session, url_for, redirect
 from werkzeug.utils import secure_filename
 
+def list_to_dict(list):
+    return dict( zip([num for num in range(0,len(list))]  ,[x for x in list] ) ) 
+
+
 def upload_wrapper(app,request,where):
 
     if where =="profil":
@@ -11,12 +15,10 @@ def upload_wrapper(app,request,where):
         return upload(app,request,file,where)
     elif where=="postare" :
         files =request.files.getlist('file')
-        erori={}
+        data=[]
         for file in files:
-            data=upload(app,request,file,where)
-            temp=data["erori"]
-            erori={**erori,**tmp}
-        return erori
+            data.append(upload(app,request,file,where))
+        return list_to_dict(data)
     else :
         print("Second parameter is either /'profil/' or /'postare/'")
         return 0
@@ -46,3 +48,6 @@ def upload(app,request,file,where):
             file.save('./static/'+path)
         else: return 0
     return {'erori':erori,'tip':tip,'path':path}
+list = [1,3,5,6]
+
+print(dictionar)

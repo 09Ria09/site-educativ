@@ -367,6 +367,7 @@ def schimbare_parola(token):
         con = mysql.connection
         password=v.nfc(request.form['password'])
         password_again=v.nfc(request.form['passwordAgain'])
+        if not v.valid(password):erori["parolaInvalida"]=True
         #VERIFICA PAROLA
         
         try:
@@ -408,9 +409,9 @@ def upload_file():
       <input type=file name=file >
       <input type=submit value=Upload>
     </form>
-    <img src="{}" >
+    <img src="" >
     <video width="320" height="240" controls>
-  <source src="" type="video/mp4"> 
+  <source src="{}" type="video/mp4"> 
   </video>
     '''.format(url)
     #print(c)
