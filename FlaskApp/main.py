@@ -400,7 +400,7 @@ def upload_file():
         url =url_for('static',filename = data['path'].replace('\\','/')+'/')
         print(data['erori'])
     print(url)
- 
+    
     c='''
     <!doctype html>
     <title>Upload new File</title>

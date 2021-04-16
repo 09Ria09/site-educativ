@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request, session, url_for, redirect
 from werkzeug.utils import secure_filename
 from docx2pdf import convert
 import imghdr
-import mimetypes
+import magic
 
 def list_to_dict(list):
     return dict( zip([num for num in range(0,len(list))]  ,[x for x in list] ) ) 
@@ -38,7 +38,8 @@ def upload(app,request,file,where):
     if erori=={}:
         temp=v.file_type(file.filename)
         tip=temp[0]
-        print(tip)
+        print(file.filename)
+        erori['tipInvalid'] = False
         #if tip=='invalid':
          #   erori['tipInvalid']=True
         if where=='profil':
@@ -55,13 +56,16 @@ def upload(app,request,file,where):
         if file and not erori['tipInvalid'] :
             file_path = './static/'+path
             file.save(file_path)
+            file_path = os.path.join(app.static_folder,path)
+            file_path = file_path.replace('\\','/')
+            print(file_path)
             if tip == "invalid":
-                file_path = os.path.join(app.static_folder,path)
-                file_path = file_path.replace('\\','/')
-                print(file_path)
-                if not mimetypes.guess_type(file_path)[0] == 'text/plain':
+                if magic.from_file(file_path, mime = True) != 'text/plain':
                     os.remove(file_path)
                     erori['tipInvalid'] = True
+            elif '.docx' in file.filename:
+                convert(file_path)
+                os.remove(file_path)
 
         else: return 0
     return {'erori':erori,'tip':tip,'path':path}
