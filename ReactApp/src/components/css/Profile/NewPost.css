@@ -1,0 +1,115 @@
+.newPost {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(var(--oxfordblue));
+    max-width: 800px;
+    width: 100%;
+    border-radius: 25px;
+    padding: 25px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.newPostAdd {
+    margin: 5px;
+    border-radius: 25px;
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.3);
+    align-items: center;
+    color: rgb(var(--columbiablue));
+    font-size: inherit;
+    font-family: inherit;
+    text-decoration: inherit;
+    border: inherit;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    padding: 15px 46px;
+    overflow: hidden;
+}
+
+.newPost .textareaContainer {
+    margin: unset;
+}
+
+.newPost .textareaEditor {
+    margin: 5px !important;
+    box-sizing: border-box !important;
+}
+
+.newPost .textareaToolbar {
+    transform: translateY(-100%) translateY(-15px) !important;
+    box-sizing: border-box !important;
+}
+
+.newPostAdd > .addIcon {
+    margin-left: 35%;
+    width: 32px;
+    height: 32px;
+    margin-right: 15px;
+}
+
+.addIconModified {
+    margin-left: unset !important;
+    align-self: normal;
+    position: absolute;
+    left: 12px;
+    top: 8px;
+}
+
+.newPostAdd > input {
+    position: absolute;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    left: 0;
+    top: 0;
+}
+
+.imagesSelected {
+    max-height: 256px;
+    max-width: 256px;
+    margin: auto;
+    padding: 5px 2px;
+    z-index: 4;
+    position: relative;
+    border-radius: 25px;
+}
+
+.videoSelected {
+    max-height: 512px;
+    max-width: 512px;
+    margin: auto;
+    border-radius: 25px;
+    z-index: 4;
+    position: relative;
+}
+
+.docsSelected {
+    margin: auto;
+    color: inherit;
+    text-decoration: inherit;
+    z-index: 4;
+    position: relative;
+
+}
+
+.newPostText {
+    position: relative;
+}
+
+.newPostAdd > button, .newPostText > button {
+    background: unset;
+    border: inherit;
+    position: absolute;
+    right: -4px;
+    top: 4px;
+    z-index: 5;
+}
+
+.newPostText > button {
+    right: -8px !important;
+    top: 12px !important;
+}

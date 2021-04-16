@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import '../css/Filter.css';
-import CustomSelect from "./CustomSelect";
+import '../../css/Discover/Filter.css';
+import CustomSelect from "../CustomSelect";
 
 function Filter(props) {
     const [filters, setFilters] = useState({});
@@ -40,7 +40,7 @@ function Filter(props) {
                     {value: 11, label: 'Economie'},
                     {value: 12, label: 'Educatie Fizica'},
                     {value: 13, label: 'Educatie Financiara'},
-                    
+
                 ]}/>
                 <CustomSelect setValue={filtersHandler}
                               placeholder={'Filtrează dupa clasă'} editing={true} name={'clasa'} isMulti options={[

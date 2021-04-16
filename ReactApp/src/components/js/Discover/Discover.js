@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
-import '../css/Discover.css';
+import '../../css/Discover/Discover.css';
 import PersonSummary from "./PersonSummary";
 import Filter from "./Filter";
 import {Redirect} from "react-router-dom";
 import axios from "axios";
 import {Editor} from "react-draft-wysiwyg";
 import {convertFromRaw, EditorState} from "draft-js";
-import CustomSelect from "./CustomSelect";
-import Loading from "./Loading";
+import CustomSelect from "../CustomSelect";
+import Loading from "../Loading";
 
 function Discover(props) {
     const [summaries, setSummaries] = useState([]);
@@ -22,7 +22,6 @@ function Discover(props) {
             url: '/GetSummaries',
             data: filters
         }).then(res => {
-            console.log(JSON.parse(res.request.response))
             setSummaries(JSON.parse(res.request.response))
             setWaitingResponse(false)
         });
@@ -50,6 +49,11 @@ function Discover(props) {
                 <div className={'people'}>
                     {summaries === null ? ('') :
                         summaries.map((x, y) => {
+                            try {
+                                EditorState.createWithContent(convertFromRaw(JSON.parse(x['descriere'])));
+                            } catch {
+                                return '';
+                            }
                             return (
                                 <PersonSummary image={'placeholder.jpg'} key={y}
                                                name={(x['prenume'] + ' ' + x['nume'])}>
@@ -76,8 +80,8 @@ function Discover(props) {
                                         {value: 11, label: 'Economie'},
                                     ]}/>
                                 </PersonSummary>
-                        );
-                    })
+                            );
+                        })
                     }
                     <PersonSummary name={'Dexter Morgan'} image={'placeholder.jpg'}>This man is a knight in shining
                         armor.

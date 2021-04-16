@@ -1,13 +1,13 @@
-import React, {useCallback, useState, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import isHotkey from 'is-hotkey';
-import {Editable, withReact, useSlate, Slate} from 'slate-react';
-import {Editor, Transforms, createEditor} from 'slate';
+import {Editable, Slate, useSlate, withReact} from 'slate-react';
+import {createEditor, Editor, Transforms} from 'slate';
 import {withHistory} from 'slate-history';
 import Button from './CustomButton';
 import Icon from './Icon';
 import Toolbar from './ToolBar';
 
-const Hotkeys = { 'mod+`' : 'code', 'mod+i' : 'italic', 'mod+u':'underline', 'mod+b':'bold' };
+const Hotkeys = {'mod+`': 'code', 'mod+i': 'italic', 'mod+u': 'underline', 'mod+b': 'bold'};
 
 const ListTypes = ['numbered-list', 'bulleted-list'];
 
@@ -18,18 +18,18 @@ function TextBox() {
     const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
     return (
-        <Slate value = {text} editor = {editor} onChange = {text => setText(text)}>
+        <Slate value={text} editor={editor} onChange={text => setText(text)}>
             <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'/>
 
             <Toolbar>
-                <MButton format='bold' icon='format_bold' />
-                <MButton format='italic' icon='format_italic' />
-                <MButton format='underline' icon='format_underlined' />
-                <MButton format='code' icon='code' />
-                <BButton format='heading-one' icon='looks_one' />
-                <BButton format='heading-two' icon='looks_two' />
-                <BButton format='numbered-list' icon='format_list_numbered' />
-                <BButton format='bulleted-list' icon='format_list_bulleted' />
+                <MButton format='bold' icon='format_bold'/>
+                <MButton format='italic' icon='format_italic'/>
+                <MButton format='underline' icon='format_underlined'/>
+                <MButton format='code' icon='code'/>
+                <BButton format='heading-one' icon='looks_one'/>
+                <BButton format='heading-two' icon='looks_two'/>
+                <BButton format='numbered-list' icon='format_list_numbered'/>
+                <BButton format='bulleted-list' icon='format_list_bulleted'/>
             </Toolbar>
             <Editable
                 renderElement={renderElement}
@@ -38,13 +38,13 @@ function TextBox() {
                 spellCheck
                 autoFocus
                 onKeyDown={event => {
-                for (const hotkey in Hotkeys) {
-                    if (isHotkey(hotkey, event)) {
-                    event.preventDefault();
-                    const mark = Hotkeys[hotkey];
-                    toggleM(editor, mark);
+                    for (const hotkey in Hotkeys) {
+                        if (isHotkey(hotkey, event)) {
+                            event.preventDefault();
+                            const mark = Hotkeys[hotkey];
+                            toggleM(editor, mark);
+                        }
                     }
-                }
                 }}
             />
 
@@ -52,10 +52,10 @@ function TextBox() {
     )
 }
 
-const initialValue = [ { type: 'paragraph', children: [{text: ''}] } ];
+const initialValue = [{type: 'paragraph', children: [{text: ''}]}];
 
 function Element({element, children, attributes}) {
-    if(element.type == 'block-quote') {
+    if (element.type == 'block-quote') {
         return <blockquote {...attributes}> {children} </blockquote>;
     } else if (element.type == 'bulleted-list') {
         return <ul {...attributes}>{children}</ul>;
@@ -72,25 +72,28 @@ function Element({element, children, attributes}) {
     }
 }
 
-function Leaf({ attributes, children, leaf }) {
+function Leaf({attributes, children, leaf}) {
     if (leaf.bold) {
-    children = <strong>{children}</strong>;
-    } if (leaf.code) {
+        children = <strong>{children}</strong>;
+    }
+    if (leaf.code) {
         children = <code>{children}</code>;
-    } if (leaf.italic) {
+    }
+    if (leaf.italic) {
         children = <em>{children}</em>;
-    } if (leaf.underline) {
+    }
+    if (leaf.underline) {
         children = <u>{children}</u>;
     }
-    
+
     return <span {...attributes}>{children}</span>;
 }
 
 function isBActive(editor, format) {
     const [match] = Editor.nodes(editor, {match: n => n.type === format});
-  
+
     return match;
-};
+}
 
 function toggleB(editor, format) {
     const isActive = isBActive(editor, format);
@@ -100,7 +103,7 @@ function toggleB(editor, format) {
         match: n => ListTypes.includes(n.type),
         split: true
     });
-    
+
     Transforms.setNodes(editor, {
         type: (isActive ? 'paragraph' : (isList ? 'list-item' : format))
     });
@@ -115,7 +118,10 @@ function toggleB(editor, format) {
 function BButton({format, icon}) {
     const editor = useSlate();
     return (
-        <Button active = {isBActive(editor, format)} onMouseDown = {event => {event.preventDefault(); toggleB(editor, format);}}>
+        <Button active={isBActive(editor, format)} onMouseDown={event => {
+            event.preventDefault();
+            toggleB(editor, format);
+        }}>
             <Icon>{icon}</Icon>
         </Button>
     )
@@ -123,29 +129,32 @@ function BButton({format, icon}) {
 
 function isMActive(editor, format) {
     const marks = Editor.marks(editor);
-    if(marks) {
+    if (marks) {
         return marks[format] === true;
     } else {
         return false;
     }
 }
 
-function toggleM(editor, format){
+function toggleM(editor, format) {
     const isActive = isMActive(editor, format);
-  
+
     if (isActive) {
-      Editor.removeMark(editor, format);
+        Editor.removeMark(editor, format);
     } else {
-      Editor.addMark(editor, format, true);
+        Editor.addMark(editor, format, true);
     }
 }
 
 function MButton({format, icon}) {
     const editor = useSlate();
     return (
-      <Button active = {isMActive(editor, format)} onMouseDown = {event => {event.preventDefault(); toggleM(editor, format);}}>
-        <Icon>{icon}</Icon>
-      </Button>
+        <Button active={isMActive(editor, format)} onMouseDown={event => {
+            event.preventDefault();
+            toggleM(editor, format);
+        }}>
+            <Icon>{icon}</Icon>
+        </Button>
     );
 }
 

@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {Redirect} from 'react-router-dom'
 import axios from "axios";
-import '../css/Profile.css';
+import '../../css/Profile/Profile.css';
 import TextEdit from "./TextEdit";
-import CustomSelect from "./CustomSelect";
-import Loading from "./Loading";
+import CustomSelect from "../CustomSelect";
+import Loading from "../Loading";
+import NewPost from "./NewPost";
 
 function Profile(props) {
     const [profile, setProfile] = useState({});
@@ -95,6 +96,7 @@ function Profile(props) {
                                   setValue={valueHandler}
                                   editing={editing}
                                   errors={errors['invalidUN']}
+                                  placeholder={'Username'}
                                   onBlur={() => setCheckProfile(true)}
                                   maxlength={32}/></h1>
                     <h2>{profile['prenume'] + ' ' + profile['nume']}</h2>
@@ -142,6 +144,7 @@ function Profile(props) {
                         {value: 13, label: 'Educatie Financiara'},
                     ]}/>
                 </article>
+                <NewPost/>
             </div>
         </div>
     );

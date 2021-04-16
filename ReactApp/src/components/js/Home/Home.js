@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import Rellax from "rellax";
 import HomeStart from "./HomeStart";
 import Content from "./Content";
+import Features from "./Features";
 
 function Home(props) {
     useEffect(() => {
@@ -21,7 +22,7 @@ function Home(props) {
                     <li>I'm thinking two circus clowns dancing. You?</li>
                 </ul>
             </Content>
-            <Content type={'E'}>
+            <Content type={'E'} style={{marginBottom: '20vh'}}>
                 <p>God created pudding, and then he rested. Keep your mind limber. Makes me a … scientist. God created
                     pudding, and then he rested. I'm doing mental jumping jacks.</p>
                 <p>Watching ice melt. This is fun. Oh I beg to differ, I think we have a lot to discuss. After all, you
@@ -34,6 +35,7 @@ function Home(props) {
                     my own set of rules. I'm Dexter. Boo. Somehow, I doubt that. You have a good heart, Dexter. You're a
                     killer. I catch killers.</p>
             </Content>
+            <Features/>
         </React.Fragment>
     );
 }

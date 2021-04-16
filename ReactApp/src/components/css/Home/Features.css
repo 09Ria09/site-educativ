@@ -1,0 +1,88 @@
+.featuresContainer {
+    background-color: rgb(var(--oxfordblue));
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.features {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.features > .line {
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    width: 6px;
+    background-color: rgb(var(--darkslateblue));
+    border-radius: 25px;
+}
+
+.feature {
+    display: flex;
+    margin: 50px 15vw;
+    align-items: center;
+    position: relative;
+}
+
+.featureReverse {
+    flex-direction: row-reverse;
+}
+
+.feature > div > img {
+    border-radius: 25px;
+}
+
+.feature > .dotAndText {
+    display: flex;
+    position: absolute;
+    left: 50%;
+    height: 100%;
+    align-items: center;
+}
+
+.feature > .dotAndTextReverse {
+    flex-direction: row-reverse;
+    left: unset;
+    right: 50%;
+}
+
+.feature > .dotAndText > div {
+    height: 100%;
+    display: flex;
+}
+
+.feature > .dotAndText > div > p {
+    color: rgb(var(--columbiablue));
+    max-width: 25vw;
+    margin: 0 50px;
+    align-self: center;
+}
+
+.feature > .dotAndText > .dot {
+    flex-shrink: 0;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background-color: rgb(var(--darkslateblue));
+    transform: translateX(-7px);
+}
+
+.feature > .dotAndTextReverse > .dot {
+    transform: translateX(13px);
+}
+
+.specialDot {
+    position: sticky;
+    left: 0;
+    right: 0;
+    margin: -10px auto;
+    height: 20px;
+    width: 20px;
+    top: calc(100vh - 165px);
+    z-index: 2;
+    border-radius: 50%;
+    background-color: rgb(var(--mantis));
+    transform: translateX(3px);
+}

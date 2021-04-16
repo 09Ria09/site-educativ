@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {HashRouter, Route} from "react-router-dom";
 import './App.css';
-import Home from "./components/js/Home";
-import Discover from "./components/js/Discover";
+import Home from "./components/js/Home/Home";
+import Discover from "./components/js/Discover/Discover";
 import Navbar from "./components/js/Navbar";
-import SignUp from "./components/js/SignUp";
-import SignIn from "./components/js/SignIn";
-import ForgotPassword from "./components/js/ForgotPassword";
-import Profile from "./components/js/Profile";
+import SignUp from "./components/js/Sign/SignUp";
+import SignIn from "./components/js/Sign/SignIn";
+import ForgotPassword from "./components/js/Sign/ForgotPassword";
+import Profile from "./components/js/Profile/Profile";
 import {CSSTransition} from "react-transition-group";
 import Cookies from 'universal-cookie';
 import axios from "axios";
@@ -52,7 +52,7 @@ function App() {
         }
 
         checkIfSignedIn();
-        const checkIfSignedInInterval = setInterval(checkIfSignedIn, 1000);
+        const checkIfSignedInInterval = setInterval(checkIfSignedIn, 10000);
         return () => clearInterval(checkIfSignedInInterval);
     }, []);
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import '../css/TextEdit.css';
+import '../../css/Profile/TextEdit.css';
 import {Editor} from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import {convertFromRaw, convertToRaw, EditorState} from 'draft-js';
@@ -33,7 +33,7 @@ function TextEdit(props) {
     }, [value]);
 
     useEffect(() => {
-        if (onFocus === false && props.editing === true)
+        if (onFocus === false && props.editing === true && props.onBlur !== undefined)
             props.onBlur();
     }, [onFocus]);
 
@@ -69,11 +69,13 @@ function TextEdit(props) {
                                onChange={(event) => setValue(event.target.value)}
                                onFocus={() => setOnFocus(true)}
                                onBlur={() => setOnFocus(false)}
+                               placeholder={props.placeholder}
                         />
                     ))}
             </div>
+
             <p className={'textErrors'}
-               style={{display: (errors === '' ? 'none' : '')}}>{errors}</p>
+               style={{display: (errors === '' ? 'none' : 'unset')}}>{errors}</p>
         </React.Fragment>
     );
 }

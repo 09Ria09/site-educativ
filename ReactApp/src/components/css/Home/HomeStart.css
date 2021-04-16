@@ -21,7 +21,6 @@
     grid-template-rows: repeat(9, 11.11%);
     margin: 20vh auto;
     padding: 25px;
-    max-width: 500px;
     animation-duration: 400ms;
     animation-delay: 200ms;
 }
@@ -41,7 +40,12 @@
     margin-right: auto;
     backface-visibility: hidden;
     animation-delay: 1250ms;
-    border-radius: 10px;
+    border-radius: 5px;
+    transition-duration: 100ms;
+}
+
+.startButton:hover {
+    border-radius: 15px;
 }
 
 .circle {

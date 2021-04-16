@@ -27,7 +27,6 @@ function CustomSelect(props) {
     }
 
     useEffect(() => {
-        console.log(value)
         if (props.setValue === undefined)
             return
         if (value === null) {
@@ -161,7 +160,7 @@ function CustomSelect(props) {
                     isClearable={props.isClearable}
                     isMulti={props.isMulti}/>
                 <p style={{
-                    display: (errors === '' ? 'none' : ''),
+                    display: (errors === '' ? 'none' : 'unset'),
                     marginTop: '3px',
                     fontSize: 'medium',
                     fontWeight: 'normal'
@@ -183,12 +182,12 @@ function CustomSelect(props) {
                     }}>{x['label']}</span>))}
             </span></div>)
                 : (
-                    <React.Fragment>
+                    <div style={{marginBottom: '28px', marginTop: '28px'}}>
                         <span style={{
                             whiteSpace: 'nowrap',
                             marginRight: '5px'
                         }}>{props.ikw}</span><span>{value['label']}</span>
-                    </React.Fragment>
+                    </div>
                 ));
 }
 
