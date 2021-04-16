@@ -2,13 +2,13 @@ import hashlib
 import json
 import unicodedata
 
-
 SPECIAL = [',', '.', '-', '_']
 PAS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 MAIL = "!#$%&'*+-/=?^_`{|}~@."
-PICS = {'png','jpg','jpeg','gif'}
-VIDS = {'mp4','ogg','webm'}
-TEXT = {'docx','pdf'}
+PICS = {'png', 'jpg', 'jpeg', 'gif'}
+VIDS = {'mp4', 'ogg', 'webm'}
+TEXT = {'docx', 'pdf'}
+
 
 # USE NFC FOR COMPARING AND NFD FOR PROCESSING
 
@@ -26,7 +26,7 @@ def nfd(s):
 def normalizare_email(email):
     elements = email.split('@')
     nume = elements[0].split('.')
-    nume_normalizat = ''.join(map(str, nume))+'@'+elements[1]
+    nume_normalizat = ''.join(map(str, nume)) + '@' + elements[1]
     return nume_normalizat
 
 
@@ -48,6 +48,7 @@ def verificare_text(txt):
             return False
     return True
 
+
 # def verificare_domain(cuv):
 #     for term in cuv.split('.'):
 #         if not len(term)>=1 :
@@ -57,10 +58,11 @@ def verificare_text(txt):
 def mail_valid(mail):
     if mail.count('@') == 1:
         cuv = mail.split('@')
-        #ok = verificare_domain(cuv[1])   
-        if valid(mail, MAIL) and len(cuv[0])<=64 and not mail.count('..') and cuv[1].count('.') >= 1 :
+        # ok = verificare_domain(cuv[1])
+        if valid(mail, MAIL) and len(cuv[0]) <= 64 and not mail.count('..') and cuv[1].count('.') >= 1:
             return 1
     return 0
+
 
 def validare_ue(username_or_email, password):
     erori = {}
@@ -153,9 +155,14 @@ def verify_profile_helper(mysql, session, ptype, value):
 
     return tmp
 
+
 def file_type(s):
-    s= s.rsplit('.',1)[1].lower()
-    if s in PICS: return ['pic',s]
-    elif s in VIDS: return ['vid',s]
-    elif s in TEXT: return ['txt',s]
-    else: return["invalid", s]
+    s = s.rsplit('.', 1)[1].lower()
+    if s in PICS:
+        return ['pic', s]
+    elif s in VIDS:
+        return ['vid', s]
+    elif s in TEXT:
+        return ['txt', s]
+    else:
+        return ["invalid", s]
