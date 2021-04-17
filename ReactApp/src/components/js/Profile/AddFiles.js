@@ -37,7 +37,7 @@ function AddFiles(props) {
                     return (<video className={'videoSelected'} key={y} src={URL.createObjectURL(x)} controls/>)
             })}
             <button onClick={resetInput} style={{display: (value.length !== 0 ? 'unset' : 'none')}}><img
-                src={'close-line.png'} alt={'Șterge ' + props.placeholder}/></button>
+                src={'close-circle-line.png'} alt={'Șterge ' + props.placeholder}/></button>
         </div>
     );
 }

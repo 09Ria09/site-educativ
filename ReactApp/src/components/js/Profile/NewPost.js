@@ -7,7 +7,7 @@ import axios from "axios";
 function NewPost() {
     const [text, setText] = useState(null);
     const [value, setValue] = useState({});
-    const [errors, setErrors] = useState('');
+    const [errors, setErrors] = useState({});
 
     function valueHandler(t, v) {
         setValue(s => {
@@ -15,12 +15,18 @@ function NewPost() {
             tmp[t] = v;
             return tmp
         })
-        console.log(value)
     }
 
     return (
         <div className={'newPost'}>
-            <h1 className={'newPostTitle'}>Adaugă o postare nouă!</h1>
+            <h1 className={'newPostHeader'}>Adaugă o postare nouă!</h1>
+            <TextEdit type={'input'}
+                      name={'title'}
+                      setValue={valueHandler}
+                      editing={true}
+                      errors={errors['invalidTitle']}
+                      placeholder={'Titlu'}
+                      maxlength={128}/>
             <AddFiles preview={'video'} placeholder={'Video'} icon={'video-add-line.png'}
                       accept={'video/mp4,video/ogg,video/webm'} setValue={valueHandler} name={'video'}/>
             <AddFiles preview={'img'} placeholder={'Imagini'} icon={'image-add-line.png'}
@@ -35,7 +41,7 @@ function NewPost() {
                               placeholder={'Adaugă Text'}
                               errors={errors}/>
                     <button onClick={() => setText(false)}>
-                        <img src={'close-line.png'} alt={'reset images'}/>
+                        <img src={'close-circle-line.png'} alt={'reset images'}/>
                     </button>
                 </div>
             ) : (
@@ -45,12 +51,13 @@ function NewPost() {
             <AddFiles preview={'a'} placeholder={'Documente'} icon={'file-add-line.png'}
                       accept={'application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf'}
                       setValue={valueHandler} name={'docs'} multiple/>
-            <button onClick={() => {
+            <button className={'btn personButton newPostBtn'} onClick={() => {
                 let tmp = new FormData();
                 tmp.append('video', value['video'])
                 tmp.append('images', value['images'])
                 tmp.append('text', value['text'])
                 tmp.append('docs', value['docs'])
+                tmp.append('title', value['title'])
                 axios({
                     method: 'post',
                     url: '/NewPost',

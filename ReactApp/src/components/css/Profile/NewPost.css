@@ -5,9 +5,10 @@
     max-width: 800px;
     width: 100%;
     border-radius: 25px;
-    padding: 25px;
+    padding: 0 25px 63px;
     box-sizing: border-box;
     margin-bottom: 30px;
+    position: relative;
 }
 
 .newPostAdd {
@@ -105,11 +106,39 @@
     border: inherit;
     position: absolute;
     right: -4px;
-    top: 4px;
+    top: 6px;
     z-index: 5;
 }
 
 .newPostText > button {
     right: -8px !important;
-    top: 12px !important;
+    top: 18px !important;
+}
+
+.newPostBtn {
+    border: unset;
+    height: unset;
+    padding: 12px 15px;
+    margin: unset;
+    position: absolute;
+    right: 25px;
+    bottom: 14px;
+    min-width: 150px;
+}
+
+.newPostHeader {
+    color: rgb(var(--columbiablue));
+    margin-left: 10px;
+    margin-bottom: 10px;
+    font-size: 1.6em;
+}
+
+.newPost > .inputContainer {
+    margin: 5px 5px 10px;
+    width: 100%;
+    font-size: 1.4em;
+}
+
+.newPost > .inputContainer > input {
+    margin: unset;
 }

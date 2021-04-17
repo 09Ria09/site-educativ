@@ -6,7 +6,7 @@ import {convertFromRaw, convertToRaw, EditorState} from 'draft-js';
 
 function TextEdit(props) {
     const [value, setValue] = useState(initTextEdit);
-    const [errors, setErrors] = useState('');
+    const [errors, setErrors] = useState(undefined);
     const [onFocus, setOnFocus] = useState(false)
     let textRef = useRef(null);
 
@@ -73,9 +73,8 @@ function TextEdit(props) {
                         />
                     ))}
             </div>
-
             <p className={'textErrors'}
-               style={{display: (errors === '' ? 'none' : 'unset')}}>{errors}</p>
+               style={{display: (typeof errors !== 'string' ? 'none' : 'unset')}}>{toString(errors)}</p>
         </React.Fragment>
     );
 }
