@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 
 function AlternativeSkyCanvas(props) {
     const canvasRef = useRef(null);
@@ -7,27 +7,27 @@ function AlternativeSkyCanvas(props) {
         let width = 0, height = 0;
         const background = canvasRef.current;
         const bgCtx = background.getContext('2d');
-        width = window.innerWidth;
-        height = document.body.offsetHeight;
-        
+        width = canvasRef.current.clientWidth;
+        height = canvasRef.current.clientHeight;
+
         background.width = width;
         background.height = height;
-        
+
         bgCtx.fillStyle = '#0a122a';
-        bgCtx.fillRect(0,0,width,height);
-        
-        function Star(options){
-            this.size = Math.random()*2;
-            this.speed = Math.random()*.1;
+        bgCtx.fillRect(0, 0, width, height);
+
+        function Star(options) {
+            this.size = Math.random() * 2;
+            this.speed = Math.random() * .1;
             this.x = options.x;
             this.y = options.y;
         }
-        
-        Star.prototype.reset = function(){
-            this.size = Math.random()*2;
-            this.speed = Math.random()*.1;
+
+        Star.prototype.reset = function () {
+            this.size = Math.random() * 2;
+            this.speed = Math.random() * .1;
             this.x = width;
-            this.y = Math.random()*height;
+            this.y = Math.random() * height;
         }
             
         Star.prototype.update = function(){
@@ -89,7 +89,7 @@ function AlternativeSkyCanvas(props) {
             while(entLen--){
                 entities[entLen].update();
             }
-                
+
             requestAnimationFrame(animate);
         }
         animate();

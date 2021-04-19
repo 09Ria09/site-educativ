@@ -4,10 +4,9 @@ import PersonSummary from "./PersonSummary";
 import Filter from "./Filter";
 import {Redirect} from "react-router-dom";
 import axios from "axios";
-import {Editor} from "react-draft-wysiwyg";
-import {convertFromRaw, EditorState} from "draft-js";
 import CustomSelect from "../CustomSelect";
 import Loading from "../Loading";
+import TextEdit from "../Profile/TextEdit";
 
 function Discover(props) {
     const [summaries, setSummaries] = useState([]);
@@ -49,21 +48,10 @@ function Discover(props) {
                 <div className={'people'}>
                     {summaries === null ? ('') :
                         summaries.map((x, y) => {
-                            try {
-                                EditorState.createWithContent(convertFromRaw(JSON.parse(x['descriere'])));
-                            } catch {
-                                return '';
-                            }
                             return (
                                 <PersonSummary image={'placeholder.jpg'} key={y}
                                                name={(x['prenume'] + ' ' + x['nume'])}>
-                                    <Editor wrapperClassName="textareaWrapper"
-                                            editorClassName={"textareaEditor textareaEditorReadOnly"}
-                                            toolbarClassName={"textareaToolbar"}
-                                            editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(x['descriere'])))}
-                                            editorStyle={{textAlign: 'justify'}}
-                                            readOnly={true}
-                                    />
+                                    <TextEdit type={'textarea'} editing={false} initialValue={x['descriere']}/>
                                     <CustomSelect initialValue={x['materii']}
                                                   editing={false} options={[
                                         {value: 0, label: 'Matematică'},

@@ -1,9 +1,5 @@
-.profileContainerContainer {
-    background-color: rgb(var(--darkslateblue));
-}
-
 .profileContainer {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.4);
     display: flex;
     min-height: 100vh;
     margin-top: -60px;
@@ -16,7 +12,6 @@
 .profile {
     flex-grow: 1;
     box-sizing: border-box;
-    min-height: calc(100vh - 60px - (2 * 30px));
     background-color: rgb(var(--oxfordblue));
     color: rgb(var(--columbiablue));
     max-width: 800px;
@@ -33,10 +28,16 @@
     right: 20px;
     top: 20px;
     user-select: none;
+    height: 32px;
+    width: 32px;
+    background: unset;
+    border: unset;
+    padding: unset;
 }
 
 .cogwheel {
     height: 32px;
+    width: 32px;
 }
 
 .cogwheel:hover, .rotateCogwheel {
@@ -46,19 +47,66 @@
     animation-timing-function: linear;
 }
 
+.profilePicture, .profileImg {
+    position: relative;
+    width: 256px;
+    height: 256px;
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+.profilePicture > input {
+    position: absolute;
+    z-index: 4;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    left: 0;
+    top: 0;
+}
+
+.profilePicture > .imagesSelected {
+    padding: 0;
+    margin: 0;
+    z-index: 3;
+    height: 100%;
+    width: 100%;
+    max-width: unset;
+    max-height: unset;
+    border-radius: unset;
+}
+
+.profilePicture > button {
+    background: unset;
+    border: inherit;
+    position: absolute;
+    right: -4px;
+    top: 6px;
+    z-index: 5;
+}
+
+.profileFlex {
+    display: flex;
+}
+
+.profileFlexChild {
+    flex-grow: 1;
+    padding-right: 40px;
+}
+
 @media screen and (max-width: 769px) {
     .profileContainer {
         width: 100%;
         margin: 0;
         padding: 0;
-        border-radius: unset;
         display: flex;
         flex-direction: column;
         justify-content: center;
     }
 
     .profile {
-        margin: 0;
+        margin: 0 0 30px;
         font-size: 1.5em;
+        border-radius: unset;
     }
 }

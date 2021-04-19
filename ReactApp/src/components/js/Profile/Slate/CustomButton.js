@@ -1,13 +1,12 @@
 import React from 'react';
-import {css, cx} from '@emotion/css'
+import '../../../css/Profile/TextBox.css';
 
 const Button = React.forwardRef
 (
     ({className, active, ...props}, ref) =>
         (
             <span {...props} ref={ref}
-                  className={cx(className, css`cursor: pointer;
-                          color: ${active ? 'black' : '#ccc'};`)}/>
+                  className={(className !== undefined ? className : '') + ' customButton' + (active === true ? ' customButtonActive' : '')}/>
         )
 );
 

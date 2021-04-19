@@ -230,6 +230,7 @@ def submit_profile():
         con.commit()
 
     if 'descriere' in rq:
+        print(rq['descriere'])
         cursor.execute('''update extra set descriere=%s where user_id=%s''',
                        (json.dumps(rq['descriere'], ensure_ascii=False), session.get('user_id')))
         con.commit()
@@ -250,6 +251,9 @@ def submit_profile():
                        (rq['clasa'], session.get('user_id')))
         con.commit()
         c = True
+
+    if 'profilePicture' in rq:
+        print(rq['profilePicture'])
 
     if d and m and c and (not session.get('completed_profile')):
         cursor.execute('''update users set completed_profile=%s where id=%s''',

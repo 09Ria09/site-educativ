@@ -40,6 +40,7 @@ function NewPost() {
                               editing={true}
                               placeholder={'Adaugă Text'}
                               errors={errors}/>
+
                     <button onClick={() => setText(false)}>
                         <img src={'close-circle-line.png'} alt={'reset images'}/>
                     </button>

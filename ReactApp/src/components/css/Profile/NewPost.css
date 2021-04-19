@@ -34,7 +34,7 @@
     margin: unset;
 }
 
-.newPost .textareaEditor {
+.newPost .textareaContainer {
     margin: 5px !important;
     box-sizing: border-box !important;
 }
@@ -77,6 +77,7 @@
     z-index: 4;
     position: relative;
     border-radius: 25px;
+    width: 100%;
 }
 
 .videoSelected {
@@ -86,6 +87,7 @@
     border-radius: 25px;
     z-index: 4;
     position: relative;
+    width: 100%;
 }
 
 .docsSelected {
@@ -111,8 +113,8 @@
 }
 
 .newPostText > button {
-    right: -8px !important;
-    top: 18px !important;
+    right: -9px !important;
+    top: 7px !important;
 }
 
 .newPostBtn {
@@ -128,9 +130,9 @@
 
 .newPostHeader {
     color: rgb(var(--columbiablue));
-    margin-left: 10px;
+    margin-left: 12px;
     margin-bottom: 10px;
-    font-size: 1.6em;
+    font-size: 1.5em;
 }
 
 .newPost > .inputContainer {
@@ -141,4 +143,11 @@
 
 .newPost > .inputContainer > input {
     margin: unset;
+}
+
+
+@media screen and (max-width: 769px) {
+    .newPost {
+        border-radius: unset;
+    }
 }

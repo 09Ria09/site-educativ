@@ -1,27 +1,37 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import isHotkey from 'is-hotkey';
 import {Editable, Slate, useSlate, withReact} from 'slate-react';
 import {createEditor, Editor, Transforms} from 'slate';
 import {withHistory} from 'slate-history';
-import Button from './CustomButton';
-import Icon from './Icon';
-import Toolbar from './ToolBar';
+import Button from './Slate/CustomButton';
+import Icon from './Slate/Icon';
+import Toolbar from './Slate/ToolBar';
 
 const Hotkeys = {'mod+`': 'code', 'mod+i': 'italic', 'mod+u': 'underline', 'mod+b': 'bold'};
 
 const ListTypes = ['numbered-list', 'bulleted-list'];
 
-function TextBox() {
-    const [text, setText] = useState(initialValue);
+function TextBox(props) {
+    const [text, setText] = useState(props.initialValue);
+    const [onFocus, setOnFocus] = useState(false);
     const renderElement = useCallback(props => <Element {...props} />, []);
     const renderLeaf = useCallback(props => <Leaf {...props} />, []);
     const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
+    useEffect(() => {
+        props.setValue(text);
+    }, [text]);
+
+    useEffect(() => {
+        props.onFocus(onFocus);
+    }, [onFocus]);
+
     return (
-        <Slate value={text} editor={editor} onChange={text => setText(text)}>
+        <Slate value={text} editor={editor} onChange={text => setText(text)}
+               className={(onFocus === true ? ' textareaEditorOnFocus' : '')}>
             <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'/>
 
-            <Toolbar>
+            <Toolbar style={{display: (props.readOnly === true ? 'none' : 'unset')}}>
                 <MButton format='bold' icon='format_bold'/>
                 <MButton format='italic' icon='format_italic'/>
                 <MButton format='underline' icon='format_underlined'/>
@@ -34,9 +44,15 @@ function TextBox() {
             <Editable
                 renderElement={renderElement}
                 renderLeaf={renderLeaf}
-                placeholder='Enter some rich text…'
+                placeholder={props.placeholder}
                 spellCheck
-                autoFocus
+                readOnly={props.readOnly}
+                onFocus={() => {
+                    if (props.readOnly === false) setTimeout(() => setOnFocus(true), 2);
+                }}
+                onBlur={() => {
+                    setTimeout(() => setOnFocus(false), 2);
+                }}
                 onKeyDown={event => {
                     for (const hotkey in Hotkeys) {
                         if (isHotkey(hotkey, event)) {
@@ -52,20 +68,18 @@ function TextBox() {
     )
 }
 
-const initialValue = [{type: 'paragraph', children: [{text: ''}]}];
-
 function Element({element, children, attributes}) {
-    if (element.type == 'block-quote') {
+    if (element.type === 'block-quote') {
         return <blockquote {...attributes}> {children} </blockquote>;
-    } else if (element.type == 'bulleted-list') {
+    } else if (element.type === 'bulleted-list') {
         return <ul {...attributes}>{children}</ul>;
-    } else if (element.type == 'heading-one') {
+    } else if (element.type === 'heading-one') {
         return <h1 {...attributes}>{children}</h1>;
-    } else if (element.type == 'heading-two') {
+    } else if (element.type === 'heading-two') {
         return <h2 {...attributes}>{children}</h2>;
-    } else if (element.type == 'list-item') {
+    } else if (element.type === 'list-item') {
         return <li {...attributes}>{children}</li>;
-    } else if (element.type == 'numbered-list') {
+    } else if (element.type === 'numbered-list') {
         return <ol {...attributes}>{children}</ol>;
     } else {
         return <p {...attributes}>{children}</p>;
