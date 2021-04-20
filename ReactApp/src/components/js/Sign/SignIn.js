@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import '../css/Sign.css';
+import '../../css/Sign.css';
 import {Link, Redirect} from 'react-router-dom';
 import axios from "axios";
 import Cookies from "universal-cookie";
@@ -25,12 +25,13 @@ function SignIn(props) {
         }).then(res => {
             let tmp = JSON.parse(res.request.response);
             if (tmp.success) {
-                props.setSignedIn(true);
+
                 props.setVerified(tmp.verified);
                 props.setCompletedProfile(tmp.completed_profile);
-                cookies.set('signed-in', true, {sameSite: true});
+                props.setSignedIn(true);
                 cookies.set('verified', tmp.verified, {sameSite: true});
                 cookies.set('completed-profile', tmp.completed_profile, {sameSite: true});
+                cookies.set('signed-in', true, {sameSite: true});
             }
             setErrors(tmp.erori);
         });
@@ -44,22 +45,27 @@ function SignIn(props) {
             <div className={'signMain'}>
                 <h1 className={'sign'}>Sign In</h1>
                 <form onSubmit={handleSubmit} method={'post'}>
-                    <input name="usernameOrEmail" className={'un'} type={'text'}
+                    <input name={"usernameOrEmail"} className={'un'} type={'text'}
                            placeholder='Username sau Email'/>
                     <p className={'errors'}
-                       style={{display: (errors['usernameInvalid'] === true ? '' : 'none')}}>Username-ul este
+                       style={{display: (errors['usernameInvalid'] === true ? 'unset' : 'none')}}>Username-ul este
                         invalid.</p>
-                    <p className={'errors'} style={{display: (errors['mailInvalid'] === true ? '' : 'none')}}>Email-ul
+                    <p className={'errors'}
+                       style={{display: (errors['mailInvalid'] === true ? 'unset' : 'none')}}>Email-ul
                         este invalid.</p>
-                    <p className={'errors'} style={{display: (errors['usernameNonexistent'] === true ? '' : 'none')}}>Nu
+                    <p className={'errors'}
+                       style={{display: (errors['usernameNonexistent'] === true ? 'unset' : 'none')}}>Nu
                         exista un cont cu acest username.</p>
-                    <p className={'errors'} style={{display: (errors['mailNonexistent'] === true ? '' : 'none')}}>Nu
+                    <p className={'errors'}
+                       style={{display: (errors['mailNonexistent'] === true ? 'unset' : 'none')}}>Nu
                         exista un cont cu acest email.</p>
                     <input name="password" className={'un'} type={'password'}
                            placeholder='Parola'/>
-                    <p className={'errors'} style={{display: (errors['passwordInvalid'] === true ? '' : 'none')}}>Parola
+                    <p className={'errors'}
+                       style={{display: (errors['passwordInvalid'] === true ? 'unset' : 'none')}}>Parola
                         este invalidă.</p>
-                    <p className={'errors'} style={{display: (errors['wrongPassword'] === true ? '' : 'none')}}>Parola
+                    <p className={'errors'}
+                       style={{display: (errors['wrongPassword'] === true ? 'unset' : 'none')}}>Parola
                         este greșită.</p>
                     <input className={'submit'} type={'submit'} value={'Sign In'}/>
                     <Link className={'forgot'} to={'/forgotPassword'}>Ai uitat parola?</Link>

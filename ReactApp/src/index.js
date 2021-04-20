@@ -5,10 +5,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import SkyCanvas from "./components/js/SkyCanvas";
+import AlternativeSkyCanvas from'./components/js/AlternativeSkyCanvas';
 
 ReactDOM.render(
     <React.Fragment>
-        <SkyCanvas style={{
+        <AlternativeSkyCanvas style={{
             width: '100vw',
             height: '100vh',
             position: 'fixed',

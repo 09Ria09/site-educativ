@@ -24,7 +24,7 @@
     background-color: rgb(var(--darkslateblue));
     color: rgb(var(--columbiablue));
     text-decoration: none;
-    transition-duration: 400ms;
+    transition-duration: 100ms;
     user-select: none;
 }
 

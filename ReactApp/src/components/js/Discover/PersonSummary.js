@@ -1,5 +1,5 @@
 import React from "react";
-import '../css/PersonSummary.css';
+import '../../css/Discover/PersonSummary.css';
 
 function PersonSummary(props) {
     return (

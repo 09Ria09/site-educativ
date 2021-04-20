@@ -1,0 +1,27 @@
+.customButton {
+    cursor: pointer;
+    color: rgba(var(--columbiablue), 0.6);
+}
+
+.customButtonActive {
+    color: rgb(var(--columbiablue));
+}
+
+.TextBoxIcon {
+    font-size: 18px;
+    vertical-align: text-bottom;
+}
+
+.ToolBar1 {
+    display: inline-block;
+    margin-left: 15px;
+    height: 24px;
+}
+
+.ToolBar2 {
+    position: relative;
+    padding: 1px 18px 6px;
+    border-bottom: 2px solid rgba(var(--columbiablue), 0.6);
+    margin-left: -20px;
+    margin-right: -20px;
+}

@@ -1,18 +1,18 @@
 import json
 import smtplib
 import ssl
-import os
 import time
 
-from flask import Flask, jsonify, request, session, url_for, redirect
+from flask import Flask, jsonify, request, session, url_for
 from flask_cors import CORS
 from flask_mysqldb import MySQL
 from itsdangerous import SignatureExpired, URLSafeTimedSerializer
-from werkzeug.utils import secure_filename
-#import Whoosh
 
-import ver as v
 import auxiliary as a
+import ver as v
+
+# import Whoosh
+
 # Initizare bot gmail
 smtp_server = "smtp.gmail.com"
 port = 587
@@ -22,20 +22,21 @@ password = "4tzainfo_root"
 context = ssl.create_default_context()
 
 
-def mail_verificare(recipient,code,cont_sau_parola):
+def mail_verificare(recipient, code, cont_sau_parola):
     try:
-        if  cont_sau_parola=="cont":
+        if cont_sau_parola == "cont":
             cont_sau_parola = "Validare cont"
-        else :cont_sau_parola = "Schimbare Parola"
-        server = smtplib.SMTP(smtp_server,port)
-        server.starttls(context=context) 
+        else:
+            cont_sau_parola = "Schimbare Parola"
+        server = smtplib.SMTP(smtp_server, port)
+        server.starttls(context=context)
         server.login(sender_email, password)
-        message = "Linkul Dumneavoastra este :\n"+code+"\n"
-        headers = "\r\n".join(["from: " + sender_email, 
-                            "subject: " + cont_sau_parola, 
-                            "to: " + recipient, 
-                            "mime-version: 1.0", 
-                            "content-type: text/html"]) 
+        message = "Linkul Dumneavoastra este :\n" + code + "\n"
+        headers = "\r\n".join(["from: " + sender_email,
+                               "subject: " + cont_sau_parola,
+                               "to: " + recipient,
+                               "mime-version: 1.0",
+                               "content-type: text/html"])
 
         content = headers + "\r\n\r\n" + message
         server.sendmail(sender_email, recipient, content)
@@ -43,17 +44,17 @@ def mail_verificare(recipient,code,cont_sau_parola):
         print(e)
     finally:
         print("Sent email")
-        server.quit() 
+        server.quit()
 
 
 app = Flask("__main__")
 app.secret_key = '6398715B0D903F28D7BBF08370156D9557DDFAE4CBB1A610A9A535F960CF994D' \
                  '8325FCB6CD4C0D980469698435125C6359526E7D17B7BAFE89AA32B6B1361C73'
 mysql = MySQL(app)
-s= URLSafeTimedSerializer('6398715B0D903F28D7BBF08370156D9557DDFAE4CBB1A610A9A535F960CF994D' \
-                 '8325FCB6CD4C0D980469698435125C6359526E7D17B7BAFE89AA32B6B1361C73')
+s = URLSafeTimedSerializer('6398715B0D903F28D7BBF08370156D9557DDFAE4CBB1A610A9A535F960CF994D' \
+                           '8325FCB6CD4C0D980469698435125C6359526E7D17B7BAFE89AA32B6B1361C73')
 PAS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
-CACHE_PATH= "./assets/cache"
+CACHE_PATH = "./assets/cache"
 CORS(app)
 
 app.config['MYSQL_HOST'] = 'localhost'
@@ -62,20 +63,22 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = '4tzainfo_root'
 app.config['MYSQL_DB'] = 'brainerdb'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-app.config['UPLOAD_FOLDER'] =  CACHE_PATH
-#VARIABILE
+app.config['UPLOAD_FOLDER'] = CACHE_PATH
+
+
+# VARIABILE
 
 @app.route("/SignUpSubmit", methods=["POST"])
 def sign_up():
     success = False
     cursor = mysql.connection.cursor()
     con = mysql.connection
-    username =v.nfc(request.form['username'])
-    nume =v.nfc(request.form['nume'])
-    prenume =v.nfc(request.form['prenume'])
+    username = v.nfc(request.form['username'])
+    nume = v.nfc(request.form['nume'])
+    prenume = v.nfc(request.form['prenume'])
     email = v.normalizare_email(request.form['email'])
-    password =v.nfc(request.form['password'])
-    password_again =v.nfc(request.form['passwordAgain'])
+    password = v.nfc(request.form['password'])
+    password_again = v.nfc(request.form['passwordAgain'])
 
     erori = v.validare(username, nume, prenume, email, password, password_again)
 
@@ -90,7 +93,7 @@ def sign_up():
             erori["mailTaken"] = True
         if erori == {}:
             cursor.execute('''insert into users values (NULL, %s, %s, %s, NULL, %s, NULL,0,0)''',
-                           (username, nume, prenume,email))
+                           (username, nume, prenume, email))
             con.commit()
             cursor.execute('''select id from users where username=%s;''', [username])
             user_id = cursor.fetchall()[0]["id"]
@@ -100,8 +103,8 @@ def sign_up():
             print("Am adaugat parola user-ului cu id-ul: {}".format(user_id))
             session.clear()
             if erori == {}:
-                temp= s.dumps(email,salt="cont")
-                mail_verificare(email,url_for("verificare_mail",token=temp,_external=True),"cont") 
+                temp = s.dumps(email, salt="cont")
+                mail_verificare(email, url_for("verificare_mail", token=temp, _external=True), "cont")
                 print("Mail trimis catre {}".format(email))
             else:
                 print("Nu am trimis mail")
@@ -140,9 +143,9 @@ def sign_in():
             if correct_password[0]['hash'] == v.hash_pas(v.nfc(password)):
                 session.clear()
                 session['user_id'] = user_id[0]["id"]
-                cursor.execute('''select verified from users where id=%s;''',  [user_id[0]["id"]])
+                cursor.execute('''select verified from users where id=%s;''', [user_id[0]["id"]])
                 session['verified'] = cursor.fetchall()[0]["verified"]
-                cursor.execute('''select completed_profile from users where id=%s;''',  [user_id[0]["id"]])
+                cursor.execute('''select completed_profile from users where id=%s;''', [user_id[0]["id"]])
                 session['completed_profile'] = cursor.fetchall()[0]["completed_profile"]
                 print("Am logat user cu id-ul: {}".format(user_id))
                 success = True
@@ -199,11 +202,12 @@ def is_signed_in():
     if session.get('user_id') is None:
         return {'signedIn': False}
     cursor = mysql.connection.cursor()
-    cursor.execute('''select verified from users where id=%s;''',  [session.get('user_id')])
+    cursor.execute('''select verified from users where id=%s;''', [session.get('user_id')])
     session['verified'] = cursor.fetchall()[0]["verified"]
-    cursor.execute('''select completed_profile from users where id=%s;''',  [session.get('user_id')])
+    cursor.execute('''select completed_profile from users where id=%s;''', [session.get('user_id')])
     session['completed_profile'] = cursor.fetchall()[0]["completed_profile"]
-    return {'signedIn': True, 'verified': session.get('verified'), 'completed_profile': session.get('completed_profile')}
+    return {'signedIn': True, 'verified': session.get('verified'),
+            'completed_profile': session.get('completed_profile')}
 
 
 @app.route("/SubmitProfile", methods=["POST"])
@@ -226,10 +230,11 @@ def submit_profile():
         con.commit()
 
     if 'descriere' in rq:
+        print(rq['descriere'])
         cursor.execute('''update extra set descriere=%s where user_id=%s''',
                        (json.dumps(rq['descriere'], ensure_ascii=False), session.get('user_id')))
         con.commit()
-        d=True
+        d = True
 
     if 'materii' in rq and type(rq['materii']) == list:
         cursor.execute('''delete from materii where user_id=%s''', [session.get('user_id')])
@@ -238,7 +243,7 @@ def submit_profile():
             cursor.execute('''insert into materii values (NULL, %s, %s)''',
                            (session.get('user_id'), materie))
             con.commit()
-        m=True
+        m = True
 
     if 'clasa' in rq:
         print(rq['clasa'])
@@ -246,6 +251,9 @@ def submit_profile():
                        (rq['clasa'], session.get('user_id')))
         con.commit()
         c = True
+
+    if 'profilePicture' in rq:
+        print(rq['profilePicture'])
 
     if d and m and c and (not session.get('completed_profile')):
         cursor.execute('''update users set completed_profile=%s where id=%s''',
@@ -277,7 +285,7 @@ def get_summaries():
         users = get_summaries_helper(users, 'user_id', 'brainerdb.materii', 'materie_id', rq['materii'])
 
     if 'clasa' in rq and type(rq['clasa']) == list:
-        users = get_summaries_helper(users, 'id','brainerdb.users', 'clasa', rq['clasa'])
+        users = get_summaries_helper(users, 'id', 'brainerdb.users', 'clasa', rq['clasa'])
 
     cu = session.get('user_id')
     for user in users:
@@ -294,7 +302,7 @@ def get_summaries_helper(users, what, table, column, rq):
     cursor = mysql.connection.cursor()
 
     for x in rq:
-        cursor.execute('''SELECT ''' + what +''' FROM ''' + table + ''' WHERE ''' + column + '''=%s;''',
+        cursor.execute('''SELECT ''' + what + ''' FROM ''' + table + ''' WHERE ''' + column + '''=%s;''',
                        [x])
         tmp0 = set()
         tmp1 = cursor.fetchall()
@@ -303,56 +311,60 @@ def get_summaries_helper(users, what, table, column, rq):
         users &= tmp0
     return users
 
+
 @app.route("/VerifyMail/Cont/<token>", methods=["GET"])
 def verificare_mail(token):
     succes = False
-    erori={}
+    erori = {}
     cursor = mysql.connection.cursor()
     con = mysql.connection
     try:
-        email=s.loads(token,salt="cont",max_age=2*60*60*1000)
+        email = s.loads(token, salt="cont", max_age=2 * 60 * 60 * 1000)
     except SignatureExpired:
-        erori["tokenExpirat"]=True
+        erori["tokenExpirat"] = True
         print("token expired")
-    if erori=={}:
+    if erori == {}:
         cursor.execute('''select id from users where mail=%s''', [email])
-        user_id=cursor.fetchall()[0]["id"]
-        cursor.execute('''update brainerdb.users set verified=True where id=%s''',[user_id])
+        user_id = cursor.fetchall()[0]["id"]
+        cursor.execute('''update brainerdb.users set verified=True where id=%s''', [user_id])
         con.commit()
         print("Verified :{}".format(user_id))
         succes = True
-    return {"succes": succes, 'erori':erori}
+    return {"succes": succes, 'erori': erori}
 
-@app.route("/ForgotPassword/", methods=["GET","POST"])
+
+@app.route("/ForgotPassword/", methods=["GET", "POST"])
 def mail_parola():
-    #RETURN {ERORI"ERORI,'SIUCCES':SUCCESA}
-    if request.method=='POST':
+    # RETURN {ERORI"ERORI,'SIUCCES':SUCCESA}
+    if request.method == 'POST':
         succes = False
-        erori={}
+        erori = {}
         cursor = mysql.connection.cursor()
         con = mysql.connection
-        email =v.normalizare_email(request.form['email'])
+        email = v.normalizare_email(request.form['email'])
 
         cursor.execute('''select id from users where mail=%s''', [email])
-        user_id=cursor.fetchall()
+        user_id = cursor.fetchall()
         if user_id == ():
-            erori["mailNonexistent"]=True 
+            erori["mailNonexistent"] = True
             print("Nu s-a trimis mail-ul,nu exista")
         else:
-            temp= s.dumps(email,salt="parola")
-            mail_verificare(email,url_for("schimbare_parola",token=temp,_external=True),"parola") 
+            temp = s.dumps(email, salt="parola")
+            mail_verificare(email, url_for("schimbare_parola", token=temp, _external=True), "parola")
             print("Mail trimis catre {}".format(email))
-            succes=True
-    return  '''<!doctype html>
+            succes = True
+    return '''<!doctype html>
     <title>Upload new File</title>
     <h1>Upload new File</h1>
     <form method=post enctype=multipart/form-data>
       <input type="text" name="email" >
       <input type=submit value=Upload>
     </form>'''
-@app.route("/NewPassword/<token>", methods=["GET","POST"])
+
+
+@app.route("/NewPassword/<token>", methods=["GET", "POST"])
 def schimbare_parola(token):
-    c='''<!doctype html>
+    c = '''<!doctype html>
         <title>Upload new File</title>
         <h1>Upload new File</h1>
         <form method=post enctype=multipart/form-data>
@@ -360,48 +372,50 @@ def schimbare_parola(token):
             <input type="password" name="passwordAgain" >
             <input type=submit value=Upload>
         </form>'''
-    if request.method=='POST':
+    if request.method == 'POST':
         succes = False
-        erori={}
+        erori = {}
         cursor = mysql.connection.cursor()
         con = mysql.connection
-        password=v.nfc(request.form['password'])
-        password_again=v.nfc(request.form['passwordAgain'])
-        if not v.valid(password):erori["parolaInvalida"]=True
-        #VERIFICA PAROLA
-        
+        password = v.nfc(request.form['password'])
+        password_again = v.nfc(request.form['passwordAgain'])
+        if not v.valid(password): erori["parolaInvalida"] = True
+        # VERIFICA PAROLA
+
         try:
-            email=s.loads(token,salt="parola",max_age=5*60*1000)
+            email = s.loads(token, salt="parola", max_age=5 * 60 * 1000)
         except SignatureExpired:
-            erori["tokenExpirat"]=True
+            erori["tokenExpirat"] = True
             print("token expired")
             return c
 
-        if password==password_again:
+        if password == password_again:
 
-            if not v.valid(password,PAS) or len(password)<6:
-                erori['parolaInvalida']=True
+            if not v.valid(password, PAS) or len(password) < 6:
+                erori['parolaInvalida'] = True
                 return c
-            
-            cursor.execute('''select id from users where mail=%s''', [email])
-            user_id=cursor.fetchall()[0]["id"]
-            cursor.execute('''update brainerdb.passwords set hash=%s where user_id=%s''',(v.hash_pas(password),user_id))
-            con.commit()
-        else :erori["passwordMismatch"]=True
-    return  c
-   
 
-@app.route('/Upload/', methods=['GET','POST'])
+            cursor.execute('''select id from users where mail=%s''', [email])
+            user_id = cursor.fetchall()[0]["id"]
+            cursor.execute('''update brainerdb.passwords set hash=%s where user_id=%s''',
+                           (v.hash_pas(password), user_id))
+            con.commit()
+        else:
+            erori["passwordMismatch"] = True
+    return c
+
+
+@app.route('/Upload/', methods=['GET', 'POST'])
 def upload_file():
-    url='static/assets/images/icons/default.jpg'
-    if request.method=='POST':
-        data=a.upload_wrapper(app,request,'profil')
-        #url='file:///'+os.path.join(app.static_folder,data['path'])
-        url =url_for('static',filename = data['path'].replace('\\','/')+'/')
+    url = 'static/assets/images/icons/default.jpg'
+    if request.method == 'POST':
+        data = a.upload_wrapper(app, request, 'profil')
+        # url='file:///'+os.path.join(app.static_folder,data['path'])
+        url = url_for('static', filename=data['path'].replace('\\', '/') + '/')
         print(data['erori'])
     print(url)
- 
-    c='''
+
+    c = '''
     <!doctype html>
     <title>Upload new File</title>
     <h1>Upload new File</h1>
@@ -416,9 +430,17 @@ def upload_file():
   <object data="{}" type="text/plain"
     width="500" style="height: 300px">
     '''.format(url)
-    #print(c)
+    # print(c)
     time.sleep(1)
     return c
+
+
+@app.route('/NewPost', methods=['POST'])
+def new_post():
+    print(request.form)
+    return {}
+
+
 @app.errorhandler(404)
 def fof():
     return

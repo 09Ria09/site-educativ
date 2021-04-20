@@ -1,5 +1,5 @@
 import React from "react";
-import '../css/HomeStart.css';
+import '../../css/Home/HomeStart.css';
 import {Link} from "react-router-dom";
 
 
@@ -11,8 +11,7 @@ function HomeStart(props) {
                          style={{position: 'absolute', left: 0, right: 0, top: 0}}>
                     <div className={'homeStartCenter animate__animated animate__fadeIn'}>
                         <h1 className={'title'}>Brainer</h1>
-                        <h2 className={'startText'}>I'm something new entirely. With my own set of rules. I'm Dexter.
-                            Boo.</h2>
+                        <h2 className={'startText'}>You bring the Homework, We do the rest!</h2>
                         <Link
                             className={'btn startButton animate__animated animate__rubberBand' + (props.signedIn === true ? ' displayNone' : '')}
                             to={'/signUp'}>Sign

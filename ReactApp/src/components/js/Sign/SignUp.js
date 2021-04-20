@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import '../css/Sign.css';
+import '../../css/Sign.css';
 import {Link, Redirect} from 'react-router-dom';
 import axios from "axios";
 import Cookies from "universal-cookie";
@@ -28,12 +28,12 @@ function SignUp(props) {
         }).then(res => {
             let tmp = JSON.parse(res.request.response);
             if (tmp.success === true) {
-                props.setSignedIn(tmp.success);
                 props.setVerified(tmp.verified);
                 props.setCompletedProfile(tmp.completed_profile);
-                cookies.set('signed-in', true, {sameSite: true});
+                props.setSignedIn(tmp.success);
                 cookies.set('verified', tmp.verified, {sameSite: true});
                 cookies.set('completed-profile', tmp.completed_profile, {sameSite: true});
+                cookies.set('signed-in', true, {sameSite: true});
             }
             setErrors(tmp.erori);
         });
@@ -50,38 +50,43 @@ function SignUp(props) {
                     <input name="username" className={'un'} type={'text'}
                            placeholder='Username'/>
                     <p className={'errors'}
-                       style={{display: (errors['usernameInvalid'] === true ? '' : 'none')}}>Username-ul este
+                       style={{display: (errors['usernameInvalid'] === true ? 'unset' : 'none')}}>Username-ul este
                         invalid.</p>
-                    <p className={'errors'} style={{display: (errors['usernameTaken'] === true ? '' : 'none')}}>Există
+                    <p className={'errors'}
+                       style={{display: (errors['usernameTaken'] === true ? 'unset' : 'none')}}>Există
                         deja un alt cont cu acest username.</p>
                     <input name="prenume" className={'un'} type={'text'}
                            placeholder='Prenume'/>
-                    <p className={'errors'} style={{display: (errors['prenumeInvalid'] === true ? '' : 'none')}}>Prenume
+                    <p className={'errors'}
+                       style={{display: (errors['prenumeInvalid'] === true ? 'unset' : 'none')}}>Prenume
                         este invalid.</p>
                     <input name="nume" className={'un'} type={'text'}
                            placeholder='Nume'/>
-                    <p className={'errors'} style={{display: (errors['numeInvalid'] === true ? '' : 'none')}}>Numele
+                    <p className={'errors'}
+                       style={{display: (errors['numeInvalid'] === true ? 'unset' : 'none')}}>Numele
                         este invalid.</p>
                     <input name="email" className={'un'} type={'text'}
                            placeholder='Email'/>
-                    <p className={'errors'} style={{display: (errors['mailInvalid'] === true ? '' : 'none')}}>Email-ul
+                    <p className={'errors'}
+                       style={{display: (errors['mailInvalid'] === true ? 'unset' : 'none')}}>Email-ul
                         este invalid.</p>
-                    <p className={'errors'} style={{display: (errors['mailTaken'] === true ? '' : 'none')}}>Există deja
+                    <p className={'errors'} style={{display: (errors['mailTaken'] === true ? 'unset' : 'none')}}>Există
+                        deja
                         un alt cont cu acest email.</p>
                     <input name="password" className={'un'} type={'password'}
                            placeholder='Parola'/>
-                    <p className={'errors'} style={{display: (errors['passwordInvalid'] === true ? '' : 'none')}}>Parola
+                    <p className={'errors'}
+                       style={{display: (errors['passwordInvalid'] === true ? 'unset' : 'none')}}>Parola
                         este invalidă.</p>
                     <input name="passwordAgain" className={'un'} type={'password'}
                            placeholder='Parola încă odată'/>
                     <p className={'errors'}
-                       style={{display: (errors['passwordMismatch'] === true ? '' : 'none')}}>Parolele sunt
+                       style={{display: (errors['passwordMismatch'] === true ? 'unset' : 'none')}}>Parolele sunt
                         diferite.</p>
                     <input className={'submit'} type={'submit'} value={'Sign Up'}/>
                     <Link className={'goToSignIn'} to={'/signIn'}>Ai deja un cont?</Link>
                 </form>
             </div>
-            <p>{window.token}</p>
         </div>
     )
 }

@@ -1,6 +1,22 @@
 .textContainer {
     position: relative;
     display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.textareaContainer {
+    flex-direction: column;
+
+    border-radius: 25px;
+    color: rgb(var(--columbiablue));
+    padding: 5px 25px;
+    margin-left: -25px;
+    margin-right: -25px;
+    height: max-content;
+    box-sizing: content-box;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .inputContainer {
@@ -73,7 +89,7 @@
     visibility: visible !important;
 }
 
-.inputContainer > input, .textareaEditor, .textareaToolbar {
+.inputContainer > input, .textareaEditor, .textareaToolbar, .textareaContainer {
     transition: box-shadow 100ms, -webkit-box-shadow 100ms !important;
 }
 

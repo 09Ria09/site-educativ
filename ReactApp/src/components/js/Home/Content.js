@@ -1,6 +1,6 @@
 import React from "react";
 import ScrollAnimation from 'react-animate-on-scroll';
-import '../css/Content.css';
+import '../../css/Home/Content.css';
 
 function Content(props) {
     return (
