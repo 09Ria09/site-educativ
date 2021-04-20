@@ -11,12 +11,14 @@ import Profile from "./components/js/Profile/Profile";
 import {CSSTransition} from "react-transition-group";
 import Cookies from 'universal-cookie';
 import axios from "axios";
+import ChangePassword from "./components/js/Sign/ChangePassword";
 
 function App() {
     const routes = [
         {path: '/', name: 'Home', Component: Home},
         {path: '/discover', name: 'Discover', Component: Discover},
         {path: '/forgotPassword', name: 'Forgot Password', Component: ForgotPassword},
+        {path: '/changePassword', name: 'Change Password', Component: ChangePassword},
         {path: '/profile', name: 'Profile', Component: Profile},
         {path: '/signUp', name: 'Sign Up', Component: SignUp},
         {path: '/signIn', name: 'Sign In', Component: SignIn}];
