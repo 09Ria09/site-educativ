@@ -7,6 +7,7 @@ function AlternativeSkyCanvas(props) {
         let width = 0, height = 0;
         const background = canvasRef.current;
         const bgCtx = background.getContext('2d');
+
         width = canvasRef.current.clientWidth;
         height = canvasRef.current.clientHeight;
 
@@ -46,9 +47,10 @@ function AlternativeSkyCanvas(props) {
         ShootingStar.prototype.reset = function(){
             this.x = width;
             this.y = (Math.random()*height - height / 10) / 2;
-            this.len = (Math.random()*80)+10;
+            this.len = (Math.random()*40)+10;
             this.speed = (Math.random()*10)+6;
-            this.size = (Math.random()*2)+2;
+            this.angle = (Math.random()*2) + 1;
+            this.size = (Math.random()*1)+1;
             // this is used so the shooting stars arent constant
             this.waitTime =  new Date().getTime() + (Math.random()*6000)+500;
             this.active = false;
@@ -56,7 +58,7 @@ function AlternativeSkyCanvas(props) {
             
         ShootingStar.prototype.update = function(){
             if(this.active){
-                this.x-=this.speed;
+                this.x-=this.speed * this.angle;
                 this.y+=this.speed;
                 if(this.x + this.len<0 || this.y - this.len >= height){
                     this.reset();
@@ -64,7 +66,7 @@ function AlternativeSkyCanvas(props) {
                 bgCtx.lineWidth = this.size;
                     bgCtx.beginPath();
                     bgCtx.moveTo(this.x,this.y);
-                    bgCtx.lineTo(this.x+this.len, this.y-this.len);
+                    bgCtx.lineTo(this.x+this.len * this.angle, this.y-this.len);
                     bgCtx.stroke();
                 }
             }else{
