@@ -18,7 +18,7 @@ function App() {
         {path: '/', name: 'Home', Component: Home},
         {path: '/discover', name: 'Discover', Component: Discover},
         {path: '/forgotPassword', name: 'Forgot Password', Component: ForgotPassword},
-        {path: '/changePassword', name: 'Change Password', Component: ChangePassword},
+        {path: '/changePassword/*', name: 'Change Password', Component: ChangePassword},
         {path: '/profile', name: 'Profile', Component: Profile},
         {path: '/signUp', name: 'Sign Up', Component: SignUp},
         {path: '/signIn', name: 'Sign In', Component: SignIn}];

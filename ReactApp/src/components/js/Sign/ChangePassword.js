@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import '../../css/Sign.css';
 import axios from "axios";
-import {Redirect} from "react-router-dom";
+import {Redirect, useHistory} from "react-router-dom";
 
 function ChangePassword() {
     const [success, setSuccess] = useState(false);
     const [redirect, setRedirect] = useState(false);
+    let history = useHistory();
     const [errors, setErrors] = useState({
         passwordInvalid: false,
         passwordMismatch: false
@@ -35,9 +36,10 @@ function ChangePassword() {
                 <form method={'post'} onSubmit={(event) => {
                     event.preventDefault();
                     const data = new FormData(event.target);
+                    console.log(history.location.pathname)
                     axios({
                         method: 'post',
-                        url: window.location.pathname.substring(3),
+                        url: history.location.pathname,
                         data: data
                     }).then(res => {
                         let tmp = JSON.parse(res.request.response);
