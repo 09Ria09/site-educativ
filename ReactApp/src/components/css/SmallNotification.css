@@ -1,0 +1,59 @@
+.smallNotificationContainer {
+    background-color: rgb(10, 18, 42);
+    border-radius: 25px;
+    width: auto;
+    height: auto;
+}
+
+.smallNotificationContainer:hover {
+    background-color: rgb(14, 22, 50);
+}
+
+.smallNotificationName {
+    display:flex;
+    padding: 1vw;
+    padding-bottom: 0;
+    color: rgb(201, 240, 255);
+    font-size: 1.2vw;
+    align-items: center;
+}
+
+.smallNotificationImage {
+    height: 3vw;
+    border-radius: 15px;
+    margin-right: 1vw;
+}
+
+.smallNotificationText {
+    padding: 1vw;
+    color: rgb(201, 240, 255);
+    font-size: 0.9vw;
+}
+
+.notVisible {
+    background-color: transparent;
+    margin-top: 1vw;
+    text-align: center;
+    border: 0px;
+    width: 18vw;
+}
+
+@media only screen and (max-width: 600px) {
+    .smallNotificationContainer {
+        height: 10vh;
+        border-radius: 2vh;
+    }
+    .smallNotificationText {
+        font-size: 1.8vh;
+    }
+    .smallNotificationName {
+        font-size: 2.2vh;
+    }
+    .smallNotificationImage {
+        height: 5vh;
+    }
+    .notVisible {
+        width: 68vw;
+        height: 10vh;
+    }
+}

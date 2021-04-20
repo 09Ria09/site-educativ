@@ -1,0 +1,44 @@
+.bg {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+}
+  
+.smallContainer {
+    background-color: rgba(6, 11, 25, 0.9);
+    height: 80vh;
+    width: 20vw;
+    margin-left: auto;
+    border-radius: 25px;
+    overflow-x: hidden;
+    text-align: center;
+}
+  
+.smallContainer::-webkit-scrollbar { width: 0 !important }
+.smallContainer { overflow: -moz-scrollbars-none; }
+.smallContainer { -ms-overflow-style: none; }
+
+.bigContainer {
+    background-color: rgba(6, 11, 25, 0.9);
+    height: 80vh;
+    width: 70vw;
+    margin-left: 2.5vw;
+    margin-right: auto;
+    border-radius: 25px;
+    overflow-x: auto;
+}
+
+.bigContainer::-webkit-scrollbar { width: 0 !important }
+.bigContainer { overflow: -moz-scrollbars-none; }
+.bigContainer { -ms-overflow-style: none; }
+
+@media only screen and (max-width: 600px) {
+    .bigContainer {
+        width: 0px;
+        background-color: transparent;
+    }
+    .smallContainer {
+        width: 70vw;
+        border-radius: 2vh;
+    }
+  }

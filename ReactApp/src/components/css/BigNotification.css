@@ -1,0 +1,24 @@
+.bigNotificationContainer {
+    border-radius: 25px;
+}
+
+.bigNotificationName {
+    padding: 1vw;
+    padding-bottom: 0;
+    color: rgb(201, 240, 255);
+    font-size: 2vw;
+    display:flex;
+    align-items: center;
+}
+
+.bigNotificationImage {
+    height: 5vw;
+    border-radius: 15px;
+    margin-right: 1vw;
+}
+
+.bigNotificationText {
+    padding: 1vw;
+    color: rgb(201, 240, 255);
+    font-size: 1.5vw;
+}
