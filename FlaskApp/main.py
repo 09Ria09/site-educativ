@@ -155,6 +155,11 @@ def sign_in():
                 erori["wrongPassword"] = True
     print(erori)
     if success:
+        cursor.execute('''select username from users where id=%s;''', [session[user_id]])
+        session["username"] = cursor.fetchall()[0]["username"]
+        cursor.execute('''select mail from users where id=%s;''', [session[user_id]])
+        session["email"] = cursor.fetchall()[0]["mail"]
+        print(session)
         return {'erori': erori, 'success': success, 'verified': session.get('verified'),
                 'completed_profile': session.get('completed_profile')}
     else:

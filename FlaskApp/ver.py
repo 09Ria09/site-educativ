@@ -1,6 +1,7 @@
 import hashlib
 import json
 import unicodedata
+import time
 
 SPECIAL = [',', '.', '-', '_']
 PAS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
@@ -40,7 +41,7 @@ def valid(s, special):
 
 
 def verificare_text(txt):
-    length = len(txt)
+    lenght = len(txt)
     if not lenght or lenght > 2048:
         return False
     for ch in txt:
@@ -48,17 +49,9 @@ def verificare_text(txt):
             return False
     return True
 
-
-# def verificare_domain(cuv):
-#     for term in cuv.split('.'):
-#         if not len(term)>=1 :
-#             return False
-#     return True
-
 def mail_valid(mail):
     if mail.count('@') == 1:
         cuv = mail.split('@')
-        ok = verificare_domain(cuv[1])
         if valid(mail, MAIL) and len(cuv[0]) <= 64 and not mail.count('..') and cuv[1].count('.') >= 1:
             return 1
     return 0
