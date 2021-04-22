@@ -23,7 +23,7 @@ function App() {
         {path: '/profile', name: 'Profile', Component: Profile},
         {path: '/signUp', name: 'Sign Up', Component: SignUp},
         {path: '/signIn', name: 'Sign In', Component: SignIn},
-        {path: '/test', name: 'Notifications', Component: Notifications }
+        {path: '/notification', name: 'Notifications', Component: Notifications }
         
     ];
 

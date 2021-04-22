@@ -45,6 +45,8 @@ function Navbar(props) {
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
+                        <NavLink to={'/notification'} className={'navbarObject'}
+                                 activeClassName={scrolled === true ? 'navbarActive' : ''}>Notifications</NavLink>
                         <NavLink to={'/discover'} className={'navbarObject'}
                                  activeClassName={scrolled === true ? 'navbarActive' : ''}>Discover</NavLink>
                         <NavLink to={'/profile'} className={'navbarObject'}
