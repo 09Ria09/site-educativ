@@ -1,7 +1,7 @@
 import imghdr
 import os
 import uuid
-
+import time
 import magic
 from docx2pdf import convert
 from werkzeug.utils import secure_filename
@@ -17,7 +17,7 @@ def list_to_dict(list):
 def upload_wrapper(app, request, where,et):
     if where == "profil":
         file = request.files['file']
-        return upload(app, request, file, where)
+        return upload(app, request, file, where, et)
     elif where == "postare":
         files = request
         
@@ -83,3 +83,21 @@ def upload(app, request, file, where,et):
         else:
             return 0
     return {'erori': erori, 'tip': tip, 'path': path}
+
+def send_notification(tip, session, receiver, mysql,message = None):
+    erori = {}
+    if(tip == "message"):
+        if(len(message) > 7999 ):
+            erori["preaLung"] = True
+        if(message == None or message == ''):
+            erori["mesajInvalid"] = True
+        if(erori != {}):
+            return erori
+    current_user = session.get("username")
+    if(tip == "match"):
+        message = "Userul {} vrea să învățați împreună!".format(current_user)
+    timp = time.time()
+    cursor = mysql.connection.cursor()
+    cursor.execute('''insert into notifications values (NULL, %s, %s, %s, %s, %s)''',
+                           (tip, current_user, receiver, message, timp))
+    
