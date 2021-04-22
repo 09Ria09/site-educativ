@@ -32,11 +32,11 @@ function AlternativeSkyCanvas(props) {
         }
             
         Star.prototype.update = function(){
-            this.x-=this.speed;
+            this.x-=this.speed / width;
             if(this.x<0){
                 this.reset();
             }else{
-                bgCtx.fillRect(this.x,this.y,this.size,this.size); 
+                bgCtx.fillRect(this.x * width,this.y * height,this.size * height / 1080,this.size * height / 1080); 
             }
         }
             
@@ -76,13 +76,17 @@ function AlternativeSkyCanvas(props) {
             }
         }
         let entities = [];
-        for(let i=0; i < height; i++){
-            entities.push(new Star({x:Math.random()*width, y:Math.random()*height}));
+        for(let i=0; i < 720; i++){
+            entities.push(new Star({x:Math.random(), y:Math.random()}));
         }
         entities.push(new ShootingStar());
         entities.push(new ShootingStar());
         entities.push(new ShootingStar());
         function animate(){
+            width = canvasRef.current.clientWidth;
+            height = canvasRef.current.clientHeight;
+            background.width = width;
+            background.height = height;
             bgCtx.fillStyle = '#0a122a';
             bgCtx.fillRect(0,0,width,height);
             bgCtx.fillStyle = '#ffffff';
