@@ -12,6 +12,7 @@ import {CSSTransition} from "react-transition-group";
 import Cookies from 'universal-cookie';
 import axios from "axios";
 import ChangePassword from "./components/js/Sign/ChangePassword";
+import Notifications from "./components/js/Notifications";
 
 function App() {
     const routes = [
@@ -21,7 +22,11 @@ function App() {
         {path: '/changePassword/*', name: 'Change Password', Component: ChangePassword},
         {path: '/profile', name: 'Profile', Component: Profile},
         {path: '/signUp', name: 'Sign Up', Component: SignUp},
-        {path: '/signIn', name: 'Sign In', Component: SignIn}];
+        {path: '/signIn', name: 'Sign In', Component: SignIn},
+        {path: '/test', name: 'Notifications', Component: Notifications }
+        
+    ];
+
 
     const cookies = new Cookies();
     const [signedIn, setSignedIn] = useState(cookies.get('signed-in') === 'true');

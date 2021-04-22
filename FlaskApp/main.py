@@ -54,6 +54,7 @@ mysql = MySQL(app)
 s = URLSafeTimedSerializer('6398715B0D903F28D7BBF08370156D9557DDFAE4CBB1A610A9A535F960CF994D' \
                            '8325FCB6CD4C0D980469698435125C6359526E7D17B7BAFE89AA32B6B1361C73')
 PAS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+CHANGE_PASSWORD_URL='http://localhost:3000/#/changePassword/'
 CACHE_PATH = "./assets/cache"
 CORS(app)
 
@@ -76,13 +77,14 @@ def sign_up():
     username = v.nfc(request.form['username'])
     nume = v.nfc(request.form['nume'])
     prenume = v.nfc(request.form['prenume'])
-    email = v.normalizare_email(request.form['email'])
+    email =request.form['email'] 
     password = v.nfc(request.form['password'])
     password_again = v.nfc(request.form['passwordAgain'])
 
     erori = v.validare(username, nume, prenume, email, password, password_again)
-
-    if erori == {}:
+   
+    if erori == {}: 
+        email =v.normalizare_email(email)
         cursor.execute('''select id from users where username=%s;''', [username])
         user_id = cursor.fetchall()
         if user_id != ():
@@ -246,14 +248,18 @@ def submit_profile():
         m = True
 
     if 'clasa' in rq:
-        print(rq['clasa'])
+        #print(rq['clasa'])
         cursor.execute('''update users set clasa=%s where id=%s''',
                        (rq['clasa'], session.get('user_id')))
         con.commit()
         c = True
 
     if 'profilePicture' in rq:
-        print(rq['profilePicture'])
+        print('AICI')
+        print(rq['username'])
+        #a.upload_wrapper(app,session,'profil')
+        cursor.execute('''update extra set icon=%s where user_id=%s''',(rq['profilePicture'],session.get('user_id')))
+        con.commit()
 
     if d and m and c and (not session.get('completed_profile')):
         cursor.execute('''update users set completed_profile=%s where id=%s''',
@@ -337,7 +343,7 @@ def verificare_mail(token):
 def mail_parola():
     # RETURN {ERORI"ERORI,'SIUCCES':SUCCESA}
     if request.method == 'POST':
-        succes = False
+        success = False
         erori = {}
         cursor = mysql.connection.cursor()
         con = mysql.connection
@@ -350,69 +356,66 @@ def mail_parola():
             print("Nu s-a trimis mail-ul,nu exista")
         else:
             temp = s.dumps(email, salt="parola")
-            mail_verificare(email, url_for("schimbare_parola", token=temp, _external=True), "parola")
+            url =CHANGE_PASSWORD_URL+temp
+            
+            print(url)
+            mail_verificare(email,url , "parola")
             print("Mail trimis catre {}".format(email))
-            succes = True
-    return '''<!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post enctype=multipart/form-data>
-      <input type="text" name="email" >
-      <input type=submit value=Upload>
-    </form>'''
+            success = True
+    return  {'erori':erori,'success':success}
 
 
-@app.route("/NewPassword/<token>", methods=["GET", "POST"])
+@app.route("/changePassword/<token>", methods=["POST"])
 def schimbare_parola(token):
-    c = '''<!doctype html>
-        <title>Upload new File</title>
-        <h1>Upload new File</h1>
-        <form method=post enctype=multipart/form-data>
-            <input type="password" name="password" >
-            <input type="password" name="passwordAgain" >
-            <input type=submit value=Upload>
-        </form>'''
+
     if request.method == 'POST':
-        succes = False
+        success = False
         erori = {}
         cursor = mysql.connection.cursor()
         con = mysql.connection
         password = v.nfc(request.form['password'])
+        print(request.form['password'])
         password_again = v.nfc(request.form['passwordAgain'])
-        if not v.valid(password): erori["parolaInvalida"] = True
+        print(request.form['passwordAgain'])
+        if not v.valid(password,PAS): erori['passwordInvalid'] = True
         # VERIFICA PAROLA
 
         try:
             email = s.loads(token, salt="parola", max_age=5 * 60 * 1000)
+            print(email)
         except SignatureExpired:
-            erori["tokenExpirat"] = True
+            erori["tokenExpired"] = True
             print("token expired")
-            return c
+            return {'erori':erori,'success':success}
 
         if password == password_again:
-
+            print('test')
             if not v.valid(password, PAS) or len(password) < 6:
-                erori['parolaInvalida'] = True
-                return c
+                erori['passwordInvalid'] = True
+                return {'erori':erori,'success':success}
 
             cursor.execute('''select id from users where mail=%s''', [email])
             user_id = cursor.fetchall()[0]["id"]
             cursor.execute('''update brainerdb.passwords set hash=%s where user_id=%s''',
                            (v.hash_pas(password), user_id))
             con.commit()
+            success=True
         else:
             erori["passwordMismatch"] = True
-    return c
+        
+    return {'erori':erori,'success':success}
 
 
 @app.route('/Upload/', methods=['GET', 'POST'])
 def upload_file():
     url = 'static/assets/images/icons/default.jpg'
+    print(request)
     if request.method == 'POST':
-        data = a.upload_wrapper(app, request, 'profil')
+        #data = a.upload_wrapper(app, request, 'profil','pic')
         # url='file:///'+os.path.join(app.static_folder,data['path'])
-        url = url_for('static', filename=data['path'].replace('\\', '/') + '/')
-        print(data['erori'])
+       # url = url_for('static', filename=data['path'].replace('\\', '/') + '/')
+       # print(data)
+       pass
     print(url)
 
     c = '''
@@ -425,9 +428,9 @@ def upload_file():
     </form>
     <img src="" >
     <video width="320" height="240" controls>
-  <source src="" type="video/mp4"> 
+  <source src="{}" type="video/mp4"> 
   </video>
-  <object data="{}" type="text/plain"
+  <object data="" type="text/plain"
     width="500" style="height: 300px">
     '''.format(url)
     # print(c)
@@ -435,12 +438,30 @@ def upload_file():
     return c
 
 
-@app.route('/NewPost', methods=['POST'])
+@app.route('/NewPost', methods=['GET','POST'])
 def new_post():
     print(request.form)
+    t= request.get_json()
+    print(t)
+    url=''
+    if request.method == 'POST':
+        data = a.upload_wrapper(app, request, 'postare','video')
+        # url='file:///'+os.path.join(app.static_folder,data['path'])
+        for i in data:
+            url = url_for('static', filename=data[i]['path'].replace('\\', '/') + '/')
+            print(data[i])
+    print(url)
     return {}
 
 
+import time
+seconds = time.time()
+
+print("Seconds since epoch =", seconds)	
+print(type(seconds))
+local_time = time.ctime(seconds)
+print(local_time)
+print(type(local_time))
 @app.errorhandler(404)
 def fof():
     return

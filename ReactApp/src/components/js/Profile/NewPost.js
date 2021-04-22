@@ -28,7 +28,7 @@ function NewPost() {
                       placeholder={'Titlu'}
                       maxlength={128}/>
             <AddFiles preview={'video'} placeholder={'Video'} icon={'video-add-line.png'}
-                      accept={'video/mp4,video/ogg,video/webm'} setValue={valueHandler} name={'video'}/>
+                      accept={'video/mp4,video/ogg,video/webm'} setValue={valueHandler} name={'video'} multiple/>
             <AddFiles preview={'img'} placeholder={'Imagini'} icon={'image-add-line.png'}
                       accept={'image/x-png,image/gif,image/jpeg'} setValue={valueHandler} name={'images'} multiple/>
 

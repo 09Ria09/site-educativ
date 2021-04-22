@@ -25,7 +25,7 @@ function ForgotPassword() {
                     const data = new FormData(event.target);
                     axios({
                         method: 'post',
-                        url: '/ForgotPassword',
+                        url: '/ForgotPassword/',
                         data: data
                     }).then(res => {
                         let tmp = JSON.parse(res.request.response);

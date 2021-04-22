@@ -8,27 +8,34 @@ from werkzeug.utils import secure_filename
 
 import ver as v
 
+ETM={'video':'vid','images':'img','docs':'doc'}
 
 def list_to_dict(list):
     return dict(zip([num for num in range(0, len(list))], [x for x in list]))
 
 
-def upload_wrapper(app, request, where):
+def upload_wrapper(app, request, where,et):
     if where == "profil":
         file = request.files['file']
         return upload(app, request, file, where)
     elif where == "postare":
-        files = request.files.getlist('file')
+        files = request
+        
+        print('sss')
+        print(type(files))
+        print('sss')
         data = []
         for file in files:
-            data.append(upload(app, request, file, where))
+            print(1)
+            print(file)
+           # data.append(upload(app, request, file, where,et))
         return list_to_dict(data)
     else:
         print("Second parameter is either /'profil/' or /'postare/'")
         return 0
 
 
-def upload(app, request, file, where):
+def upload(app, request, file, where,et):
     print(imghdr.what(file))
     erori = {}
     tip = 'invalid'
@@ -52,7 +59,7 @@ def upload(app, request, file, where):
                 path = 'assets/images/posts'
             elif tip == "vid":
                 path = 'assets/videos/posts'
-            elif tip == "txt":
+            elif tip == "doc":
                 path = "assets/docs/posts"
             else:
                 path = "assets/texts/posts"

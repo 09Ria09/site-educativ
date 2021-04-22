@@ -7,7 +7,7 @@ PAS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 MAIL = "!#$%&'*+-/=?^_`{|}~@."
 PICS = {'png', 'jpg', 'jpeg', 'gif'}
 VIDS = {'mp4', 'ogg', 'webm'}
-TEXT = {'docx', 'pdf'}
+DOCS = {'docx', 'pdf'}
 
 
 # USE NFC FOR COMPARING AND NFD FOR PROCESSING
@@ -58,7 +58,7 @@ def verificare_text(txt):
 def mail_valid(mail):
     if mail.count('@') == 1:
         cuv = mail.split('@')
-        # ok = verificare_domain(cuv[1])
+        ok = verificare_domain(cuv[1])
         if valid(mail, MAIL) and len(cuv[0]) <= 64 and not mail.count('..') and cuv[1].count('.') >= 1:
             return 1
     return 0
@@ -162,7 +162,7 @@ def file_type(s):
         return ['pic', s]
     elif s in VIDS:
         return ['vid', s]
-    elif s in TEXT:
-        return ['txt', s]
+    elif s in DOCS:
+        return ['doc', s]
     else:
         return ["invalid", s]
