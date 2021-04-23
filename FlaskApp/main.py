@@ -461,24 +461,17 @@ def new_post():
     print(url)
     return {}
 
+@app.route('/notification', methods={'GET','POST'})
+def testam():
 
-@app.route("/GetNotifications", methods=["POST"])
-def get_notifications():
-    print(request)
-    return jsonify([])
-    timp=a.send_notification('message',session,39,mysql,'buna')['timp']
-    return'''<html>hi {} </html>'''.format(timp)
+    mesaj=a.follow(session,39,mysql)
+    print(mesaj)
+    print(type(mesaj))
+ 
+
+    return'''<html>hi {} </html>'''.format(mesaj)
 
 
-import time
-seconds = time.time()
-
-# '''print("Seconds since epoch =", seconds)
-# print(type(seconds))
-# local_time = time.ctime(seconds)
-# print(local_time)
-# print(type(local_time))'''
-print(a.format(946707779))
 @app.errorhandler(404)
 
 app.run(debug=True)
