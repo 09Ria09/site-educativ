@@ -13,54 +13,54 @@ function Notifications() {
 
     useEffect(() => update({}), []);
 
-    function update(filters) {
+    function update() {
         setWaitingResponse(true);
         axios({
             method: 'post',
             url: '/GetNotifications',
-            data: filters
         }).then(res => {
             setNotifications(JSON.parse(res.request.response))
             setWaitingResponse(false)
         });
     }
 
-    if (waitingResponse === false)
+    if (waitingResponse === true)
         return (
-            <div className='bg'>
+             <div className='bg'>
                 <div className='smallContainer'>
-                    {notifications === null ? ('') :
-                        notifications.map((x, y, imgurl) => {
-                            return (
-                                <SmallNotification name={x.length > 40 ? x.substring(0, 40) : x}
-                                                   value={y.length > 40 ? y.substring(0, 40) + "..." : y} img={imgurl}
-                                                   clicked={setBigNotification}/>
-                            );
-                        })
-                    }
-                    <SmallNotification name="John Doe"
-                                       value={"ai primit o notificare prea lunga deschide-o pe toata ca sa o vezi"}
-                                       clicked={setBigNotification}/>
-                    <SmallNotification name="Tony Stark" value={"ai am airon men"} img={"placeholder1.jpg"}
-                                       clicked={setBigNotification}/>
+                    <Loading/>
                 </div>
                 <div className='bigContainer'>
-                    <BigNotification name={bigNotification[0]} value={bigNotification[1]} img={bigNotification[2]}/>
+                    <Loading/>
                 </div>
             </div>
-
         )
     else
-        return (
-            <div className='bg'>
-                <div className='smallContainer'>
-                    <Loading/>
-                </div>
-                <div className='bigContainer'>
-                    <Loading/>
-                </div>
+    return (
+        <div className='bg'>
+            <div className='smallContainer'>
+                {notifications === null ? ('') :
+                    notifications.map((x) => {
+                        return (
+                            <SmallNotification name={x['sender'].length > 40 ? x.substring(0, 40) : x['sender']}
+                                               value={x['message'] > 40 ? x['message'].substring(0, 40) + "..." : x['message']}
+                                               clicked={setBigNotification}/>
+                        );
+                    })
+                }
+                <SmallNotification name="John Doe"
+                                   value={"ai primit o notificare prea lunga deschide-o pe toata ca sa o vezi"}
+                                   clicked={setBigNotification}/>
+                <SmallNotification name="Tony Stark" value={"ai am airon men"} img={"placeholder1.jpg"}
+                                   clicked={setBigNotification}/>
             </div>
-        )
+            <div className='bigContainer'>
+                <BigNotification name={bigNotification[0]} value={bigNotification[1]} img={bigNotification[2]}/>
+            </div>
+        </div>
+
+    )
+        
 }
 
 export default Notifications;

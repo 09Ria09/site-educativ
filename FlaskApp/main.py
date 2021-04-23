@@ -197,6 +197,7 @@ def get_profile_helper(user_id):
     print(tmpm)
     if tmp:
         profile['materii'] = tmpm
+    profile['id']=user_id
     return profile
 
 
@@ -461,16 +462,25 @@ def new_post():
     print(url)
     return {}
 
-@app.route('/notification', methods={'GET','POST'})
+@app.route('/GedsvsdgxacscafafasfasfsafsadfasdfdsgtNotifications', methods={'GET','POST'})
 def testam():
-    mesaj=a.follow(session,39,mysql)
-    print(mesaj)
-    print(type(mesaj))
- 
+    if request.method=='POST':
+        #mesaj=a.send_notification('message',session,39,mysql)
+        #print(mesaj)
+        #print(type(mesaj))
+        pass
 
-    return'''<html>hi {} </html>'''.format(mesaj)
+@app.route('/GetNotifications', methods={'GET','POST'})
+def get_notifications():
+    if request.method =='POST':
+        rq=a.get_notifications(session['user_id'],mysql)
+    # return jsonify([])
+    return jsonify(rq)
 
 
 @app.errorhandler(404)
+def fof():
+    return
 
 app.run(debug=True)
+

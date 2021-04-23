@@ -6,8 +6,7 @@ from werkzeug.utils import secure_filename
 
 import ver as v
 
-ETM = {'videos': 'vid', 'images': 'img', 'docs': 'doc'}
-
+ETM={'video':'vid','images':'img','docs':'doc'}
 
 def format(timp):
     if timp==1:
@@ -37,12 +36,12 @@ def format(timp):
         return '''{} zile'''.format(timp)
     if timp<30:
         return '''{} de zile'''.format(timp)
-    timp=math.floor(timp/30)
+    timp=math.floor(timp/30)    
     if timp==1:
         return '''1 lună'''
     if timp<12:
         return '''{} luni'''.format(timp)
-    timp=math.floor(timp/12)
+    timp=math.floor(timp/12)    
     if timp==1:
         return '''1 an'''
     if timp<20:
@@ -55,6 +54,26 @@ def list_to_dict(list):
     return dict(zip([num for num in range(0, len(list))], [x for x in list]))
 
 
+# def upload_wrapper(app, request, where,et):
+#     if where == "profil":
+#         file = request.files['file']
+#         return upload(app, request, file, where, et)
+#     elif where == "postare":
+#         files = request
+        
+#         print('sss')
+#         print(type(files))
+#         print('sss')
+#         data = []
+#         for file in files:
+#             print(1)
+#             print(file)
+#            # data.append(upload(app, request, file, where,et))
+#         return list_to_dict(data)
+#     else:
+#         print("Second parameter is either /'profil/' or /'postare/'")
+#         return 0
+
 def upload_wrapper(app, files, where, et):
     data = []
     for file in files:
@@ -62,8 +81,7 @@ def upload_wrapper(app, files, where, et):
             data.append(upload(app, files, f, where, et))
     return list_to_dict(data)
 
-
-def upload(app, request, file, where, et):
+def upload(app, request, file, where,et):
     print(imghdr.what(file))
     erori = {}
     tip = 'invalid'
@@ -115,28 +133,41 @@ def upload(app, request, file, where, et):
 def send_notification(tip, session, receiver, mysql,message = ''):
     data={}
     erori = {}
-    if (tip == "message"):
-        if (len(message) > 7999):
+    if(tip == "message"):
+        if(len(message) > 7999 ):
             erori["preaLung"] = True
-        if (message == None or message == ''):
+        if(message == None or message == ''):
             erori["mesajInvalid"] = True
-        if (erori != {}):
+        if(erori != {}):
             return erori
     current_user = session["username"]
     if(tip == "match"):
-        message = "Userul {} vrea să învățați împreună!".format(current_user)
-    if(tip=='block'):
-        message = "Userul {} vrea să învățați împreună!".format(current_user)
+        message = "{} vrea să învățați împreună!".format(current_user)
     timp = time.time()
     cursor = mysql.connection.cursor()
     con = mysql.connection
     cursor.execute('''insert into notifications values (NULL, %s, %s, %s, %s, %s)''',
                            (tip, session['user_id'], receiver, message, timp))
-    print(timp)
-    print(time.ctime(timp))
     con.commit()
-    print('ba')
     d= datetime.datetime.fromtimestamp(timp)
     t=format_date(d, format='long', locale='ro')
     return {'erori':erori,'timp':t}
-    
+
+def get_notifications(id,mysql) : 
+    cursor = mysql.connection.cursor()
+    cursor.execute('''select * from notifications where sender =%s ''',[id])
+    m=cursor.fetchall()
+    for x in m:
+        cursor.execute('''select username from users where id =%s ''',[x['sender']])
+        
+        a=cursor.fetchall()[0]['username']
+        x['sender']=a
+    return list(m)
+
+def follow(session,followee,mysql):
+    cursor = mysql.connection.cursor()
+    con = mysql.connection
+    cursor.execute('''select * from follow where follower =%s ''',[session['user_id']])
+    m=cursor.fetchall()
+    return m
+           
