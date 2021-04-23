@@ -466,16 +466,19 @@ def new_post():
 def get_notifications():
     print(request)
     return jsonify([])
+    timp=a.send_notification('message',session,39,mysql,'buna')['timp']
+    return'''<html>hi {} </html>'''.format(timp)
 
 
 import time
-
 seconds = time.time()
 
-print("Seconds since epoch =", seconds)
-print(type(seconds))
-local_time = time.ctime(seconds)
-print(local_time)
-print(type(local_time))
+# '''print("Seconds since epoch =", seconds)
+# print(type(seconds))
+# local_time = time.ctime(seconds)
+# print(local_time)
+# print(type(local_time))'''
+print(a.format(946707779))
+@app.errorhandler(404)
 
 app.run(debug=True)

@@ -1,15 +1,54 @@
-import imghdr
-import os
-import time
-import uuid
+import imghdr, os ,uuid, time, magic ,math,datetime
 
-import magic
+from babel.dates import format_date, format_datetime, format_time
 from docx2pdf import convert
 from werkzeug.utils import secure_filename
 
 import ver as v
 
 ETM = {'videos': 'vid', 'images': 'img', 'docs': 'doc'}
+
+
+def format(timp):
+    if timp==1:
+        return '''1 secundă'''
+    if timp<20:
+        return '''{} secunde'''.format(timp)
+    if timp<60:
+        return '''{} de secunde'''.format(timp)
+    timp=math.floor(timp/60)
+    if timp==1:
+        return '''1 minut'''
+    if timp<20:
+        return '''{} minute'''.format(timp)
+    if timp<60:
+        return '''{} de minute'''.format(timp)
+    timp=math.floor(timp/60)
+    if timp==1:
+        return '''1 oră'''
+    if timp<20:
+        return '''{} ore'''.format(timp)
+    if timp<24:
+        return '''{} de ore'''.format(timp)
+    timp=math.floor(timp/24)
+    if timp==1:
+        return '''1 zi'''
+    if timp<20:
+        return '''{} zile'''.format(timp)
+    if timp<30:
+        return '''{} de zile'''.format(timp)
+    timp=math.floor(timp/30)
+    if timp==1:
+        return '''1 lună'''
+    if timp<12:
+        return '''{} luni'''.format(timp)
+    timp=math.floor(timp/12)
+    if timp==1:
+        return '''1 an'''
+    if timp<20:
+        return '''{} ani'''.format(timp)
+    else : return '''{} de ani'''.format(timp)
+
 
 
 def list_to_dict(list):
@@ -73,8 +112,8 @@ def upload(app, request, file, where, et):
             return 0
     return {'erori': erori, 'tip': tip, 'path': path}
 
-
-def send_notification(tip, session, receiver, mysql, message=None):
+def send_notification(tip, session, receiver, mysql,message = ''):
+    data={}
     erori = {}
     if (tip == "message"):
         if (len(message) > 7999):
@@ -83,10 +122,21 @@ def send_notification(tip, session, receiver, mysql, message=None):
             erori["mesajInvalid"] = True
         if (erori != {}):
             return erori
-    current_user = session.get("username")
-    if (tip == "match"):
+    current_user = session["username"]
+    if(tip == "match"):
+        message = "Userul {} vrea să învățați împreună!".format(current_user)
+    if(tip=='block'):
         message = "Userul {} vrea să învățați împreună!".format(current_user)
     timp = time.time()
     cursor = mysql.connection.cursor()
+    con = mysql.connection
     cursor.execute('''insert into notifications values (NULL, %s, %s, %s, %s, %s)''',
-                   (tip, current_user, receiver, message, timp))
+                           (tip, session['user_id'], receiver, message, timp))
+    print(timp)
+    print(time.ctime(timp))
+    con.commit()
+    print('ba')
+    d= datetime.datetime.fromtimestamp(timp)
+    t=format_date(d, format='long', locale='ro')
+    return {'erori':erori,'timp':t}
+    
