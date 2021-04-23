@@ -16,7 +16,7 @@ function Notifications() {
     function update(filters) {
         setWaitingResponse(true);
         axios({
-            method: 'notification',
+            method: 'post',
             url: '/GetNotifications',
             data: filters
         }).then(res => {
@@ -24,38 +24,42 @@ function Notifications() {
             setWaitingResponse(false)
         });
     }
-  
-    if(waitingResponse === true)
-        return  (
-    
-        <div className='bg'>
-        <div className='smallContainer'> 
-            {notifications === null ? ('') :
-                notifications.map((x, y, imgurl) => {
-                    return ( 
-                        <SmallNotification name={x.length > 40 ? x.substring(0, 40) : x} value={y.length > 40 ? y.substring(0, 40) + "..." : y} img={imgurl} clicked={setBigNotification}/>
-                    );
-                })
-            }
-            <SmallNotification name="John Doe" value={"ai primit o notificare prea lunga deschide-o pe toata ca sa o vezi"} clicked={setBigNotification}/>
-            <SmallNotification name="Tony Stark" value={"ai am airon men"} img={"placeholder1.jpg"} clicked={setBigNotification}/>
-        </div>
-        <div className='bigContainer'> 
-            <BigNotification name={bigNotification[0]} value={bigNotification[1]} img={bigNotification[2]} />
-        </div>
-        </div>
+
+    if (waitingResponse === false)
+        return (
+            <div className='bg'>
+                <div className='smallContainer'>
+                    {notifications === null ? ('') :
+                        notifications.map((x, y, imgurl) => {
+                            return (
+                                <SmallNotification name={x.length > 40 ? x.substring(0, 40) : x}
+                                                   value={y.length > 40 ? y.substring(0, 40) + "..." : y} img={imgurl}
+                                                   clicked={setBigNotification}/>
+                            );
+                        })
+                    }
+                    <SmallNotification name="John Doe"
+                                       value={"ai primit o notificare prea lunga deschide-o pe toata ca sa o vezi"}
+                                       clicked={setBigNotification}/>
+                    <SmallNotification name="Tony Stark" value={"ai am airon men"} img={"placeholder1.jpg"}
+                                       clicked={setBigNotification}/>
+                </div>
+                <div className='bigContainer'>
+                    <BigNotification name={bigNotification[0]} value={bigNotification[1]} img={bigNotification[2]}/>
+                </div>
+            </div>
 
         )
     else
         return (
-        <div className='bg'>
-            <div className='smallContainer'> 
-                <Loading />
+            <div className='bg'>
+                <div className='smallContainer'>
+                    <Loading/>
+                </div>
+                <div className='bigContainer'>
+                    <Loading/>
+                </div>
             </div>
-            <div className='bigContainer'> 
-                <Loading />
-            </div>
-        </div>
         )
 }
 

@@ -54,10 +54,14 @@ function NewPost() {
                       setValue={valueHandler} name={'docs'} multiple/>
             <button className={'btn personButton newPostBtn'} onClick={() => {
                 let tmp = new FormData();
-                tmp.append('video', value['video'])
-                tmp.append('images', value['images'])
+                console.log(value)
+                console.log(value['video'])
+                tmp.append('video', value['video'][0])
+                value['images'].forEach((x, y) =>
+                    tmp.append('images', x))
                 tmp.append('text', value['text'])
-                tmp.append('docs', value['docs'])
+                value['docs'].forEach((x, y) =>
+                    tmp.append('docs', x))
                 tmp.append('title', value['title'])
                 axios({
                     method: 'post',

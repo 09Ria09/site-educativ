@@ -28,7 +28,7 @@ function Discover(props) {
 
     if (props.signedIn === false)
         return (<Redirect to='/'/>);
-    if (props.completedProfile === false)
+    if (props.completedProfile === 0)
         return (<Redirect to='/Profile'/>);
     if (waitingResponse === true)
         return (

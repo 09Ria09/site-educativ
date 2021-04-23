@@ -4,11 +4,11 @@ import "animate.css/animate.min.css";
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import SkyCanvas from "./components/js/SkyCanvas";
-import AlternativeSkyCanvas from'./components/js/AlternativeSkyCanvas';
+import {isMobile} from "react-device-detect";
+import AlternativeSkyCanvas from './components/js/AlternativeSkyCanvas';
 
 ReactDOM.render(
-    <React.Fragment>
+    <div className={(isMobile === true ? 'mobile' : '')}>
         <AlternativeSkyCanvas style={{
             width: '100vw',
             height: '100vh',
@@ -16,7 +16,7 @@ ReactDOM.render(
             zIndex: '-1',
         }}/>
         <App/>
-    </React.Fragment>,
+    </div>,
     document.getElementById('root')
 );
 

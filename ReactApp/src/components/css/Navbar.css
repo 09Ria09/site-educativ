@@ -58,9 +58,20 @@
     background-color: rgb(var(--oxfordblue)) !important;
 }
 
+.mobile .navbar {
+    height: 4em;
+}
+
+.mobile .navbarObject {
+    justify-content: center;
+}
+
+.mobile .navbarSpacer {
+    display: none;
+}
+
 @media screen and (max-width: 769px) {
     .navbarObject {
-        font-size: 20px;
         justify-content: center;
     }
 

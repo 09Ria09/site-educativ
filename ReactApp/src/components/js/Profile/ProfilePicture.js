@@ -9,9 +9,7 @@ function AddFiles(props) {
     useEffect(() => {
         if (value === null)
             return;
-        let tmp = new FormData();
-        tmp.append('profilePicture', value);
-        props.setValue('profilePicture', tmp);
+        props.setValue(value);
         setURL(URL.createObjectURL(value))
     }, [value])
 
@@ -28,7 +26,8 @@ function AddFiles(props) {
     if (props.editing)
         return (
             <div className={'profilePicture'}>
-                <input ref={ref} type={'file'} onChange={valueHandler} accept={'image/x-png,image/gif,image/jpeg'} name={'icon'}/>
+                <input ref={ref} type={'file'} onChange={valueHandler} accept={'image/x-png,image/gif,image/jpeg'}
+                       name={'icon'}/>
                 {
                     <img className={'imagesSelected'} src={url}/>}
                 <button onClick={resetInput}><img

@@ -37,7 +37,7 @@ function ForgotPassword() {
                 }}>
                     <input className={'un'} type={'text'} name={'email'}
                            placeholder='Email'/>
-                    <p className={'errors'} style={{display: (errors !== null ? 'unset' : 'none')}}>{errors}</p>
+                    <p className={'errors'} style={{display: (errors !== null ? 'block' : 'none')}}>{errors}</p>
                     <input className={'submit'} type={'submit'} value={'Trimite Email'}/>
                 </form>
             </div>

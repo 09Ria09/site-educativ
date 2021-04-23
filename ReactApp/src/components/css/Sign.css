@@ -15,17 +15,19 @@
 }
 
 .signMain > p {
-    color: rgb(var(--oxfordblue));
+    color: rgba(var(--oxfordblue), 0.7);
     text-align: center;
-    margin: 15px;
+    margin: 20px;
 }
 
 .sign {
+    font-size: 1rem !important;
     color: rgb(var(--greenblue));
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
     font-size: 2em;
     text-align: center;
+    margin: 15px;
 }
 
 .un {
@@ -90,7 +92,7 @@
 }
 
 .errors {
-    margin-top: -18px;
+    margin-top: -20px;
     margin-bottom: 3px;
     margin-left: 22px;
     color: rgba(var(--oxfordblue), 0.8);
@@ -98,7 +100,31 @@
     font-weight: normal;
 }
 
+.mobile .signMain {
+    width: 100%;
+    min-height: calc(100vh - 60px);
+    border-radius: unset;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+}
+
+.mobile .submit {
+    padding: calc(10px + 0.6em) calc(40px + 0.6em);
+}
+
+.mobile .sign {
+    margin: calc(15px + 0.6em) 15px;
+}
+
+.mobile .un {
+    margin-bottom: calc(15px + 0.6em);
+    padding: calc(10px + 0.6em) calc(20px + 0.6em);
+}
+
 @media screen and (max-width: 769px) {
+
     .signMain {
         width: 100%;
         min-height: calc(100vh - 60px);
@@ -110,10 +136,19 @@
     }
 
     .sign {
-        font-size: 2.5em;
+        font-size: 3em;
     }
 
-    .un, .submit, .forgot, .goToSignIn {
-        font-size: 1.5em;
+    .submit {
+        padding: calc(10px + 0.6em) calc(40px + 0.6em);
+    }
+
+    .sign {
+        margin: calc(15px + 0.6em) 15px;
+    }
+
+    .un {
+        margin-bottom: calc(15px + 0.6em);
+        padding: calc(10px + 0.6em) calc(20px + 0.6em);
     }
 }

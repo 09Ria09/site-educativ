@@ -5,7 +5,7 @@
     max-width: 800px;
     width: 100%;
     border-radius: 25px;
-    padding: 0 25px 63px;
+    padding: 0 25px 64px;
     box-sizing: border-box;
     margin-bottom: 30px;
     position: relative;
@@ -124,7 +124,7 @@
     margin: unset;
     position: absolute;
     right: 25px;
-    bottom: 14px;
+    bottom: 12px;
     min-width: 150px;
 }
 

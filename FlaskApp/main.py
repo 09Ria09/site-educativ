@@ -1,7 +1,6 @@
 import json
 import smtplib
 import ssl
-import time
 
 from flask import Flask, jsonify, request, session, url_for
 from flask_cors import CORS
@@ -54,7 +53,7 @@ mysql = MySQL(app)
 s = URLSafeTimedSerializer('6398715B0D903F28D7BBF08370156D9557DDFAE4CBB1A610A9A535F960CF994D' \
                            '8325FCB6CD4C0D980469698435125C6359526E7D17B7BAFE89AA32B6B1361C73')
 PAS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
-CHANGE_PASSWORD_URL='http://localhost:3000/#/changePassword/'
+CHANGE_PASSWORD_URL = 'http://localhost:3000/#/changePassword/'
 CACHE_PATH = "./assets/cache"
 CORS(app)
 
@@ -77,14 +76,14 @@ def sign_up():
     username = v.nfc(request.form['username'])
     nume = v.nfc(request.form['nume'])
     prenume = v.nfc(request.form['prenume'])
-    email =request.form['email'] 
+    email = request.form['email']
     password = v.nfc(request.form['password'])
     password_again = v.nfc(request.form['passwordAgain'])
 
     erori = v.validare(username, nume, prenume, email, password, password_again)
-   
-    if erori == {}: 
-        email =v.normalizare_email(email)
+
+    if erori == {}:
+        email = v.normalizare_email(email)
         cursor.execute('''select id from users where username=%s;''', [username])
         user_id = cursor.fetchall()
         if user_id != ():
@@ -103,15 +102,19 @@ def sign_up():
             cursor.execute('''insert into passwords values ( %s, %s);''', (user_id, v.hash_pas(password)))
             con.commit()
             print("Am adaugat parola user-ului cu id-ul: {}".format(user_id))
+            cursor.execute('''insert into extra values (NULL, %s, NULL, NULL, NULL)''',
+                           [user_id])
+            con.commit()
             session.clear()
-            if erori == {}:
-                temp = s.dumps(email, salt="cont")
-                mail_verificare(email, url_for("verificare_mail", token=temp, _external=True), "cont")
-                print("Mail trimis catre {}".format(email))
-            else:
-                print("Nu am trimis mail")
             session['user_id'] = user_id
+            session['verified'] = 1
+            session['completed_profile'] = 0
+            temp = s.dumps(email, salt="cont")
+            mail_verificare(email, url_for("verificare_mail", token=temp, _external=True), "cont")
+            print("Mail trimis catre {}".format(email))
             success = True
+            return {'erori': erori, 'success': success, 'verified': session.get('verified'),
+                    'completed_profile': session.get('completed_profile')}
         else:
             print("Nu am adaugat nimic in baza")
     print(erori)
@@ -155,9 +158,9 @@ def sign_in():
                 erori["wrongPassword"] = True
     print(erori)
     if success:
-        cursor.execute('''select username from users where id=%s;''', [session[user_id]])
+        cursor.execute('''select username from users where id=%s;''', [session.get('user_id')])
         session["username"] = cursor.fetchall()[0]["username"]
-        cursor.execute('''select mail from users where id=%s;''', [session[user_id]])
+        cursor.execute('''select mail from users where id=%s;''', [session.get('user_id')])
         session["email"] = cursor.fetchall()[0]["mail"]
         print(session)
         return {'erori': erori, 'success': success, 'verified': session.get('verified'),
@@ -224,7 +227,7 @@ def submit_profile():
     c = False
     cursor = mysql.connection.cursor()
     con = mysql.connection
-    rq = request.get_json()
+    rq = json.loads(request.form['value'])
 
     ver = v.verify_profile(mysql, session, rq)
 
@@ -253,26 +256,28 @@ def submit_profile():
         m = True
 
     if 'clasa' in rq:
-        #print(rq['clasa'])
+        # print(rq['clasa'])
         cursor.execute('''update users set clasa=%s where id=%s''',
                        (rq['clasa'], session.get('user_id')))
         con.commit()
         c = True
 
-    if 'profilePicture' in rq:
-        print('AICI')
-        print(rq['username'])
-        #a.upload_wrapper(app,session,'profil')
-        cursor.execute('''update extra set icon=%s where user_id=%s''',(rq['profilePicture'],session.get('user_id')))
+    if 'profilePicture' in request.files:
+        print(request.files['profilePicture'])
+        a.upload_wrapper(app, request.files, 'profil', 'image')
+        # a.upload_wrapper(app,session,'profil')
+        cursor.execute('''update extra set icon=%s where user_id=%s''',
+                       (request.files['profilePicture'], session.get('user_id')))
         con.commit()
 
     if d and m and c and (not session.get('completed_profile')):
         cursor.execute('''update users set completed_profile=%s where id=%s''',
                        (1, session.get('user_id')))
         con.commit()
-        session['completed_profile'] = True
+        session['completed_profile'] = 1
 
-    return ver
+    print(session['completed_profile'])
+    return {'ver': ver, 'completed_profile': session['completed_profile']}
 
 
 @app.route("/CheckProfile", methods=["POST"])
@@ -361,18 +366,17 @@ def mail_parola():
             print("Nu s-a trimis mail-ul,nu exista")
         else:
             temp = s.dumps(email, salt="parola")
-            url =CHANGE_PASSWORD_URL+temp
-            
+            url = CHANGE_PASSWORD_URL + temp
+
             print(url)
-            mail_verificare(email,url , "parola")
+            mail_verificare(email, url, "parola")
             print("Mail trimis catre {}".format(email))
             success = True
-    return  {'erori':erori,'success':success}
+    return {'erori': erori, 'success': success}
 
 
 @app.route("/changePassword/<token>", methods=["POST"])
 def schimbare_parola(token):
-
     if request.method == 'POST':
         success = False
         erori = {}
@@ -382,7 +386,7 @@ def schimbare_parola(token):
         print(request.form['password'])
         password_again = v.nfc(request.form['passwordAgain'])
         print(request.form['passwordAgain'])
-        if not v.valid(password,PAS): erori['passwordInvalid'] = True
+        if not v.valid(password, PAS): erori['passwordInvalid'] = True
         # VERIFICA PAROLA
 
         try:
@@ -391,24 +395,24 @@ def schimbare_parola(token):
         except SignatureExpired:
             erori["tokenExpired"] = True
             print("token expired")
-            return {'erori':erori,'success':success}
+            return {'erori': erori, 'success': success}
 
         if password == password_again:
             print('test')
             if not v.valid(password, PAS) or len(password) < 6:
                 erori['passwordInvalid'] = True
-                return {'erori':erori,'success':success}
+                return {'erori': erori, 'success': success}
 
             cursor.execute('''select id from users where mail=%s''', [email])
             user_id = cursor.fetchall()[0]["id"]
             cursor.execute('''update brainerdb.passwords set hash=%s where user_id=%s''',
                            (v.hash_pas(password), user_id))
             con.commit()
-            success=True
+            success = True
         else:
             erori["passwordMismatch"] = True
-        
-    return {'erori':erori,'success':success}
+
+    return {'erori': erori, 'success': success}
 
 
 @app.route('/Upload/', methods=['GET', 'POST'])
@@ -416,11 +420,11 @@ def upload_file():
     url = 'static/assets/images/icons/default.jpg'
     print(request)
     if request.method == 'POST':
-        #data = a.upload_wrapper(app, request, 'profil','pic')
+        # data = a.upload_wrapper(app, request, 'profil','pic')
         # url='file:///'+os.path.join(app.static_folder,data['path'])
-       # url = url_for('static', filename=data['path'].replace('\\', '/') + '/')
-       # print(data)
-       pass
+        # url = url_for('static', filename=data['path'].replace('\\', '/') + '/')
+        # print(data)
+        pass
     print(url)
 
     c = '''
@@ -443,14 +447,13 @@ def upload_file():
     return c
 
 
-@app.route('/NewPost', methods=['GET','POST'])
+@app.route('/NewPost', methods=['POST'])
 def new_post():
     print(request.form)
-    t= request.get_json()
-    print(t)
-    url=''
+    print(request.files)
+    url = ''
     if request.method == 'POST':
-        data = a.upload_wrapper(app, request, 'postare','video')
+        data = a.upload_wrapper(app, request.files, 'postare', 'video')
         # url='file:///'+os.path.join(app.static_folder,data['path'])
         for i in data:
             url = url_for('static', filename=data[i]['path'].replace('\\', '/') + '/')
@@ -459,17 +462,20 @@ def new_post():
     return {}
 
 
+@app.route("/GetNotifications", methods=["POST"])
+def get_notifications():
+    print(request)
+    return jsonify([])
+
+
 import time
+
 seconds = time.time()
 
-print("Seconds since epoch =", seconds)	
+print("Seconds since epoch =", seconds)
 print(type(seconds))
 local_time = time.ctime(seconds)
 print(local_time)
 print(type(local_time))
-@app.errorhandler(404)
-def fof():
-    return
-
 
 app.run(debug=True)

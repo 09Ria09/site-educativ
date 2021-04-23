@@ -52,12 +52,12 @@ function ChangePassword() {
                     <input name="password" className={'un'} type={'password'}
                            placeholder='Parola'/>
                     <p className={'errors'}
-                       style={{display: (errors['passwordInvalid'] === true ? 'unset' : 'none')}}>Parola
+                       style={{display: (errors['passwordInvalid'] === true ? 'block' : 'none')}}>Parola
                         este invalidă.</p>
                     <input name="passwordAgain" className={'un'} type={'password'}
                            placeholder='Parola încă odată'/>
                     <p className={'errors'}
-                       style={{display: (errors['passwordMismatch'] === true ? 'unset' : 'none')}}>Parolele sunt
+                       style={{display: (errors['passwordMismatch'] === true ? 'block' : 'none')}}>Parolele sunt
                         diferite.</p>
                     <input className={'submit'} type={'submit'} value={'Schimbă Parola'}/>
                 </form>

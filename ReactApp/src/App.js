@@ -23,15 +23,15 @@ function App() {
         {path: '/profile', name: 'Profile', Component: Profile},
         {path: '/signUp', name: 'Sign Up', Component: SignUp},
         {path: '/signIn', name: 'Sign In', Component: SignIn},
-        {path: '/notification', name: 'Notifications', Component: Notifications }
-        
+        {path: '/notification', name: 'Notifications', Component: Notifications}
+
     ];
 
 
     const cookies = new Cookies();
     const [signedIn, setSignedIn] = useState(cookies.get('signed-in') === 'true');
-    const [verified, setVerified] = useState(cookies.get('verified') === 'true');
-    const [completedProfile, setCompletedProfile] = useState(cookies.get('completed-profile') === 'true');
+    const [verified, setVerified] = useState(cookies.get('verified') === '1');
+    const [completedProfile, setCompletedProfile] = useState(cookies.get('completed-profile') === '1');
 
     useEffect(() => {
 
@@ -46,13 +46,13 @@ function App() {
                         setSignedIn(tmp.signedIn)
                         cookies.set('signed-in', true, {sameSite: true});
                     }
-                    if (verified !== Boolean(tmp.verified)) {
-                        setVerified(Boolean(tmp.verified));
-                        cookies.set('verified', Boolean(tmp.verified), {sameSite: true});
+                    if (verified !== tmp.verified) {
+                        setVerified(tmp.verified);
+                        cookies.set('verified', tmp.verified, {sameSite: true});
                     }
-                    if (completedProfile !== Boolean(tmp.completed_profile)) {
-                        setCompletedProfile(Boolean(tmp.completed_profile));
-                        cookies.set('completed-profile', Boolean(tmp.completed_profile), {sameSite: true});
+                    if (completedProfile !== tmp.completed_profile) {
+                        setCompletedProfile(tmp.completed_profile);
+                        cookies.set('completed-profile', tmp.completed_profile, {sameSite: true});
                     }
                 }
             }).catch(() => clearInterval(checkIfSignedInInterval))

@@ -1,7 +1,6 @@
 import hashlib
 import json
 import unicodedata
-import time
 
 SPECIAL = [',', '.', '-', '_']
 PAS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
@@ -48,6 +47,7 @@ def verificare_text(txt):
         if not ch.isalnum() and ch not in PAS:
             return False
     return True
+
 
 def mail_valid(mail):
     if mail.count('@') == 1:

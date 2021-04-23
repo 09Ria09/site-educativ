@@ -48,24 +48,24 @@ function SignIn(props) {
                     <input name={"usernameOrEmail"} className={'un'} type={'text'}
                            placeholder='Username sau Email'/>
                     <p className={'errors'}
-                       style={{display: (errors['usernameInvalid'] === true ? 'unset' : 'none')}}>Username-ul este
+                       style={{display: (errors['usernameInvalid'] === true ? 'block' : 'none')}}>Username-ul este
                         invalid.</p>
                     <p className={'errors'}
-                       style={{display: (errors['mailInvalid'] === true ? 'unset' : 'none')}}>Email-ul
+                       style={{display: (errors['mailInvalid'] === true ? 'block' : 'none')}}>Email-ul
                         este invalid.</p>
                     <p className={'errors'}
-                       style={{display: (errors['usernameNonexistent'] === true ? 'unset' : 'none')}}>Nu
+                       style={{display: (errors['usernameNonexistent'] === true ? 'block' : 'none')}}>Nu
                         exista un cont cu acest username.</p>
                     <p className={'errors'}
-                       style={{display: (errors['mailNonexistent'] === true ? 'unset' : 'none')}}>Nu
+                       style={{display: (errors['mailNonexistent'] === true ? 'block' : 'none')}}>Nu
                         exista un cont cu acest email.</p>
                     <input name="password" className={'un'} type={'password'}
                            placeholder='Parola'/>
                     <p className={'errors'}
-                       style={{display: (errors['passwordInvalid'] === true ? 'unset' : 'none')}}>Parola
+                       style={{display: (errors['passwordInvalid'] === true ? 'block' : 'none')}}>Parola
                         este invalidă.</p>
                     <p className={'errors'}
-                       style={{display: (errors['wrongPassword'] === true ? 'unset' : 'none')}}>Parola
+                       style={{display: (errors['wrongPassword'] === true ? 'block' : 'none')}}>Parola
                         este greșită.</p>
                     <input className={'submit'} type={'submit'} value={'Sign In'}/>
                     <Link className={'forgot'} to={'/forgotPassword'}>Ai uitat parola?</Link>
