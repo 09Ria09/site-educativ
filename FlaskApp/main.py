@@ -463,7 +463,6 @@ def new_post():
 
 @app.route('/notification', methods={'GET','POST'})
 def testam():
-
     mesaj=a.follow(session,39,mysql)
     print(mesaj)
     print(type(mesaj))
