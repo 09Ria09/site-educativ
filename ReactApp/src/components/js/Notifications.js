@@ -16,7 +16,7 @@ function Notifications() {
     function update(filters) {
         setWaitingResponse(true);
         axios({
-            method: 'notification',
+            method: 'post',
             url: '/GetNotifications',
             data: filters
         }).then(res => {
