@@ -155,9 +155,10 @@ def sign_in():
                 erori["wrongPassword"] = True
     print(erori)
     if success:
-        cursor.execute('''select username from users where id=%s;''', [session[user_id]])
+        cursor.execute('''select username from users where id=%s;''', [session['user_id']])
         session["username"] = cursor.fetchall()[0]["username"]
-        cursor.execute('''select mail from users where id=%s;''', [session[user_id]])
+        print(session['username'])
+        cursor.execute('''select mail from users where id=%s;''', [session['user_id']])
         session["email"] = cursor.fetchall()[0]["mail"]
         print(session)
         return {'erori': erori, 'success': success, 'verified': session.get('verified'),
@@ -458,15 +459,20 @@ def new_post():
     print(url)
     return {}
 
-
+@app.route('/notification', methods={'GET','POST'})
+def testam():
+    print('dsafdsag')
+    timp=a.send_notification('message',session,39,mysql,'buna')['timp']
+    return'''<html>hi {} </html>'''.format(timp)
 import time
 seconds = time.time()
 
-print("Seconds since epoch =", seconds)	
-print(type(seconds))
-local_time = time.ctime(seconds)
-print(local_time)
-print(type(local_time))
+# '''print("Seconds since epoch =", seconds)	
+# print(type(seconds))
+# local_time = time.ctime(seconds)
+# print(local_time)
+# print(type(local_time))'''
+print(a.format(946707779))
 @app.errorhandler(404)
 def fof():
     return
