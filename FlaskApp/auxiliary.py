@@ -8,6 +8,11 @@ import ver as v
 
 ETM={'video':'vid','images':'img','docs':'doc'}
 
+def get_path(app,path):
+    file_path = './static/' + path
+    file_path = os.path.join(app.static_folder, path).replace('/','\\')
+    return file_path
+
 def format(timp):
     if timp==1:
         return '''1 secundă'''
@@ -112,8 +117,11 @@ def upload(app, request, file, where,et):
         nume = secure_filename(uuid.uuid4().hex) + '.' + temp[1]
         path = os.path.join(path, nume)
         erori['test'] = tip
+        print(tip)
         if file and not erori['tipInvalid']:
             file_path = './static/' + path
+            print(file_path)
+            fp=file_path
             file.save(file_path)
             file_path = os.path.join(app.static_folder, path)
             file_path = file_path.replace('\\', '/')
@@ -123,12 +131,13 @@ def upload(app, request, file, where,et):
                     os.remove(file_path)
                     erori['tipInvalid'] = True
             elif '.docx' in file.filename:
+                print(file_path)
                 convert(file_path)
                 os.remove(file_path)
 
         else:
             return 0
-    return {'erori': erori, 'tip': tip, 'path': path}
+    return {'erori': erori, 'tip': tip, 'path':path}
 
 def send_notification(tip, session, receiver, mysql,message = ''):
     data={}

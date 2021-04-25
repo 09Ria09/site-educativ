@@ -1,16 +1,12 @@
-import json
-import smtplib
-import ssl
+import json ,smtplib , ssl
 
-from flask import Flask, jsonify, request, session, url_for
+from flask import Flask, jsonify, request, session, url_for,send_file
 from flask_cors import CORS
 from flask_mysqldb import MySQL
 from itsdangerous import SignatureExpired, URLSafeTimedSerializer
 
 import auxiliary as a
 import ver as v
-
-# import Whoosh
 
 # Initizare bot gmail
 smtp_server = "smtp.gmail.com"
@@ -265,10 +261,14 @@ def submit_profile():
 
     if 'profilePicture' in request.files:
         print(request.files['profilePicture'])
-        a.upload_wrapper(app, request.files, 'profil', 'image')
+        data=a.upload_wrapper(app, request.files, 'profil', 'image')
         # a.upload_wrapper(app,session,'profil')
+        path =data[0]['path']
+        print(path)
+        url = url_for('static', filename=path.replace('\\', '/') + '/')
+        print(url)
         cursor.execute('''update extra set icon=%s where user_id=%s''',
-                       (request.files['profilePicture'], session.get('user_id')))
+                       (url, session.get('user_id')))
         con.commit()
 
     if d and m and c and (not session.get('completed_profile')):
@@ -436,9 +436,9 @@ def upload_file():
       <input type=file name=file >
       <input type=submit value=Upload>
     </form>
-    <img src="" >
+    <img src="{}" >
     <video width="320" height="240" controls>
-  <source src="{}" type="video/mp4"> 
+  <source src="" type="video/mp4"> 
   </video>
   <object data="" type="text/plain"
     width="500" style="height: 300px">
@@ -456,9 +456,14 @@ def new_post():
     if request.method == 'POST':
         data = a.upload_wrapper(app, request.files, 'postare', 'video')
         # url='file:///'+os.path.join(app.static_folder,data['path'])
+        print(data)
         for i in data:
             url = url_for('static', filename=data[i]['path'].replace('\\', '/') + '/')
-            print(data[i])
+            print('*****************************************************')
+            print(a.get_path(app,data[i]['path']))
+            print('*****************************************************')
+        print('*****************************************************')
+        print(data)
     print(url)
     return {}
 
