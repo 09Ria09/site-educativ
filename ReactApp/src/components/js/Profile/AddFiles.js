@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import '../../css/Profile/NewPost.css';
+import '../../css/Profile/Post.css';
 
 function AddFiles(props) {
     const [value, setValue] = useState([]);
@@ -32,7 +32,8 @@ function AddFiles(props) {
                     return (<a className={'docsSelected'} key={y} href={URL.createObjectURL(x)}
                                target={"_blank"}>{x.name}</a>)
                 else if (props.preview === 'img')
-                    return (<img className={'imagesSelected'} key={y} src={URL.createObjectURL(x)}/>)
+                    return (
+                        <img className={'imagesSelected'} key={y} src={URL.createObjectURL(x)} alt={'selected image'}/>)
                 else if (props.preview === 'video')
                     return (<video className={'videoSelected'} key={y} src={URL.createObjectURL(x)} controls/>)
             })}

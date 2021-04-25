@@ -87,7 +87,7 @@ function TextEdit(props) {
                         ))}
             </div>
             <p className={'textErrors'}
-               style={{display: (typeof errors !== 'string' ? 'none' : 'unset')}}>{toString(errors)}</p>
+               style={{display: (typeof errors !== 'string' ? 'none' : 'block')}}>{errors}</p>
         </React.Fragment>
     );
 }

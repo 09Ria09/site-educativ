@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import '../../css/Profile/NewPost.css';
+import '../../css/Profile/Post.css';
 import TextEdit from "./TextEdit";
 import AddFiles from "./AddFiles";
 import axios from "axios";

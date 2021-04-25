@@ -8,6 +8,7 @@ import Loading from "../Loading";
 import NewPost from "./NewPost";
 import ProfilePicture from "./ProfilePicture";
 import Cookies from "universal-cookie";
+import Posts from "./Posts";
 
 function Profile(props) {
     const cookies = new Cookies();
@@ -49,7 +50,6 @@ function Profile(props) {
             }).then(res => {
                 let tmp = JSON.parse(res.request.response)
                 setErrors(tmp.ver);
-                console.log(tmp.completed_profile)
                 props.setCompletedProfile(tmp.completed_profile);
                 cookies.set('completed-profile', tmp.completed_profile, {sameSite: true});
                 if (tmp.ver['valid'] === true)
@@ -158,6 +158,7 @@ function Profile(props) {
                 ]}/>
             </article>
             <NewPost/>
+            <Posts id={profile['id']}/>
         </div>
     );
 }

@@ -5,14 +5,15 @@
     max-width: 800px;
     width: 100%;
     border-radius: 25px;
-    padding: 0 25px 64px;
+    padding: 0 25px 70px;
     box-sizing: border-box;
     margin-bottom: 30px;
     position: relative;
 }
 
 .newPostAdd {
-    margin: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     border-radius: 25px;
     display: flex;
     background-color: rgba(0, 0, 0, 0.3);
@@ -35,7 +36,8 @@
 }
 
 .newPost .textareaContainer {
-    margin: 5px !important;
+    margin-bottom: 5px !important;
+    margin-top: 5px !important;
     box-sizing: border-box !important;
 }
 
@@ -124,7 +126,7 @@
     margin: unset;
     position: absolute;
     right: 25px;
-    bottom: 12px;
+    bottom: 16px;
     min-width: 150px;
 }
 
@@ -136,15 +138,65 @@
 }
 
 .newPost > .inputContainer {
-    margin: 5px 5px 10px;
+    box-sizing: content-box;
+    margin-top: 5px;
+    margin-bottom: 10px;
     width: 100%;
     font-size: 1.4em;
 }
 
 .newPost > .inputContainer > input {
     margin: unset;
+    text-align: center;
 }
 
+.post .newPostAdd {
+    background-color: unset;
+    padding: 15px 0;
+}
+
+.post .imagesNewPostAdd {
+    max-height: 300px;
+    overflow: auto;
+}
+
+.post {
+    background-color: rgb(var(--oxfordblue));
+    max-width: 800px;
+    width: 100%;
+    border-radius: 25px;
+    padding: 10px 64px 48px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+    color: rgb(var(--columbiablue));
+}
+
+.post > h1 {
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.post .videoSelected {
+    max-width: unset;
+}
+
+.post .docsSelected {
+    border-radius: 25px;
+    background-color: rgb(var(--darkslateblue));
+    padding: 5px 10px;
+    margin: 5px;
+    transition-duration: 100ms;
+}
+
+.post .docsSelected:hover {
+    background-color: rgb(var(--columbiablue));
+    color: rgb(var(--oxfordblue));
+}
+
+.newPostAddDocs {
+    display: inline;
+}
 
 @media screen and (max-width: 769px) {
     .newPost {

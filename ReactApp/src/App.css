@@ -15,6 +15,10 @@ body {
     display: none;
 }
 
+button {
+    cursor: pointer;
+}
+
 .btn {
     text-align: center;
     height: max-content;

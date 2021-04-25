@@ -49,7 +49,7 @@ function Discover(props) {
                     {summaries === null ? ('') :
                         summaries.map((x, y) => {
                             return (
-                                <PersonSummary image={'placeholder.jpg'} key={y}
+                                <PersonSummary id={x['id']} image={'placeholder.jpg'} key={y}
                                                name={(x['prenume'] + ' ' + x['nume'])}>
                                     <TextEdit type={'textarea'} editing={false} initialValue={x['descriere']}/>
                                     <CustomSelect initialValue={x['materii']}

@@ -45,13 +45,13 @@ function Navbar(props) {
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
-                        <NavLink to={'/notification'} className={'navbarObject'}
-                                 activeClassName={scrolled === true ? 'navbarActive' : ''}>Notifications</NavLink>
                         <NavLink to={'/discover'} className={'navbarObject'}
-                                 activeClassName={scrolled === true ? 'navbarActive' : ''}>Discover</NavLink>
+                                 activeClassName={scrolled === true ? 'navbarActive' : ''}>Descoperă</NavLink>
+                        <NavLink to={'/notification'} className={'navbarObject'}
+                                 activeClassName={scrolled === true ? 'navbarActive' : ''}>Notificări</NavLink>
                         <NavLink to={'/profile'} className={'navbarObject'}
-                                 activeClassName={scrolled === true ? 'navbarActive' : ''}>Profile</NavLink>
-                        <a onClick={() => {
+                                 activeClassName={scrolled === true ? 'navbarActive' : ''}>Profil</NavLink>
+                        <button onClick={() => {
                             axios({
                                 method: 'post',
                                 url: '/SignOut'
@@ -61,7 +61,8 @@ function Navbar(props) {
                                     cookies.remove('signed-in', {sameSite: true});
                                 }
                             })
-                        }} className={'navbarObject'}>Sign Out</a>
+                        }} className={'navbarObject'}>Sign Out
+                        </button>
                     </React.Fragment>
                 )}
         </div>

@@ -18,6 +18,11 @@
 }
 
 .navbarObject {
+    cursor: pointer;
+    background-color: unset;
+    border: unset;
+    font-size: unset;
+    font-family: unset;
     flex-grow: 1;
     padding-left: 10px;
     padding-right: 10px;

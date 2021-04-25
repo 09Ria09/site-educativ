@@ -1,5 +1,5 @@
 .profileContainer {
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     min-height: 100vh;
     margin-top: -60px;
@@ -38,9 +38,16 @@
 .cogwheel {
     height: 32px;
     width: 32px;
+    opacity: 0.5;
+    transition-duration: 100ms;
 }
 
-.cogwheel:hover, .rotateCogwheel {
+.cogwheel:hover {
+    opacity: 1;
+}
+
+.rotateCogwheel {
+    opacity: 0.8;
     animation-name: rotate;
     animation-duration: 2s;
     animation-iteration-count: infinite;
@@ -53,6 +60,7 @@
     height: 256px;
     border-radius: 25px;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .profilePicture > input {

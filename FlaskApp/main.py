@@ -232,7 +232,7 @@ def submit_profile():
     ver = v.verify_profile(mysql, session, rq)
 
     if not ver['valid']:
-        return ver
+        return {'ver': ver, 'completed_profile': session['completed_profile']}
 
     if 'username' in rq:
         cursor.execute('''update users set username=%s where id=%s''',
@@ -479,6 +479,5 @@ seconds = time.time()
 # print(local_time)
 # print(type(local_time))'''
 print(a.format(946707779))
-@app.errorhandler(404)
 
 app.run(debug=True)

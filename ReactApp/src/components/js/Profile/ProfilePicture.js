@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import '../../css/Profile/NewPost.css';
+import '../../css/Profile/Post.css';
 
 function AddFiles(props) {
     const [value, setValue] = useState(null);
@@ -26,12 +26,14 @@ function AddFiles(props) {
     if (props.editing)
         return (
             <div className={'profilePicture'}>
+                <img className={'addIcon addIconModified'} src={'image-add-line.png'} style={{zIndex: 5}}
+                     alt={'Schimbă Imaginea de Profil'}/>
                 <input ref={ref} type={'file'} onChange={valueHandler} accept={'image/x-png,image/gif,image/jpeg'}
                        name={'icon'}/>
                 {
                     <img className={'imagesSelected'} src={url}/>}
-                <button onClick={resetInput}><img
-                    src={'close-circle-line.png'} alt={'Șterge Imaginea de Profil'}/></button>
+                {value !== null ? (<button onClick={resetInput}><img
+                    src={'close-circle-line.png'} alt={'Șterge Imaginea de Profil'}/></button>) : ''}
             </div>
         );
     else return (<img className={'profileImg'} src={url}/>)
