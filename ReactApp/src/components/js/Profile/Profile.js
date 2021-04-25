@@ -126,7 +126,7 @@ function Profile(props) {
                     </div>
                     <ProfilePicture preview={'img'} placeholder={'Imagini'} icon={'image-add-line.png'}
                                     editing={editing}
-                                    url={'placeholder.jpg'} setValue={(x) => setProfilePicture(x)} name={'images'}/>
+                                    url={profile['url']} setValue={(x) => setProfilePicture(x)} name={'images'}/>
                 </div>
                 <TextEdit type={'textarea'}
                           name={'descriere'}

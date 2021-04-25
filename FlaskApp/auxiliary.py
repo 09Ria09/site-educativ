@@ -126,8 +126,11 @@ def upload(app, request, file, where,et):
             file_path = os.path.join(app.static_folder, path)
             file_path = file_path.replace('\\', '/')
             print(file_path)
+            print(magic.from_file(file_path, mime=True))
+            print(tip)
             if tip == "invalid":
-                if magic.from_file(file_path, mime=True) != 'text/plain':
+                if "text/" not in magic.from_file(file_path, mime=True) :
+                    print(30*"&")
                     os.remove(file_path)
                     erori['tipInvalid'] = True
             elif '.docx' in file.filename:
