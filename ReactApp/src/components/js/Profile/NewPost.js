@@ -55,10 +55,17 @@ function NewPost() {
             <button className={'btn personButton newPostBtn'} onClick={() => {
                 let tmp = new FormData();
                 console.log(value)
+                console.log("susut")
                 console.log(value['video'])
-                tmp.append('video', value['video'][0])
-                value['images'].forEach((x, y) =>
-                    tmp.append('images', x))
+                //tmp.append('video', value['video'][0])
+                value['video'].forEach((x, y) =>{
+                    tmp.append('video', x);
+                    
+                })
+                value['images'].forEach((x, y) =>{
+                    tmp.append('images', x);
+                    
+                })
                 tmp.append('text', value['text'])
                 value['docs'].forEach((x, y) =>
                     tmp.append('docs', x))
