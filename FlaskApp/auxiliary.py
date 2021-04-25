@@ -102,31 +102,34 @@ def upload(app, request, file, where,et):
         # if tip=='invalid':
         #   erori['tipInvalid']=True
         if where == 'profil':
-            path = 'assets/images/icons'
+            path = 'profilePics'
             if tip != 'pic':
                 erori['tipInvalid'] = True
         elif where == 'postare':
             if tip == "pic":
-                path = 'assets/images/posts'
+                path = 'posts/images'
             elif tip == "vid":
-                path = 'assets/videos/posts'
+                path = 'posts/videos'
             elif tip == "doc":
-                path = "assets/docs/posts"
+                path = "posts/docs"
             else:
-                path = "assets/texts/posts"
+                path = "posts/texts"
         nume = secure_filename(uuid.uuid4().hex) + '.' + temp[1]
         path = os.path.join(path, nume)
         erori['test'] = tip
         print(tip)
         if file and not erori['tipInvalid']:
-            file_path = './static/' + path
+            print(20*"&")
+            print("*")
+            print(app.static_folder)
+            print("*")
+            file_path = './public/' + path
             print(file_path)
             fp=file_path
-            file.save(file_path)
-            file_path = os.path.join(app.static_folder, path)
+            file_path = os.path.join(app.static_folder, path).replace("FlaskApp\\static","ReactApp\\public",1)
             file_path = file_path.replace('\\', '/')
             print(file_path)
-            print(magic.from_file(file_path, mime=True))
+            file.save(file_path)
             print(tip)
             if tip == "invalid":
                 if "text/" not in magic.from_file(file_path, mime=True) :
