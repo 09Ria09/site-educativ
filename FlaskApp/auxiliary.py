@@ -158,8 +158,10 @@ def get_notifications(id,mysql) :
         
         a=cursor.fetchall()[0]['username']
         x['sender']=a
+        x['delta']=format(time.time()-x['time'])
         d=datetime.datetime.fromtimestamp(x['time'])
         x['time']=format_date(d, format='long', locale='ro')
+        
     print(list(m))
     return list(m)
 
