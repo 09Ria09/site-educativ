@@ -415,45 +415,13 @@ def schimbare_parola(token):
 
     return {'erori': erori, 'success': success}
 
-
-@app.route('/Upload/', methods=['GET', 'POST'])
-def upload_file():
-    url = 'static/assets/images/icons/default.jpg'
-    print(request)
-    if request.method == 'POST':
-        # data = a.upload_wrapper(app, request, 'profil','pic')
-        # url='file:///'+os.path.join(app.static_folder,data['path'])
-        # url = url_for('static', filename=data['path'].replace('\\', '/') + '/')
-        # print(data)
-        pass
-    print(url)
-
-    c = '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post enctype=multipart/form-data>
-      <input type=file name=file >
-      <input type=submit value=Upload>
-    </form>
-    <img src="{}" >
-    <video width="320" height="240" controls>
-  <source src="" type="video/mp4">
-  </video>
-  <object data="" type="text/plain"
-    width="500" style="height: 300px">
-    '''.format(url)
-    # print(c)
-    time.sleep(1)
-    return c
-
-
 @app.route('/NewPost', methods=['POST'])
 def new_post():
     #title=request.form[]
     url = ''
     if request.method == 'POST':
         data = a.upload_wrapper(app, request.files, 'postare', 'video')
+        print(10*'*',data,10*'*')
     return data
 
 @app.route('/GedsvsdgxacscafafasfasfsafsadfasdfdsgtNotifications', methods={'GET','POST'})
@@ -468,7 +436,7 @@ def testam():
 def get_notifications():
     if request.method =='POST':
         rq=a.get_notifications(session['user_id'],mysql)
-        a.send_notification('message',session,40,mysql,'d')
+        #a.send_notification('message',session,39,mysql,'d')
     # return jsonify([])
     return jsonify(rq)
 
