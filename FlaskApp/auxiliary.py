@@ -145,7 +145,7 @@ def send_notification(tip, session, receiver, mysql,message = ''):
 
 def get_notifications(id,mysql) : 
     cursor = mysql.connection.cursor()
-    cursor.execute('''select * from notifications where receiver =%s ''',[id])
+    cursor.execute('''select * from notifications where sender =%s ''',[id])
     m=cursor.fetchall()
     for x in m:
         cursor.execute('''select username from users where id =%s ''',[x['sender']])
