@@ -155,12 +155,14 @@ def get_notifications(id,mysql) :
     m=cursor.fetchall()
     for x in m:
         cursor.execute('''select username from users where id =%s ''',[x['sender']])
-        
         a=cursor.fetchall()[0]['username']
+        cursor.execute('''select icon from extra where user_id =%s ''',[x['sender']])
+        x['icon']=cursor.fetchall()[0]['icon']
         x['sender']=a
         x['delta']=format(time.time()-x['time'])
         d=datetime.datetime.fromtimestamp(x['time'])
         x['time']=format_date(d, format='long', locale='ro')
+        
         
     print(list(m))
     return list(m)
