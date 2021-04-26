@@ -64,13 +64,16 @@ def list_to_dict(list):
 
 def upload_wrapper(app, files, where, et):
     data = []
+    print('&',files,'&')
     for file in files:
+        print('@',file,'@')
         for f in files.getlist(file):
+            print('!!',f,'!!')
             data.append(upload(app, files, f, where, et))
     return list_to_dict(data)
 
+
 def upload(app, request, file, where,et):
-    print(imghdr.what(file))
     erori = {}
     tip = 'invalid'
     path = ''
@@ -100,26 +103,16 @@ def upload(app, request, file, where,et):
         nume = secure_filename(uuid.uuid4().hex) + '.' + temp[1]
         path = os.path.join(path, nume)
         erori['test'] = tip
-        print(tip)
         if file and not erori['tipInvalid']:
-            print(20*"&")
-            print("*")
-            print(app.static_folder)
-            print("*")
             file_path = './public/' + path
-            print(file_path)
             file_path = os.path.join(app.static_folder, path).replace("FlaskApp\\static","ReactApp\\public",1)
             file_path = file_path.replace('\\', '/')
-            print(file_path)
             file.save(file_path)
-            print(tip)
             if tip == "invalid":
                 if "text/" not in magic.from_file(file_path, mime=True) :
-                    print(30*"&")
                     os.remove(file_path)
                     erori['tipInvalid'] = True
             elif '.docx' in file.filename:
-                print(file_path)
                 convert(file_path)
                 os.remove(file_path)
 
