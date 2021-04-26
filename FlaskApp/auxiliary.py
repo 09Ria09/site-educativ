@@ -168,4 +168,6 @@ def follow(session,followee,mysql):
     cursor.execute('''select * from follow where follower =%s ''',[session['user_id']])
     m=cursor.fetchall()
     return m
+
+    print("")
            
