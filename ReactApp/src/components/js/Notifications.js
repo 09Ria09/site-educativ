@@ -7,7 +7,7 @@ import BigNotification from "./BigNotification";
 import Loading from './Loading'
 
 function Notifications() {
-    const [notifications, setNotifications] = useState();
+    const [notifications, setNotifications] = useState(null);
     const [waitingResponse, setWaitingResponse] = useState(true);
     const [bigNotification, setBigNotification] = useState([]);
 
@@ -57,11 +57,11 @@ function Notifications() {
                 }
             </div>
             {
-                bigNotification !== null ?
-                    <div className='bigContainer'>
-                        <BigNotification name={bigNotification['sender']} value={bigNotification['message']} img={bigNotification['img']} time={bigNotification['time']}/>
-                    </div>
-                : ('')
+                
+                <div className='bigContainer'>
+                    <BigNotification name={bigNotification['sender']} value={bigNotification['message']} 
+                                     img={bigNotification['img']} time={bigNotification['time']} id={bigNotification['id']}/>
+                </div>
             }
         </div>
 

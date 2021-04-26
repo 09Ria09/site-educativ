@@ -1,5 +1,6 @@
 import React from 'react';
 import '../css/BigNotification.css';
+import {Link} from "react-router-dom";
 
 function BigNotification(props) {
     return (
@@ -12,6 +13,11 @@ function BigNotification(props) {
                     {props.name}
                     <p className={'bigNotificationDate'}> {props.time} </p>
                 </div>
+                {
+                    props.name ?
+                    <Link className={'respond'} to={'/chat/' + props.id}> Răspunde </Link> 
+                    : ('')
+                }
             </div>
             <div className={"bigNotificationText"}>
                 {props.value}
