@@ -8,11 +8,14 @@ import ver as v
 
 ETM={'video':'vid','images':'img','docs':'doc'}
 
-def get_path(app,path):
-    file_path = './static/' + path
-    file_path = os.path.join(app.static_folder, path).replace('/','\\')
+def get_path_abs(app,path):
+    file_path = './public/' + path
+    file_path = os.path.join(app.static_folder, path).replace("FlaskApp\\static","ReactApp\\public",1)
+    file_path = file_path.replace('\\', '/')
     return file_path
 
+def get_path_rel(app,path):
+    return 0
 def format(timp):
     if timp==1:
         return '''1 secundă'''
@@ -57,27 +60,6 @@ def format(timp):
 
 def list_to_dict(list):
     return dict(zip([num for num in range(0, len(list))], [x for x in list]))
-
-
-# def upload_wrapper(app, request, where,et):
-#     if where == "profil":
-#         file = request.files['file']
-#         return upload(app, request, file, where, et)
-#     elif where == "postare":
-#         files = request
-        
-#         print('sss')
-#         print(type(files))
-#         print('sss')
-#         data = []
-#         for file in files:
-#             print(1)
-#             print(file)
-#            # data.append(upload(app, request, file, where,et))
-#         return list_to_dict(data)
-#     else:
-#         print("Second parameter is either /'profil/' or /'postare/'")
-#         return 0
 
 def upload_wrapper(app, files, where, et):
     data = []
@@ -125,7 +107,6 @@ def upload(app, request, file, where,et):
             print("*")
             file_path = './public/' + path
             print(file_path)
-            fp=file_path
             file_path = os.path.join(app.static_folder, path).replace("FlaskApp\\static","ReactApp\\public",1)
             file_path = file_path.replace('\\', '/')
             print(file_path)

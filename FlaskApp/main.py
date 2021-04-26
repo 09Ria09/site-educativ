@@ -169,7 +169,9 @@ def sign_in():
 def get_profile():
     if session.get('user_id') is None:
         return {}
-    return get_profile_helper(session['user_id'])
+    d=get_profile_helper(session['user_id'])
+    print(d)
+    return d
 
 
 def get_profile_helper(user_id):
@@ -265,10 +267,8 @@ def submit_profile():
         # a.upload_wrapper(app,session,'profil')
         path =data[0]['path']
         print(path)
-        url = url_for('static', filename=path.replace('\\', '/') + '/')
-        print(url)
         cursor.execute('''update extra set icon=%s where user_id=%s''',
-                       (url, session.get('user_id')))
+                       (path, session.get('user_id')))
         con.commit()
 
     if d and m and c and (not session.get('completed_profile')):
@@ -450,22 +450,11 @@ def upload_file():
 
 @app.route('/NewPost', methods=['POST'])
 def new_post():
-    print(request.form)
-    print(request.files)
+    #title=request.form[]
     url = ''
     if request.method == 'POST':
         data = a.upload_wrapper(app, request.files, 'postare', 'video')
-        # url='file:///'+os.path.join(app.static_folder,data['path'])
-        print(data)
-        for i in data:
-            url = url_for('static', filename=data[i]['path'].replace('\\', '/') + '/')
-            print('*****************************************************')
-            print(a.get_path(app,data[i]['path']))
-            print('*****************************************************')
-        print('*****************************************************')
-        print(data)
-    print(url)
-    return {}
+    return data
 
 @app.route('/GedsvsdgxacscafafasfasfsafsadfasdfdsgtNotifications', methods={'GET','POST'})
 def testam():
