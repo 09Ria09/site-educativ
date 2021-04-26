@@ -17,6 +17,7 @@ def get_path_abs(app,path):
 def get_path_rel(app,path):
     return 0
 def format(timp):
+    timp=math.floor(timp)
     if timp==1:
         return '''1 secundă'''
     if timp<20:
@@ -164,7 +165,7 @@ def get_notifications(id,mysql) :
         x['time']=format_date(d, format='long', locale='ro')
         
         
-    print(list(m))
+    print(list(m).reverse())
     return list(m)
 
 def follow(session,followee,mysql):

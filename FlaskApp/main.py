@@ -459,7 +459,7 @@ def new_post():
 @app.route('/GedsvsdgxacscafafasfasfsafsadfasdfdsgtNotifications', methods={'GET','POST'})
 def testam():
     if request.method=='POST':
-        #mesaj=a.send_notification('message',session,39,mysql)
+        #mesaj=
         #print(mesaj)
         #print(type(mesaj))
         pass
@@ -468,6 +468,7 @@ def testam():
 def get_notifications():
     if request.method =='POST':
         rq=a.get_notifications(session['user_id'],mysql)
+        a.send_notification('message',session,40,mysql,'d')
     # return jsonify([])
     return jsonify(rq)
 
