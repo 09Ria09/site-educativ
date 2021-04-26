@@ -22,3 +22,8 @@
     color: rgb(201, 240, 255);
     font-size: 1.5vw;
 }
+
+.bigNotificationDate {
+    opacity: 0.3;
+    font-size: 1vw;
+}

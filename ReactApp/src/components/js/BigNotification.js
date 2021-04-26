@@ -8,7 +8,10 @@ function BigNotification(props) {
                 {props.img == null ? props.name || props.value ?
                     <img className={'bigNotificationImage'} src={"placeholder.jpg"}/> : '' :
                     <img className={'bigNotificationImage'} src={props.img}/>}
-                {props.name}
+                <div>
+                    {props.name}
+                    <p className={'bigNotificationDate'}> {props.time} </p>
+                </div>
             </div>
             <div className={"bigNotificationText"}>
                 {props.value}
