@@ -7,7 +7,7 @@ import BigNotification from "./BigNotification";
 import Loading from './Loading'
 
 function Notifications() {
-    const [notifications, setNotifications] = useState([]);
+    const [notifications, setNotifications] = useState();
     const [waitingResponse, setWaitingResponse] = useState(true);
     const [bigNotification, setBigNotification] = useState([]);
 
@@ -44,19 +44,25 @@ function Notifications() {
                         return (
                             <SmallNotification name={x['sender'].length > 40 ? x.substring(0, 40) : x['sender']}
                                                value={x['message'] > 40 ? x['message'].substring(0, 40) + "..." : x['message']}
-                                               clicked={setBigNotification}/>
+                                                time={x['delta']} clicked={setBigNotification} dictionary={x}/>
                         );
                     })
                 }
-                <SmallNotification name="John Doe"
-                                   value={"ai primit o notificare prea lunga deschide-o pe toata ca sa o vezi"}
-                                   clicked={setBigNotification}/>
-                <SmallNotification name="Tony Stark" value={"ai am airon men"} img={"placeholder1.jpg"}
-                                   clicked={setBigNotification}/>
+                {
+                    //<SmallNotification name="John Doe"
+                                       //value={"ai primit o notificare prea lunga deschide-o pe toata ca sa o vezi"}
+                                       //clicked={setBigNotification}/>
+                    //<SmallNotification name="Tony Stark" value={"ai am airon men"} img={"placeholder1.jpg"}
+                                       //clicked={setBigNotification}/>
+                }
             </div>
-            <div className='bigContainer'>
-                <BigNotification name={bigNotification[0]} value={bigNotification[1]} img={bigNotification[2]}/>
-            </div>
+            {
+                bigNotification !== null ?
+                    <div className='bigContainer'>
+                        <BigNotification name={bigNotification['sender']} value={bigNotification['message']} img={bigNotification['img']} time={bigNotification['time']}/>
+                    </div>
+                : ('')
+            }
         </div>
 
     )
