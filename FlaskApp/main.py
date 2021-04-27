@@ -417,12 +417,23 @@ def schimbare_parola(token):
 
 @app.route('/NewPost', methods=['POST'])
 def new_post():
-    #title=request.form[]
-    url = ''
+    response={'title':'','video':'','images':[],'text':'','docs':[]}
     if request.method == 'POST':
         data = a.upload_wrapper(app, request.files, 'postare', 'video')
-        print(10*'*',data,10*'*')
-    return data
+        for d in data:
+            if d['erori']['tipInvalid'] == True:
+                response['eroare'] = True
+                return response
+            
+            if d['tip'] == 'vid':
+                response['video'] = d['path']
+            elif d['tip'] == 'pic':
+                response['images'].append(d['path'])
+            elif d['tip'] == 'doc':
+                response['docs'].append(dict(nume = d['nume'],url = d['path']))
+        title = request.form['title']
+        response['title'] = title
+    return response
 
 @app.route('/GedsvsdgxacscafafasfasfsafsadfasdfdsgtNotifications', methods={'GET','POST'})
 def testam():

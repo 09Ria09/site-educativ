@@ -59,18 +59,15 @@ def format(timp):
 
 
 
-def list_to_dict(list):
-    return dict(zip([num for num in range(0, len(list))], [x for x in list]))
+#def list_to_dict(list):
+#    return dict(zip([num for num in range(0, len(list))], [x for x in list]))
 
 def upload_wrapper(app, files, where, et):
     data = []
-    print('&',files,'&')
     for file in files:
-        print('@',file,'@')
         for f in files.getlist(file):
-            print('!!',f,'!!')
             data.append(upload(app, files, f, where, et))
-    return list_to_dict(data)
+    return data
 
 
 def upload(app, request, file, where,et):
@@ -83,7 +80,7 @@ def upload(app, request, file, where,et):
     if erori == {}:
         temp = v.file_type(file.filename)
         tip = temp[0]
-        print(file.filename)
+        filename = file.filename
         erori['tipInvalid'] = False
         # if tip=='invalid':
         #   erori['tipInvalid']=True
@@ -112,13 +109,15 @@ def upload(app, request, file, where,et):
                 if "text/" not in magic.from_file(file_path, mime=True) :
                     os.remove(file_path)
                     erori['tipInvalid'] = True
-            elif '.docx' in file.filename:
-                convert(file_path)
-                os.remove(file_path)
+                else:
+                    tip = 'doc'
+            #elif '.docx' in file.filename:
+            #    convert(file_path)
+            #    os.remove(file_path)
 
         else:
             return 0
-    return {'erori': erori, 'tip': tip, 'path':path}
+    return {'erori': erori, 'tip': tip, 'path':path, 'nume' : filename}
 
 def send_notification(tip, session, receiver, mysql,message = ''):
     data={}
