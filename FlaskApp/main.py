@@ -50,6 +50,7 @@ s = URLSafeTimedSerializer('6398715B0D903F28D7BBF08370156D9557DDFAE4CBB1A610A9A5
                            '8325FCB6CD4C0D980469698435125C6359526E7D17B7BAFE89AA32B6B1361C73')
 PAS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 CHANGE_PASSWORD_URL = 'http://localhost:3000/#/changePassword/'
+VERIFY_MAIL_URL='http://localhost:3000/#/VerifyMail/Cont/'
 CACHE_PATH = "./assets/cache"
 CORS(app)
 
@@ -106,7 +107,8 @@ def sign_up():
             session['verified'] = 1
             session['completed_profile'] = 0
             temp = s.dumps(email, salt="cont")
-            mail_verificare(email, url_for("verificare_mail", token=temp, _external=True), "cont")
+            url = VERIFY_MAIL_URL + temp
+            mail_verificare(email,url, "cont")
             print("Mail trimis catre {}".format(email))
             success = True
             return {'erori': erori, 'success': success, 'verified': session.get('verified'),
@@ -170,6 +172,15 @@ def get_profile():
     if session.get('user_id') is None:
         return {}
     d=get_profile_helper(session['user_id'])
+    print(d)
+    return d
+
+@app.route('/GetNProfile/<token>',methods=["POST"])
+def get_nprofile():
+    print(token)
+    if token is None:
+        return {}
+    d=get_profile_helper(token)
     print(d)
     return d
 
@@ -291,6 +302,7 @@ def check_profile():
 @app.route("/GetSummaries", methods=["POST"])
 def get_summaries():
     rq = request.get_json()
+    print(rq)
     if type(rq) != dict:
         return {}
     users = set()
@@ -314,8 +326,11 @@ def get_summaries():
         tmp.pop('numar', None)
         tmp.pop('mail', None)
         response.append(tmp)
+    if 'sort' in rq :
+        if rq['sort']==1:
+            response.reverse()
+    print(response)
     return jsonify(response)
-
 
 def get_summaries_helper(users, what, table, column, rq):
     cursor = mysql.connection.cursor()
@@ -441,7 +456,7 @@ def new_post():
         cursor = mysql.connection.cursor()
         con = mysql.connection
         response['timp'] = format_date(datetime.datetime.fromtimestamp(time.time()), format='long', locale='ro')
-        cursor.execute('''insert into posts values (NULL, %s, NULL, %s, %s, %s)''',
+        cursor.execute('''insert into posts values (NULL, %s, %s, %s, %s)''',
                             (session['user_id'], text, title, response))
         con.commit()
     return response
@@ -458,6 +473,7 @@ def send_messages():
 def get_notifications():
     if request.method =='POST':
         rq=a.get_notifications(session['user_id'],mysql)
+        a.give_rating(session,41,mysql ,4)
         #a.send_notification('message',session,39,mysql,'d')
     # return jsonify([])
     return jsonify(rq)

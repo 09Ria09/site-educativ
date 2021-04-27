@@ -169,3 +169,48 @@ def follow(session,followee,mysql):
     m=cursor.fetchall()
     return m
        
+def ascunde(session,blocked,mysql):
+    cursor = mysql.connection.cursor()
+    con = mysql.connection
+    cursor.execute('''insert into block values (%s,%s)''',(session['user_id'],blocked))
+    con.commit()
+    return m
+
+def give_rating(session,target,mysql ,stars):
+    cursor = mysql.connection.cursor()
+    con = mysql.connection
+    #user_id=session['user_id']
+    cursor.execute('''select * from rating where from_id =%s and to_id=%s''',(session['user_id'],target))
+    temp=cursor.fetchall()
+    print(temp)
+    if temp ==():
+        cursor.execute('''insert into rating values (%s,%s,%s)''',(session['user_id'],target,stars))
+        con.commit()
+        cursor.execute('''select rating from extra where user_id =%s ''',[target])
+        rating=cursor.fetchall()[0]['rating']
+        print(rating)
+        cursor.execute('''select nr from extra where user_id =%s ''',[target])
+        number_of_ratings=cursor.fetchall()[0]['nr']
+        print(number_of_ratings)
+        rating = (rating*number_of_ratings+stars)/(number_of_ratings+1)
+        cursor.execute('''update extra set nr=%s where user_id=%s''', (number_of_ratings+1,target))
+        con.commit()
+        cursor.execute('''update extra set rating=%s where user_id=%s''', (rating,target))
+        con.commit()
+    else:
+        cursor.execute('''select rating from rating where from_id =%s and to_id=%s ''',(session['user_id'],target))
+        stars_vechi=cursor.fetchall()[0]['rating']
+        print(stars_vechi)
+        cursor.execute('''select nr from extra where user_id =%s ''',[target])
+        number_of_ratings=cursor.fetchall()[0]['nr']
+        print(number_of_ratings)
+        cursor.execute('''update rating set rating=%s where from_id =%s and to_id=%s''', (stars,session['user_id'],target))
+        con.commit()
+        cursor.execute('''select rating from extra where user_id =%s ''',[target])
+        rating=cursor.fetchall()[0]['rating']
+        print(rating)
+        rating =rating + (stars-stars_vechi)/number_of_ratings
+        cursor.execute('''update extra set rating=%s where user_id=%s''', (rating,target))
+        con.commit()
+        
+    return 0
