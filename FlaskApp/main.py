@@ -1,5 +1,5 @@
-import json ,smtplib , ssl
-
+import json ,smtplib , ssl, time, datetime
+from babel.dates import format_date, format_datetime, format_time
 from flask import Flask, jsonify, request, session, url_for,send_file
 from flask_cors import CORS
 from flask_mysqldb import MySQL
@@ -417,7 +417,7 @@ def schimbare_parola(token):
 
 @app.route('/NewPost', methods=['POST'])
 def new_post():
-    response={'title':'','video':'','images':[],'text':'','docs':[]}
+    response = {'title':'','video':'','images':[],'text':'','docs':[]}
     if request.method == 'POST':
         data = a.upload_wrapper(app, request.files, 'postare', 'video')
         for d in data:
@@ -433,6 +433,12 @@ def new_post():
                 response['docs'].append(dict(nume = d['nume'],url = d['path']))
         title = request.form['title']
         response['title'] = title
+        cursor = mysql.connection.cursor()
+        con = mysql.connection
+        response['timp'] = format_date(datetime.datetime.fromtimestamp(time.time()), format='long', locale='ro')
+        cursor.execute('''insert into posts values (NULL, %s, NULL, "text", %s, %s)''',
+                            (session['user_id'], title, response))
+        con.commit()
     return response
 
 @app.route('/GedsvsdgxacscafafasfasfsafsadfasdfdsgtNotifications', methods={'GET','POST'})
