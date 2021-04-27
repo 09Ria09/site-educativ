@@ -104,6 +104,7 @@ def upload(app, request, file, where,et):
             file_path = './public/' + path
             file_path = os.path.join(app.static_folder, path).replace("FlaskApp\\static","ReactApp\\public",1)
             file_path = file_path.replace('\\', '/')
+            print(file_path)
             file.save(file_path)
             if tip == "invalid":
                 if "text/" not in magic.from_file(file_path, mime=True) :

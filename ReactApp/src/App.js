@@ -14,6 +14,7 @@ import axios from "axios";
 import ChangePassword from "./components/js/Sign/ChangePassword";
 import Notifications from "./components/js/Notifications";
 import NProfile from "./components/js/Profile/NProfile";
+import Chat from './components/js/Chat';
 
 function App() {
     const routes = [
@@ -25,7 +26,8 @@ function App() {
         {path: '/nProfile/*', name: 'Profil User', Component: NProfile},
         {path: '/signUp', name: 'Sign Up', Component: SignUp},
         {path: '/signIn', name: 'Sign In', Component: SignIn},
-        {path: '/notification', name: 'Notificări', Component: Notifications}
+        {path: '/notification', name: 'Notificări', Component: Notifications},
+        {path: '/chat/*', name: 'Chat', Component: Chat}
 
     ];
 

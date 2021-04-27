@@ -56,7 +56,7 @@ CORS(app)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '4tzainfo_root'
+app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'brainerdb'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 app.config['UPLOAD_FOLDER'] = CACHE_PATH
@@ -211,6 +211,8 @@ def is_signed_in():
     if session.get('user_id') is None:
         return {'signedIn': False}
     cursor = mysql.connection.cursor()
+    cursor.execute('''select username from users where id=%s;''', [session.get('user_id')])
+    session["username"] = cursor.fetchall()[0]["username"]
     cursor.execute('''select verified from users where id=%s;''', [session.get('user_id')])
     session['verified'] = cursor.fetchall()[0]["verified"]
     cursor.execute('''select completed_profile from users where id=%s;''', [session.get('user_id')])
@@ -444,13 +446,13 @@ def new_post():
         con.commit()
     return response
 
-@app.route('/GedsvsdgxacscafafasfasfsafsadfasdfdsgtNotifications', methods={'GET','POST'})
-def testam():
+@app.route('/SendMessage', methods={'POST'})
+def send_messages():
     if request.method=='POST':
-        #mesaj=
-        #print(mesaj)
-        #print(type(mesaj))
-        pass
+        rq=request.get_json()
+        data=a.send_notification('message', session,rq['id'], mysql,message = rq['text'])
+        print(rq)
+    return data
 
 @app.route('/GetNotifications', methods={'GET','POST'})
 def get_notifications():
@@ -459,6 +461,19 @@ def get_notifications():
         #a.send_notification('message',session,39,mysql,'d')
     # return jsonify([])
     return jsonify(rq)
+
+@app.route('/chat/<token>', methods={'POST'})
+def get_chat_data(token): 
+    if(request.method == 'POST'):
+        cursor = mysql.connection.cursor()
+        cursor.execute('''select username from users where id =%s ''',[token])
+        username=cursor.fetchall()[0]['username']
+        cursor.execute('''select icon from extra where user_id =%s ''',[token])
+        icon=cursor.fetchall()[0]['icon']
+        user_id=token
+        return {'username':username,'icon':icon,'id':user_id}
+    return 0
+
 
 app.run(debug=True)
 
