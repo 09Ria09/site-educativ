@@ -17,6 +17,7 @@ def get_path_abs(app,path):
 def get_path_rel(app,path):
     return 0
 def format(timp):
+    timp=math.floor(timp)
     if timp==1:
         return '''1 secundă'''
     if timp<20:
@@ -58,18 +59,18 @@ def format(timp):
 
 
 
-def list_to_dict(list):
-    return dict(zip([num for num in range(0, len(list))], [x for x in list]))
+#def list_to_dict(list):
+#    return dict(zip([num for num in range(0, len(list))], [x for x in list]))
 
 def upload_wrapper(app, files, where, et):
     data = []
     for file in files:
         for f in files.getlist(file):
             data.append(upload(app, files, f, where, et))
-    return list_to_dict(data)
+    return data
+
 
 def upload(app, request, file, where,et):
-    print(imghdr.what(file))
     erori = {}
     tip = 'invalid'
     path = ''
@@ -79,7 +80,7 @@ def upload(app, request, file, where,et):
     if erori == {}:
         temp = v.file_type(file.filename)
         tip = temp[0]
-        print(file.filename)
+        filename = file.filename
         erori['tipInvalid'] = False
         # if tip=='invalid':
         #   erori['tipInvalid']=True
@@ -99,32 +100,24 @@ def upload(app, request, file, where,et):
         nume = secure_filename(uuid.uuid4().hex) + '.' + temp[1]
         path = os.path.join(path, nume)
         erori['test'] = tip
-        print(tip)
         if file and not erori['tipInvalid']:
-            print(20*"&")
-            print("*")
-            print(app.static_folder)
-            print("*")
             file_path = './public/' + path
-            print(file_path)
             file_path = os.path.join(app.static_folder, path).replace("FlaskApp\\static","ReactApp\\public",1)
             file_path = file_path.replace('\\', '/')
-            print(file_path)
             file.save(file_path)
-            print(tip)
             if tip == "invalid":
                 if "text/" not in magic.from_file(file_path, mime=True) :
-                    print(30*"&")
                     os.remove(file_path)
                     erori['tipInvalid'] = True
-            elif '.docx' in file.filename:
-                print(file_path)
-                convert(file_path)
-                os.remove(file_path)
+                else:
+                    tip = 'doc'
+            #elif '.docx' in file.filename:
+            #    convert(file_path)
+            #    os.remove(file_path)
 
         else:
             return 0
-    return {'erori': erori, 'tip': tip, 'path':path}
+    return {'erori': erori, 'tip': tip, 'path':path, 'nume' : filename}
 
 def send_notification(tip, session, receiver, mysql,message = ''):
     data={}
@@ -151,19 +144,22 @@ def send_notification(tip, session, receiver, mysql,message = ''):
 
 def get_notifications(id,mysql) : 
     cursor = mysql.connection.cursor()
-    cursor.execute('''select * from notifications where sender =%s ''',[id])
+    cursor.execute('''select * from notifications where receiver =%s ''',[id])
     m=cursor.fetchall()
     for x in m:
         cursor.execute('''select username from users where id =%s ''',[x['sender']])
-        
         a=cursor.fetchall()[0]['username']
+        cursor.execute('''select icon from extra where user_id =%s ''',[x['sender']])
+        x['icon']=cursor.fetchall()[0]['icon']
+        x['id'] = x['sender']
         x['sender']=a
         x['delta']=format(time.time()-x['time'])
         d=datetime.datetime.fromtimestamp(x['time'])
         x['time']=format_date(d, format='long', locale='ro')
         
-    print(list(m))
-    return list(m)
+    k = list(m)
+    k.reverse()
+    return k
 
 def follow(session,followee,mysql):
     cursor = mysql.connection.cursor()
@@ -171,4 +167,4 @@ def follow(session,followee,mysql):
     cursor.execute('''select * from follow where follower =%s ''',[session['user_id']])
     m=cursor.fetchall()
     return m
-           
+       

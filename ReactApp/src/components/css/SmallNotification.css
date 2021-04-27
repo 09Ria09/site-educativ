@@ -10,13 +10,22 @@
     background-color: rgb(14, 22, 50);
 }
 
+.smallNotificationNameText {
+}
+
+.smallNotificationNameTime {
+}
+
+.smallNotificationNameContainer {
+}
+
+
 .smallNotificationName {
     display: flex;
     padding: 1vw;
     padding-bottom: 0;
     color: rgb(201, 240, 255);
     font-size: 1.2vw;
-    align-items: center;
 }
 
 .smallNotificationImage {
@@ -34,9 +43,15 @@
 .notVisible {
     background-color: transparent;
     margin-top: 1vw;
-    text-align: center;
+    text-align: left;
     border: 0px;
     width: 18vw;
+}
+
+.smallNotificationTime {
+    margin-top: 0;
+    opacity: 0.3;
+    font-size: 0.8vw;
 }
 
 @media only screen and (max-width: 600px) {
@@ -60,5 +75,15 @@
     .notVisible {
         width: 68vw;
         height: 10vh;
+    }
+
+    .smallNotificationTime {
+        font-size: 2vh;
+    }
+
+    .smallNotificationNameText {
+    }
+
+    .smallNotificationNameTime {
     }
 }
