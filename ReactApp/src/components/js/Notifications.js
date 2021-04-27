@@ -43,8 +43,8 @@ function Notifications() {
                     notifications.map((x) => {
                         return (
                             <SmallNotification name={x['sender'].length > 40 ? x.substring(0, 40) : x['sender']}
-                                               value={x['message'] > 40 ? x['message'].substring(0, 40) + "..." : x['message']}
-                                               time={x['delta']} clicked={setBigNotification} dictionary={x} img={x['icon']}/>
+                                               value={x['message']} time={x['delta']} 
+                                               clicked={setBigNotification} dictionary={x} img={x['icon']}/>
                         );
                     })
                 }
@@ -57,7 +57,6 @@ function Notifications() {
                 }
             </div>
             {
-                
                 <div className='bigContainer'>
                     <BigNotification name={bigNotification['sender']} value={bigNotification['message']} 
                                      img={bigNotification['icon']} time={bigNotification['time']} id={bigNotification['id']}/>

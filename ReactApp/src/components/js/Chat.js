@@ -37,11 +37,13 @@ function Chat(props) {
         return (<Redirect to='/'/>);
 
     function sendMessage() {
-        value['id'] = data['id']
+        let tmp = {};
+        tmp['text'] = JSON.stringify(value['text'])
+        tmp['id'] = data['id']
         axios({
             method: 'post',
             url: '/SendMessage',
-            data: value
+            data: tmp
         })
     }
     if(!waitingResponse)
@@ -51,7 +53,7 @@ function Chat(props) {
                     <h1 className={'name'}> 
                         {data['username']} 
                     </h1>
-                    <TextEdit type={'input'}
+                    <TextEdit type={'textarea'}
                               name={'text'}
                               setValue={valueHandler}
                               editing={true}/>

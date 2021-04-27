@@ -102,7 +102,7 @@ def upload(app, request, file, where,et):
         erori['test'] = tip
         if file and not erori['tipInvalid']:
             file_path = './public/' + path
-            file_path = os.path.join(app.static_folder, path).replace("FlaskApp\\static","ReactApp\\public",1)
+            file_path = os.path.join(app.static_folder, path).replace("flaskapp\\static","ReactApp\\public",1)
             file_path = file_path.replace('\\', '/')
             print(file_path)
             file.save(file_path)
@@ -121,6 +121,7 @@ def upload(app, request, file, where,et):
     return {'erori': erori, 'tip': tip, 'path':path, 'nume' : filename}
 
 def send_notification(tip, session, receiver, mysql,message = ''):
+    print(message)
     data={}
     erori = {}
     if(tip == "message"):

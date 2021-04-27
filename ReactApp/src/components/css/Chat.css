@@ -48,3 +48,9 @@
     margin-top: 40px;
     font-size: 5vh;
 }
+
+
+
+.chatBox .textareaContainer {
+    min-height:60vh;
+}

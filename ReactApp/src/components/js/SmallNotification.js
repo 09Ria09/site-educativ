@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../css/SmallNotification.css';
 
 function SmallNotification(props) {
+    //let text = JSON.parse(props.value)
     return (
         <button className={'notVisible'} onClick={() => props.clicked(props.dictionary)}>
             <div className={'smallNotificationContainer'}>
