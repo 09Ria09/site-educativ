@@ -1,12 +1,19 @@
 .bg {
     display: flex;
     height: 100vh;
+    margin-top: -60px;
     align-items: center;
 }
 
 .bg .loadingContainer {
     height: 100%;
     margin: 0;
+}
+
+.bigNotificationText .textareaEditorReadOnly {
+    width: max-content;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .smallContainer {
@@ -55,7 +62,7 @@
 
 @media only screen and (max-width: 600px) {
     .bigContainer {
-        width: 0px;
+        width: 0;
         background-color: transparent;
     }
 

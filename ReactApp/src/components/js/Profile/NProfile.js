@@ -19,9 +19,8 @@ function Profile(props) {
 
     useEffect(() => {
         axios({
-            method: 'post',
-            url: '/GetNProfile',
-            data: parseInt(history.location.pathname.substring(10))
+            method: 'get',
+            url: history.location.pathname.substring(2)
         }).then(res => {
             setProfile(JSON.parse(res.request.response))
             setWaitingResponse(false)

@@ -1,46 +1,30 @@
 .chatBox {
     margin-top: calc(15vh - 30px);
-    height: 70vh;
     width: 70vw;
+    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
     background-color: rgba(6, 11, 25, 0.9);
     border-radius: 25px;
+    position: relative;
+    padding-bottom: 60px;
+    padding-top: 15px;
 }
+
 .messageBox {
-    margin-left:auto;
+    margin-left: auto;
     margin-right: auto;
-    width: 80%;
-    height: 70vh;
+    width: 85%;
+}
+
+.messageBox > h1 {
+    margin-top: 0;
 }
 
 .send {
-    height: 40px;
-    max-width: 130px;
-    width: 100%;
-    padding: 0 10px;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition-duration: 200ms;
-    border-radius: 25px;
-    background-color: rgb(var(--darkslateblue));
-    box-shadow: 0 6px rgba(var(--darkslateblue), 0.6);
-    border: none;
-    font: inherit;
-    text-decoration: inherit;
-    outline: none !important;
-    box-sizing: content-box;
-    margin: 20px min(20px, 2%);
-    margin-left: auto;
-    font-size: 20px;
-    color: rgb(201, 240, 255);
-}
-
-.send:hover, .send:focus-visible {
-    transform: translateY(4px);
-    box-shadow: 0 0 rgba(var(--darkslateblue), 0.4);
+    position: absolute;
+    right: 54px;
+    bottom: 20px;
 }
 
 .name {
@@ -49,8 +33,6 @@
     font-size: 5vh;
 }
 
-
-
-.chatBox .textareaContainer {
-    min-height:60vh;
+.chatBox .textareaContainer > div:nth-child(3) {
+    min-height: 50vh;
 }

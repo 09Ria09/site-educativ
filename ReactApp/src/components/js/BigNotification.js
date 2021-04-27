@@ -19,14 +19,14 @@ function BigNotification(props) {
                 </div>
                 {
                     props.name ?
-                    <Link className={'respond'} to={'/chat/' + props.id}> Răspunde </Link> 
+                    <Link className={'btn respond'} to={'/chat/' + props.id}> Răspunde </Link>
                     : ('')
                 }
             </div>
             <div className={"bigNotificationText"}>
                 {
                     props.value != null ?
-                        <TextEdit editing={false} type={'textarea'} initialValue={JSON.parse(props.value)[0]}/>
+                        <TextEdit editing={false} type={'textarea'} initialValue={props.value}/>
                     : ('')
                 }
             </div>
