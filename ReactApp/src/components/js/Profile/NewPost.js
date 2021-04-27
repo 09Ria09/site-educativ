@@ -28,7 +28,7 @@ function NewPost() {
                       placeholder={'Titlu'}
                       maxlength={128}/>
             <AddFiles preview={'video'} placeholder={'Video'} icon={'video-add-line.png'}
-                      accept={'video/mp4,video/ogg,video/webm'} setValue={valueHandler} name={'video'} multiple/>
+                      accept={'video/mp4,video/ogg,video/webm'} setValue={valueHandler} name={'video'}/>
             <AddFiles preview={'img'} placeholder={'Imagini'} icon={'image-add-line.png'}
                       accept={'image/x-png,image/gif,image/jpeg'} setValue={valueHandler} name={'images'} multiple/>
 
@@ -54,18 +54,9 @@ function NewPost() {
                       setValue={valueHandler} name={'docs'} multiple/>
             <button className={'btn personButton newPostBtn'} onClick={() => {
                 let tmp = new FormData();
-                console.log(value)
-                console.log("susut")
-                console.log(value['video'])
-                //tmp.append('video', value['video'][0])
-                value['video'].forEach((x, y) =>{
-                    tmp.append('video', x);
-                    
-                })
-                value['images'].forEach((x, y) =>{
-                    tmp.append('images', x);
-                    
-                })
+                tmp.append('video', value['video'][0])
+                value['images'].forEach((x, y) =>
+                    tmp.append('images', x))
                 tmp.append('text', value['text'])
                 value['docs'].forEach((x, y) =>
                     tmp.append('docs', x))

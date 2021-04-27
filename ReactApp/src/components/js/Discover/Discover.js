@@ -49,7 +49,7 @@ function Discover(props) {
                     {summaries === null ? ('') :
                         summaries.map((x, y) => {
                             return (
-                                <PersonSummary id={x['id']} image={'placeholder.jpg'} key={y}
+                                <PersonSummary id={x['id']} image={x['icon']} key={y}
                                                name={(x['prenume'] + ' ' + x['nume'])}>
                                     <TextEdit type={'textarea'} editing={false} initialValue={x['descriere']}/>
                                     <CustomSelect initialValue={x['materii']}
@@ -71,6 +71,7 @@ function Discover(props) {
                             );
                         })
                     }
+                    {/*
                     <PersonSummary name={'Dexter Morgan'} image={'placeholder.jpg'}>This man is a knight in shining
                         armor.
                         I'm real proud of you for coming, bro. I know you hate funerals. This man is a knight in shining
@@ -89,6 +90,7 @@ function Discover(props) {
                         know you hate funerals. I'm going to tell you something that I've never told anyone before. I'm
                         doing mental jumping jacks. I've lived in darkness a long time. Over the years my eyes adjusted
                         until the dark became my world and I could see.</PersonSummary>
+                        */}
                 </div>
             </div>
         </div>

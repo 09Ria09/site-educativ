@@ -18,7 +18,7 @@ function PersonSummary(props) {
         <article className={'person'}>
             <div className={'personDiv1'}>
                 <h1>{props.name}</h1>
-                <img src={props.image}/>
+                <img src={typeof props.image === 'string' ? props.image : 'placeholder.jpg'}/>
             </div>
             <div className={'personChildren'}>{props.children}</div>
             <div className={'personDiv2'}>

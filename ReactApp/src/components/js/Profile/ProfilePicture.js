@@ -3,7 +3,7 @@ import '../../css/Profile/Post.css';
 
 function AddFiles(props) {
     const [value, setValue] = useState(null);
-    const [url, setURL] = useState(props.url);
+    const [url, setURL] = useState((typeof props.url === 'string' ? props.url : 'placeholder.jpg'));
     const ref = useRef();
 
     useEffect(() => {

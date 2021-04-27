@@ -23,7 +23,7 @@ function Features() {
 
     return (
         <div className={'featuresContainer'}>
-            <div className={'specialDot'}/>
+            {/*<div className={'specialDot'}/>*/}
             <div className={'features'}>
                 <div className={'line'}/>
                 {Feature(1, 'placeholder.jpg', 'Re Re Re Re Re Re Re Re Re Re Re Re Re Re Re Re Re Re Re ')}

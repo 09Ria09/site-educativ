@@ -124,9 +124,7 @@ function Profile(props) {
                                           {value: 12, label: '12'}
                                       ]}/>
                     </div>
-                    <ProfilePicture preview={'img'} placeholder={'Imagini'} icon={'image-add-line.png'}
-                                    editing={editing}
-                                    url={profile['icon']} setValue={(x) => setProfilePicture(x)} name={'images'}/>
+                    <ProfilePicture editing={editing} url={profile['icon']} setValue={(x) => setProfilePicture(x)}/>
                 </div>
                 <TextEdit type={'textarea'}
                           name={'descriere'}
@@ -153,8 +151,6 @@ function Profile(props) {
                     {value: 9, label: 'Informatică'},
                     {value: 10, label: 'Geografie'},
                     {value: 11, label: 'Economie'},
-                    {value: 12, label: 'Educatie Fizica'},
-                    {value: 13, label: 'Educatie Financiara'},
                 ]}/>
             </article>
             <NewPost/>
