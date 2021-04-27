@@ -432,12 +432,15 @@ def new_post():
             elif d['tip'] == 'doc':
                 response['docs'].append(dict(nume = d['nume'],url = d['path']))
         title = request.form['title']
+        text = request.form['text']
+        print(8*'$',text, 8*'$')
         response['title'] = title
+        response['text'] = text
         cursor = mysql.connection.cursor()
         con = mysql.connection
         response['timp'] = format_date(datetime.datetime.fromtimestamp(time.time()), format='long', locale='ro')
-        cursor.execute('''insert into posts values (NULL, %s, NULL, "text", %s, %s)''',
-                            (session['user_id'], title, response))
+        cursor.execute('''insert into posts values (NULL, %s, NULL, %s, %s, %s)''',
+                            (session['user_id'], text, title, response))
         con.commit()
     return response
 

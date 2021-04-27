@@ -57,7 +57,7 @@ function NewPost() {
                 tmp.append('video', value['video'][0])
                 value['images'].forEach((x, y) =>
                     tmp.append('images', x))
-                tmp.append('text', value['text'])
+                 tmp.append('text', JSON.stringify(value['text']))
                 value['docs'].forEach((x, y) =>
                     tmp.append('docs', x))
                 tmp.append('title', value['title'])
