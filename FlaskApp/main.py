@@ -512,6 +512,20 @@ def hide():
         blocked=request.get_json()['id']
         a.ascunde(session,blocked,mysql)
     return {}
+
+@app.route('/GetPosts',methods={'POST'})
+def get_posts():
+    id = request.get_json()['id']
+    cursor = mysql.connection.cursor()
+    cursor.execute('''select response from posts where user_id =%s ''', [id])
+    tmp = cursor.fetchall()
+    response = []
+    for x in tmp:
+        # x['response'] = x['response'].replace('\'', '"')
+        x['response'] = eval(x['response'])
+        response.append(x['response'])
+    print(response)
+    return jsonify(response)
 # @app.route('/Report',methods={'POST'})
 # def report():
 #     if request.method=='POST':

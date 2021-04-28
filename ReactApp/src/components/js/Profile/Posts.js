@@ -6,21 +6,21 @@ import Loading from "../Loading";
 import Post from "./Post";
 
 function Posts(props) {
-    const [posts, setPosts] = useState([]);
+    const [postsList, setPostsList] = useState(null);
     const [waitingResponse, setWaitingResponse] = useState(true);
 
     useEffect(() => update(), []);
 
     function update() {
+        let tmp = {};
+        tmp['id'] = props.id;
         setWaitingResponse(true);
-        setWaitingResponse(false)
-        return;
         axios({
             method: 'post',
             url: '/GetPosts',
-            data: props.id
+            data: tmp
         }).then(res => {
-            setPosts(JSON.parse(res.request.response))
+            setPostsList(JSON.parse(res.request.response))
             setWaitingResponse(false)
         });
     }
@@ -42,10 +42,12 @@ function Posts(props) {
     return (
         <div className={'postsContainer'}>
             <div className={'posts'}>
-                {posts === null ? ('') :
-                    posts.map((x, y) => {
+                {postsList === null ? ('') :
+                    postsList.map((x) => {
+                        console.log(x);
+                        let dict = x;
                         return (
-                            <Post video={x.video} images={x.images} text={x.text} docs={x.docs}/>
+                            <Post video={dict['video']} images={dict['images']} text={dict['text']} docs={dict['docs']} title={dict['title']}/>
                         );
                     })
                 }
