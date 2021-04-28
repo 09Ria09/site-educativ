@@ -6,10 +6,13 @@ import {Link} from "react-router-dom";
 function PersonSummary(props) {
 
     function sendToServer(url, data) {
+        var test={}
+        test['id']=data;
         axios({
+            
             method: 'post',
             url: url,
-            data: data
+            data: test
 
         })
     }
@@ -18,6 +21,7 @@ function PersonSummary(props) {
         <article className={'person'}>
             <div className={'personDiv1'}>
                 <h1>{props.name}</h1>
+                <h1>{props.rating}</h1>
                 <img src={typeof props.image === 'string' ? props.image : 'placeholder.jpg'}/>
             </div>
             <div className={'personChildren'}>{props.children}</div>

@@ -172,9 +172,11 @@ def follow(session,followee,mysql):
 def ascunde(session,blocked,mysql):
     cursor = mysql.connection.cursor()
     con = mysql.connection
-    cursor.execute('''insert into block values (%s,%s)''',(session['user_id'],blocked))
-    con.commit()
-    return m
+    cursor.execute('''select blocked from block where blocker =%s ''',[session['user_id']])
+    if cursor.fetchall== ():
+        cursor.execute('''insert into block values (%s,%s)''',(session['user_id'],blocked))
+        con.commit()
+    return 0
 
 def give_rating(session,target,mysql ,stars):
     cursor = mysql.connection.cursor()
