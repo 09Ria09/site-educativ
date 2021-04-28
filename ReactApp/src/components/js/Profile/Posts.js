@@ -49,6 +49,8 @@ function Posts(props) {
                         );
                     })
                 }
+                {
+                    /*
                 <Post title={'Postare'} video={'placeholder.mp4'} images={['placeholder.jpg', 'placeholder2.jpg']}
                       text={'[{"type": "paragraph", "children": [{"text": "fdsafdasfd"}]}]'}
                       docs={[{name: 'roboti', link: 'robots.txt'}]}/>
@@ -63,6 +65,8 @@ function Posts(props) {
                       images={['placeholder.jpg', 'placeholder1.jpg', 'placeholder2.jpg']}
                       text={'[{"type": "paragraph", "children": [{"text": "fdsafdasfd"}]}]'}
                       docs={[{name: 'roboti', link: 'robots.txt'}]}/>
+                      */
+                }
             </div>
         </div>
     );

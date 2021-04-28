@@ -6,11 +6,12 @@ import {Link} from "react-router-dom";
 function PersonSummary(props) {
 
     function sendToServer(url, data) {
+        let test = {};
+        test['id'] = data;
         axios({
             method: 'post',
             url: url,
-            data: data
-
+            data: test
         })
     }
 
