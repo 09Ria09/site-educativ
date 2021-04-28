@@ -2,6 +2,13 @@ import React from 'react';
 import '../css/SmallNotification.css';
 
 function SmallNotification(props) {
+
+    let text = JSON.parse(props.value);
+    let s = '';
+    for(let x of text) {
+        if(x['children'][0]['text'] != 'undefined')
+            s += (x['children'][0]['text']);
+    }
     return (
         <button className={'notVisible'} onClick={() => props.clicked(props.dictionary)}>
             <div className={'smallNotificationContainer'}>
@@ -18,7 +25,7 @@ function SmallNotification(props) {
                     </div>
                 </div>
                 <div className={"smallNotificationText"}>
-                    {props.value.length > 40 ? props.value.substring(0, 40) + "..." : props.value}
+                    {s.length > 40 ? s.substring(0, 40) + "..." : s}
                 </div>
             </div>
         </button>

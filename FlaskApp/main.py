@@ -179,8 +179,8 @@ def get_profile():
     #print(d)
     return d
 
-@app.route('/GetNProfile/<token>',methods=["POST"])
-def get_nprofile():
+@app.route('/nProfile/<token>',methods=["POST"])
+def get_nprofile(token):
     print(token)
     if token is None:
         return {}

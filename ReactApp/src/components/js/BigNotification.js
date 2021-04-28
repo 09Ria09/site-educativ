@@ -5,8 +5,6 @@ import TextEdit from './Profile/TextEdit'
 
 function BigNotification(props) {
 
-    if(props.value != null)
-        console.log(JSON.parse(props.value))
     return (
         <div className={'bigNotificationContainer'}>
             <div className={'bigNotificationName'}>
