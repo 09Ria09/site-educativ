@@ -81,7 +81,6 @@ function Profile(props) {
                     {value: 13, label: 'Educatie Financiara'},
                 ]}/>
             </article>
-            <NewPost/>
             <Posts id={profile['id']}/>
         </div>
     );
