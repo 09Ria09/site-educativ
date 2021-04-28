@@ -530,4 +530,3 @@ def rate(token):
     stars = request.get_json()['rating']
     give_rating(session,token,mysql ,stars)
 app.run(debug=True)
-
