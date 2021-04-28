@@ -17,18 +17,22 @@ password = "4tzainfo_root"
 context = ssl.create_default_context()
 
 
-def mail_verificare(recipient, code, cont_sau_parola):
+def mail_verificare(recipient, code, subiect):
     try:
-        if cont_sau_parola == "cont":
-            cont_sau_parola = "Validare cont"
-        else:
-            cont_sau_parola = "Schimbare Parola"
+        if subiect == "cont":
+            subiect = "Validare cont"
+        elif subiect=='parola':
+            subiect = "Schimbare Parola"
+        else :
+            subiect = 'Raportare'
         server = smtplib.SMTP(smtp_server, port)
         server.starttls(context=context)
         server.login(sender_email, password)
         message = "Linkul Dumneavoastra este :\n" + code + "\n"
+        if subiect == 'Raportare':
+            message='Userul {} a raportat userul {} menționând :\n {}'.format(session['user_id'],code[0],code[1])
         headers = "\r\n".join(["from: " + sender_email,
-                               "subject: " + cont_sau_parola,
+                               "subject: " + subiect,
                                "to: " + recipient,
                                "mime-version: 1.0",
                                "content-type: text/html"])
@@ -50,6 +54,7 @@ s = URLSafeTimedSerializer('6398715B0D903F28D7BBF08370156D9557DDFAE4CBB1A610A9A5
                            '8325FCB6CD4C0D980469698435125C6359526E7D17B7BAFE89AA32B6B1361C73')
 PAS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 CHANGE_PASSWORD_URL = 'http://localhost:3000/#/changePassword/'
+VERIFY_MAIL_URL='http://localhost:3000/#/VerifyMail/Cont/'
 CACHE_PATH = "./assets/cache"
 CORS(app)
 
@@ -98,7 +103,7 @@ def sign_up():
             cursor.execute('''insert into passwords values ( %s, %s);''', (user_id, v.hash_pas(password)))
             con.commit()
             print("Am adaugat parola user-ului cu id-ul: {}".format(user_id))
-            cursor.execute('''insert into extra values (NULL, %s, NULL, NULL, NULL)''',
+            cursor.execute('''insert into extra values (NULL, %s, NULL,NULL, 5, 1)''',
                            [user_id])
             con.commit()
             session.clear()
@@ -106,7 +111,8 @@ def sign_up():
             session['verified'] = 1
             session['completed_profile'] = 0
             temp = s.dumps(email, salt="cont")
-            mail_verificare(email, url_for("verificare_mail", token=temp, _external=True), "cont")
+            url = VERIFY_MAIL_URL + temp
+            mail_verificare(email,url, "cont")
             print("Mail trimis catre {}".format(email))
             success = True
             return {'erori': erori, 'success': success, 'verified': session.get('verified'),
@@ -170,7 +176,16 @@ def get_profile():
     if session.get('user_id') is None:
         return {}
     d=get_profile_helper(session['user_id'])
-    print(d)
+    #print(d)
+    return d
+
+@app.route('/GetNProfile/<token>',methods=["POST"])
+def get_nprofile():
+    print(token)
+    if token is None:
+        return {}
+    d=get_profile_helper(token)
+    #print(d)
     return d
 
 
@@ -185,6 +200,8 @@ def get_profile_helper(user_id):
     cursor.execute('''SELECT * FROM brainerdb.extra WHERE user_id=%s;''', [user_id])
     tmp = cursor.fetchall()
     if tmp != ():
+        tmp[0]['ratingRounded']=round(tmp[0]['rating'])
+        #print(tmp)
         profile = {**tmp[0], **profile}
 
     cursor.execute('''SELECT materie_id FROM brainerdb.materii WHERE user_id=%s;''', [user_id])
@@ -192,7 +209,7 @@ def get_profile_helper(user_id):
     tmpm = []
     for x in tmp:
         tmpm.append(x['materie_id'])
-    print(tmpm)
+    #print(tmpm)
     if tmp:
         profile['materii'] = tmpm
     profile['id']=user_id
@@ -241,7 +258,7 @@ def submit_profile():
         con.commit()
 
     if 'descriere' in rq:
-        print(rq['descriere'])
+        #print(rq['descriere'])
         cursor.execute('''update extra set descriere=%s where user_id=%s''',
                        (json.dumps(rq['descriere'], ensure_ascii=False), session.get('user_id')))
         con.commit()
@@ -264,11 +281,11 @@ def submit_profile():
         c = True
 
     if 'profilePicture' in request.files:
-        print(request.files['profilePicture'])
+        #print(request.files['profilePicture'])
         data=a.upload_wrapper(app, request.files, 'profil', 'image')
         # a.upload_wrapper(app,session,'profil')
         path =data[0]['path']
-        print(path)
+        #print(path)
         cursor.execute('''update extra set icon=%s where user_id=%s''',
                        (path, session.get('user_id')))
         con.commit()
@@ -279,7 +296,7 @@ def submit_profile():
         con.commit()
         session['completed_profile'] = 1
 
-    print(session['completed_profile'])
+    #print(session['completed_profile'])
     return {'ver': ver, 'completed_profile': session['completed_profile']}
 
 
@@ -291,6 +308,7 @@ def check_profile():
 @app.route("/GetSummaries", methods=["POST"])
 def get_summaries():
     rq = request.get_json()
+    #print(rq)
     if type(rq) != dict:
         return {}
     users = set()
@@ -307,15 +325,29 @@ def get_summaries():
         users = get_summaries_helper(users, 'id', 'brainerdb.users', 'clasa', rq['clasa'])
 
     cu = session.get('user_id')
+    cursor.execute('''SELECT blocked FROM brainerdb.block WHERE blocker=%s''',[cu])
+    blocati = cursor.fetchall()
+    btmp=[]
+    if not blocati== ():
+        for b in blocati:
+            btmp.append(b['blocked'])
+    print(btmp)
     for user in users:
-        if user == cu:
+        if user == cu or user in btmp:
             continue
         tmp = get_profile_helper(user)
         tmp.pop('numar', None)
         tmp.pop('mail', None)
         response.append(tmp)
+    if 'sort' in rq :
+        if rq['sort']==1:
+            response.reverse()
+        elif rq['sort']==2:
+            def sf(d):
+                return d['rating']
+            response.sort(key=sf)
+    #print(response)
     return jsonify(response)
-
 
 def get_summaries_helper(users, what, table, column, rq):
     cursor = mysql.connection.cursor()
@@ -435,13 +467,13 @@ def new_post():
                 response['docs'].append(dict(nume = d['nume'],url = d['path']))
         title = request.form['title']
         text = request.form['text']
-        print(8*'$',text, 8*'$')
+        #print(8*'$',text, 8*'$')
         response['title'] = title
         response['text'] = text
         cursor = mysql.connection.cursor()
         con = mysql.connection
         response['timp'] = format_date(datetime.datetime.fromtimestamp(time.time()), format='long', locale='ro')
-        cursor.execute('''insert into posts values (NULL, %s, NULL, %s, %s, %s)''',
+        cursor.execute('''insert into posts values (NULL, %s, %s, %s, %s)''',
                             (session['user_id'], text, title, response))
         con.commit()
     return response
@@ -450,8 +482,6 @@ def new_post():
 def send_messages():
     if request.method=='POST':
         rq=request.get_json()
-        print(rq)
-        print(rq['text'])
         data=a.send_notification('message', session,rq['id'], mysql,message = rq['text'])
         print(rq)
     return data
@@ -460,6 +490,7 @@ def send_messages():
 def get_notifications():
     if request.method =='POST':
         rq=a.get_notifications(session['user_id'],mysql)
+        #a.give_rating(session,41,mysql ,4)
         #a.send_notification('message',session,39,mysql,'d')
     # return jsonify([])
     return jsonify(rq)
@@ -475,7 +506,28 @@ def get_chat_data(token):
         user_id=token
         return {'username':username,'icon':icon,'id':user_id}
     return 0
+@app.route('/Hide',methods={'POST'})
+def hide():
+    if request.method=='POST':
+        blocked=request.get_json()['id']
+        a.ascunde(session,blocked,mysql)
+    return {}
+# @app.route('/Report',methods={'POST'})
+# def report():
+#     if request.method=='POST':
+#         reported=request.get_json()['id']
+#         message=request.get_json()['mesaj']
+#         cursor.execute('''select username from users where id =%s ''',[reported])
+#         username=cursor.fetchall()[0]['username'])
+#         email=cursor.fetchall()[0]['mail']
+#         a.ascunde(session,reported,mysql)
 
-
+#         code = []
+#         mail_verificare(recipient, code, 'report')
+#     return {}
+@app.route('/rateSubmit/<token>', methods={'POST'})
+def rate(token): 
+    stars = request.get_json()['rating']
+    give_rating(session,token,mysql ,stars)
 app.run(debug=True)
 
