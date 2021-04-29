@@ -27,8 +27,8 @@ function AlternativeSkyCanvas(props) {
         Star.prototype.reset = function () {
             this.size = Math.random() * 2;
             this.speed = Math.random() * .1;
-            this.x = width;
-            this.y = Math.random() * height;
+            this.x = 1;
+            this.y = Math.random();
         }
 
         Star.prototype.update = function () {

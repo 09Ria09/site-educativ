@@ -52,7 +52,7 @@ s = URLSafeTimedSerializer('6398715B0D903F28D7BBF08370156D9557DDFAE4CBB1A610A9A5
                            '8325FCB6CD4C0D980469698435125C6359526E7D17B7BAFE89AA32B6B1361C73')
 PAS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 CHANGE_PASSWORD_URL = 'http://localhost:3000/#/changePassword/'
-VERIFY_MAIL_URL='http://localhost:3000/#/VerifyMail/Cont/'
+VERIFY_MAIL_URL='http://localhost:3000/#/VerifyMail'
 CACHE_PATH = "./assets/cache"
 CORS(app)
 
@@ -526,6 +526,7 @@ def get_posts():
         x['response'] = eval(x['response'])
         response.append(x['response'])
     print(response)
+    response.reverse()
     return jsonify(response)
 @app.route('/Report',methods={'POST'})
 def report():

@@ -166,6 +166,9 @@ def follow(session,followee,mysql):
     con = mysql.connection
     cursor.execute('''select * from follow where follower =%s ''',[session['user_id']])
     m=cursor.fetchall()
+    cursor.execute('''insert into block values (%s,%s)''',(session['user_id'],blocked))
+    con.commit()
+   
     return m
 def ascunde(session,blocked,mysql):
     cursor = mysql.connection.cursor()
