@@ -526,6 +526,7 @@ def get_posts():
         x['response'] = eval(x['response'])
         response.append(x['response'])
     print(response)
+    response.reverse()
     return jsonify(response)
 @app.route('/Report',methods={'POST'})
 def report():
