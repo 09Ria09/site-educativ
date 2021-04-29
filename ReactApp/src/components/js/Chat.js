@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { useHistory, Redirect } from 'react-router-dom'
+import React, {useEffect, useState} from 'react'
+import {Redirect, useHistory} from 'react-router-dom'
 import '../css/Chat.css';
 import axios from 'axios'
 import TextEdit from './Profile/TextEdit'
@@ -37,28 +37,30 @@ function Chat(props) {
         return (<Redirect to='/'/>);
 
     function sendMessage() {
-        value['id'] = data['id']
+        let tmp = {};
+        tmp['text'] = JSON.stringify(value['text'])
+        tmp['id'] = data['id']
         axios({
             method: 'post',
             url: '/SendMessage',
-            data: value
+            data: tmp
         })
     }
     if(!waitingResponse)
         return (
             <div className={'chatBox'}>
                 <div className={'messageBox'}>
-                    <h1 className={'name'}> 
-                        {data['username']} 
+                    <h1 className={'name'}>
+                        {data['username']}
                     </h1>
-                    <TextEdit type={'input'}
+                    <TextEdit type={'textarea'}
                               name={'text'}
                               setValue={valueHandler}
                               editing={true}/>
-                    <button className={'send'} onClick={sendMessage}>
-                        Trimite
-                    </button>
                 </div>
+                <button className={'btn personButton newPostBtn send'} onClick={sendMessage}>
+                    Trimite
+                </button>
             </div>
         )
     else

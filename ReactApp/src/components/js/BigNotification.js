@@ -1,8 +1,10 @@
 import React from 'react';
 import '../css/BigNotification.css';
 import {Link} from "react-router-dom";
+import TextEdit from './Profile/TextEdit'
 
 function BigNotification(props) {
+
     return (
         <div className={'bigNotificationContainer'}>
             <div className={'bigNotificationName'}>
@@ -15,12 +17,16 @@ function BigNotification(props) {
                 </div>
                 {
                     props.name ?
-                    <Link className={'respond'} to={'/chat/' + props.id}> Răspunde </Link> 
+                    <Link className={'btn respond'} to={'/chat/' + props.id}> Răspunde </Link>
                     : ('')
                 }
             </div>
             <div className={"bigNotificationText"}>
-                {props.value}
+                {
+                    props.value != null ?
+                        <TextEdit key={props.value} editing={false} type={'textarea'} initialValue={props.value}/>
+                    : ('')
+                }
             </div>
         </div>
     )

@@ -20,8 +20,7 @@ function Profile(props) {
     useEffect(() => {
         axios({
             method: 'post',
-            url: '/GetNProfile',
-            data: parseInt(history.location.pathname.substring(10))
+            url: history.location.pathname
         }).then(res => {
             setProfile(JSON.parse(res.request.response))
             setWaitingResponse(false)
@@ -60,7 +59,7 @@ function Profile(props) {
                     </div>
                     <ProfilePicture preview={'img'} placeholder={'Imagini'} icon={'image-add-line.png'}
                                     editing={false}
-                                    url={'placeholder.jpg'} setValue={(x) => setProfilePicture(x)} name={'images'}/>
+                                    url={profile['icon']} setValue={(x) => setProfilePicture(x)} name={'images'}/>
                 </div>
                 <TextEdit type={'textarea'} editing={false} initialValue={profile['descriere']}/>
                 <CustomSelect initialValue={profile['materii']}
@@ -82,7 +81,6 @@ function Profile(props) {
                     {value: 13, label: 'Educatie Financiara'},
                 ]}/>
             </article>
-            <NewPost/>
             <Posts id={profile['id']}/>
         </div>
     );
