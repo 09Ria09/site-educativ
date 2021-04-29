@@ -68,6 +68,7 @@ function NewPost() {
 
                 }).then(res => {
                     console.log(res)
+                    window.location.reload();
                 });
             }}>
                 Submit

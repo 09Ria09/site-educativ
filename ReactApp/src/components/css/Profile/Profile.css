@@ -1,5 +1,5 @@
 .profileContainer {
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(6, 11, 25, 0.9);
     display: flex;
     min-height: 100vh;
     margin-top: -60px;
@@ -10,13 +10,12 @@
 }
 
 .profile {
-    flex-grow: 1;
     box-sizing: border-box;
     background-color: rgb(var(--oxfordblue));
     color: rgb(var(--columbiablue));
     max-width: 800px;
     width: 100%;
-    border-radius: 30px;
+    border-radius: 15px;
     position: relative;
     padding: 60px 50px 30px;
     margin: 30px auto;
@@ -25,6 +24,7 @@
 
 .cogwheelContainer {
     position: absolute;
+    outline: none;
     right: 20px;
     top: 20px;
     user-select: none;

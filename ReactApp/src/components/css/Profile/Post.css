@@ -4,7 +4,7 @@
     background-color: rgb(var(--oxfordblue));
     max-width: 800px;
     width: 100%;
-    border-radius: 25px;
+    border-radius: 15px;
     padding: 0 25px 70px;
     box-sizing: border-box;
     margin-bottom: 30px;
@@ -78,7 +78,7 @@
     padding: 5px 2px;
     z-index: 4;
     position: relative;
-    border-radius: 25px;
+    border-radius: 10px;
     width: 100%;
 }
 
@@ -86,7 +86,7 @@
     max-height: 512px;
     max-width: 512px;
     margin: auto;
-    border-radius: 25px;
+    border-radius: 10px;
     z-index: 4;
     position: relative;
     width: 100%;
@@ -133,7 +133,7 @@
 .newPostHeader {
     color: rgb(var(--columbiablue));
     margin-left: 12px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     font-size: 1.5em;
 }
 
@@ -164,17 +164,27 @@
     background-color: rgb(var(--oxfordblue));
     max-width: 800px;
     width: 100%;
-    border-radius: 25px;
-    padding: 10px 64px 48px;
+    border-radius: 15px;
+    padding: 10px 32px;
     box-sizing: border-box;
     margin-bottom: 30px;
     color: rgb(var(--columbiablue));
+}
+
+.postDocsContainer {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .post > h1 {
     text-align: center;
     margin-bottom: 5px;
     margin-top: 5px;
+}
+
+.post .textareaEditorReadOnly {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .post .videoSelected {
@@ -194,8 +204,30 @@
     color: rgb(var(--oxfordblue));
 }
 
+.postsContainer {
+    width: 100%;
+}
+
+.posts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
 .newPostAddDocs {
     display: inline;
+}
+
+.onlyOneImage {
+    max-height: unset !important;
+}
+
+.onlyOneImage > .imagesSelected {
+    max-width: 100% !important;
+    max-height: 50vh !important;
+    width: auto;
+    height: auto;
 }
 
 @media screen and (max-width: 769px) {

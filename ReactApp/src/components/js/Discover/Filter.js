@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import '../../css/Discover/Filter.css';
 import CustomSelect from "../CustomSelect";
+import TextEdit from "../Profile/TextEdit";
 
 function Filter(props) {
     const [filters, setFilters] = useState({});
@@ -16,6 +17,12 @@ function Filter(props) {
     return (
         <div className={'filterContainer'}>
             <div className={'filter'}>
+                <TextEdit type={'input'}
+                          name={'search'}
+                          setValue={filtersHandler}
+                          editing={true}
+                          placeholder={'Caută'}
+                          maxlength={128}/>
                 <CustomSelect setValue={filtersHandler}
                               placeholder={'Sortează după'} editing={true} name={'sort'} isClearable
                               isSearchable={false}

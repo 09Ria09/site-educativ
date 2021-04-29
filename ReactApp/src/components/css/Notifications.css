@@ -1,8 +1,10 @@
 .bg {
     display: flex;
     height: 100vh;
+    box-sizing: border-box;
     margin-top: -60px;
     align-items: center;
+    padding-top: 60px;
 }
 
 .bg .loadingContainer {

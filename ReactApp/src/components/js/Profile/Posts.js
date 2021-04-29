@@ -31,11 +31,9 @@ function Posts(props) {
         return (<Redirect to='/Profile'/>);
     if (waitingResponse === true)
         return (
-            <div className={'discoverContainer'}>
-                <div className={'discover'}>
-                    <div className={'people'}>
-                        <Loading/>
-                    </div>
+            <div className={'postsContainer'}>
+                <div className={'posts'}>
+                    <Loading/>
                 </div>
             </div>
         );
@@ -44,15 +42,14 @@ function Posts(props) {
             <div className={'posts'}>
                 {postsList === null ? ('') :
                     postsList.map((x) => {
-                        console.log(x);
                         let dict = x;
                         return (
-                            <Post video={dict['video']} images={dict['images']} text={dict['text']} docs={dict['docs']} title={dict['title']}/>
+                            <Post video={dict['video']} images={dict['images']} text={dict['text']} docs={dict['docs']}
+                                  title={dict['title']}/>
                         );
                     })
                 }
-                {
-                    /*
+                {/*
                 <Post title={'Postare'} video={'placeholder.mp4'} images={['placeholder.jpg', 'placeholder2.jpg']}
                       text={'[{"type": "paragraph", "children": [{"text": "fdsafdasfd"}]}]'}
                       docs={[{name: 'roboti', link: 'robots.txt'}]}/>
@@ -67,8 +64,7 @@ function Posts(props) {
                       images={['placeholder.jpg', 'placeholder1.jpg', 'placeholder2.jpg']}
                       text={'[{"type": "paragraph", "children": [{"text": "fdsafdasfd"}]}]'}
                       docs={[{name: 'roboti', link: 'robots.txt'}]}/>
-                      */
-                }
+                      */}
             </div>
         </div>
     );

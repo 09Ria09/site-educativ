@@ -35,6 +35,8 @@ function Chat(props) {
 
     if (props.signedIn === false)
         return (<Redirect to='/'/>);
+    if (props.completedProfile === 0)
+        return (<Redirect to='/Profile'/>);
 
     function sendMessage() {
         let tmp = {};

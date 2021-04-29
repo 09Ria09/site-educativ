@@ -5,9 +5,10 @@ import '../css/Notifications.css'
 import SmallNotification from "./SmallNotification";
 import BigNotification from "./BigNotification";
 import Loading from './Loading'
+import {Redirect} from "react-router-dom";
 
-function Notifications() {
-    const [notifications, setNotifications] = useState(null);
+function Notifications(props) {
+    const [notifications, setNotifications] = useState([]);
     const [waitingResponse, setWaitingResponse] = useState(true);
     const [bigNotification, setBigNotification] = useState([]);
 
@@ -21,51 +22,61 @@ function Notifications() {
         }).then(res => {
             setNotifications(JSON.parse(res.request.response))
             setWaitingResponse(false)
+            if (JSON.parse(res.request.response) !== null) {
+                setBigNotification(JSON.parse(res.request.response)[0]);
+            }
         });
     }
 
+
+    if (props.signedIn === false)
+        return (<Redirect to='/'/>);
+    if (props.completedProfile === 0)
+        return (<Redirect to='/Profile'/>);
+
     if (waitingResponse === true)
         return (
-             <div className='bg'>
-                <div className='smallContainer'>
-                    <Loading/>
-                </div>
-                <div className='bigContainer'>
-                    <Loading/>
-                </div>
+            <div className='bg'>
+                <Loading/>
             </div>
         )
+    else if (notifications === null || notifications.length === 0)
+        return (
+            <div className='bg' style={{
+                display: 'flex',
+                color: 'rgb(var(--columbiablue))',
+                fontSize: '1.5em',
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}>
+                <h1>Nu ai notificări.</h1>
+            </div>
+        );
     else
-    return (
-        <div className='bg'>
-            <div className='smallContainer'>
-                {notifications === null ? ('') :
-                    notifications.map((x) => {
-                        return (
-                            <SmallNotification name={x['sender'].length > 40 ? x.substring(0, 40) : x['sender']}
-                                               value={x['message']} time={x['delta']} 
-                                               clicked={setBigNotification} dictionary={x} img={x['icon']}/>
+        return (
+            <div className='bg'>
+                <div className='smallContainer'>
+                    {notifications === null ? ('') :
+                        notifications.map((x) => {
+                            return (
+                                <SmallNotification name={x['sender'].length > 40 ? x.substring(0, 40) : x['sender']}
+                                                   value={x['message']} time={x['delta']}
+                                                   clicked={setBigNotification} dictionary={x} img={x['icon']}/>
                         );
                     })
-                }
-                {
-                    //<SmallNotification name="John Doe"
-                                       //value={"ai primit o notificare prea lunga deschide-o pe toata ca sa o vezi"}
-                                       //clicked={setBigNotification}/>
-                    //<SmallNotification name="Tony Stark" value={"ai am airon men"} img={"placeholder1.jpg"}
-                                       //clicked={setBigNotification}/>
                 }
             </div>
             {
                 <div className='bigContainer'>
-                    <BigNotification name={bigNotification['sender']} value={bigNotification['message']} 
-                                     img={bigNotification['icon']} time={bigNotification['time']} id={bigNotification['id']}/>
+                    <BigNotification name={bigNotification['sender']} value={bigNotification['message']}
+                                     img={bigNotification['icon']} time={bigNotification['time']}
+                                     id={bigNotification['id']}/>
                 </div>
             }
         </div>
 
     )
-        
+
 }
 
 export default Notifications;
