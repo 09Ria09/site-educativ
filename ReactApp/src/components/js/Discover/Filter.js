@@ -22,7 +22,8 @@ function Filter(props) {
                               options={[
                                   {value: 0, label: 'Cele mai noi'},
                                   {value: 1, label: 'Cele mai vechi'},
-                                  {value: 2, label: 'Rating'},
+                                  {value: 2, label: 'Cel mai mic rating'},
+                                  {value: 3, label: 'Cel mai mare rating'},
                               ]}/>
                 <CustomSelect setValue={filtersHandler}
                               placeholder={'Filtrează dupa materii'} editing={true} name={'materii'} isMulti options={[

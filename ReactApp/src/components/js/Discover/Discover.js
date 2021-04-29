@@ -50,7 +50,8 @@ function Discover(props) {
                         summaries.map((x, y) => {
                             return (
                                 <PersonSummary id={x['id']} image={x['icon']} key={y}
-                                               name={(x['prenume'] + ' ' + x['nume'])}>
+                                               name={(x['prenume'] + ' ' + x['nume'])}
+                                               rating={x['rating']}>
                                     <TextEdit type={'textarea'} editing={false} initialValue={x['descriere']}/>
                                     <CustomSelect initialValue={x['materii']}
                                                   editing={false} options={[

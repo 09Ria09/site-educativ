@@ -1,7 +1,6 @@
 import imghdr, os ,uuid, time, magic ,math,datetime
 
 from babel.dates import format_date, format_datetime, format_time
-from docx2pdf import convert
 from werkzeug.utils import secure_filename
 
 import ver as v
@@ -167,8 +166,10 @@ def follow(session,followee,mysql):
     con = mysql.connection
     cursor.execute('''select * from follow where follower =%s ''',[session['user_id']])
     m=cursor.fetchall()
+    cursor.execute('''insert into block values (%s,%s)''',(session['user_id'],blocked))
+    con.commit()
+   
     return m
-
 def ascunde(session,blocked,mysql):
     cursor = mysql.connection.cursor()
     con = mysql.connection
@@ -213,5 +214,5 @@ def give_rating(session,target,mysql ,stars):
         rating =rating + (stars-stars_vechi)/number_of_ratings
         cursor.execute('''update extra set rating=%s where user_id=%s''', (rating,target))
         con.commit()
-        return 0
-       
+        
+    return 0
