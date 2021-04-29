@@ -29,8 +29,6 @@ def mail_verificare(recipient, code, subiect):
         server.starttls(context=context)
         server.login(sender_email, password)
         message = "Linkul Dumneavoastra este :\n" + code + "\n"
-        if subiect == 'Raportare':
-            message='Userul {} a raportat userul {} menționând :\n {}'.format(session['user_id'],code[0],code[1])
         headers = "\r\n".join(["from: " + sender_email,
                                "subject: " + subiect,
                                "to: " + recipient,
@@ -474,6 +472,7 @@ def new_post():
         response['text'] = text
         cursor = mysql.connection.cursor()
         con = mysql.connection
+        print(response)
         response['timp'] = format_date(datetime.datetime.fromtimestamp(time.time()), format='long', locale='ro')
         cursor.execute('''insert into posts values (NULL, %s, %s, %s, %s)''',
                             (session['user_id'], text, title, response))
@@ -528,19 +527,18 @@ def get_posts():
         response.append(x['response'])
     print(response)
     return jsonify(response)
-# @app.route('/Report',methods={'POST'})
-# def report():
-#     if request.method=='POST':
-#         reported=request.get_json()['id']
-#         message=request.get_json()['mesaj']
-#         cursor.execute('''select username from users where id =%s ''',[reported])
-#         username=cursor.fetchall()[0]['username'])
-#         email=cursor.fetchall()[0]['mail']
-#         a.ascunde(session,reported,mysql)
-
-#         code = []
-#         mail_verificare(recipient, code, 'report')
-#     return {}
+@app.route('/Report',methods={'POST'})
+def report():
+    if request.method=='POST':
+        reported=request.get_json()['id']
+        #message=request.get_json()['mesaj']
+        cursor = mysql.connection.cursor()
+        cursor.execute('''select username from users where id =%s ''',[reported])
+        username=cursor.fetchall()[0]['username']
+        #a.ascunde(session,reported,mysql)
+        f = open("logs.txt", "a")
+        f.write('Userul {} a fost raportat de catre {}\n'.format(username,session['username']))
+    return {}
 @app.route('/rateSubmit/<token>', methods={'POST'})
 def rate(token): 
     stars = request.get_json()['rating']

@@ -1,7 +1,6 @@
 import imghdr, os ,uuid, time, magic ,math,datetime
 
 from babel.dates import format_date, format_datetime, format_time
-from docx2pdf import convert
 from werkzeug.utils import secure_filename
 
 import ver as v
