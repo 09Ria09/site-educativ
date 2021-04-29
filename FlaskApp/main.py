@@ -342,10 +342,12 @@ def get_summaries():
     if 'sort' in rq :
         if rq['sort']==1:
             response.reverse()
-        elif rq['sort']==2:
+        elif rq['sort']==2 or rq['sort']==3:
             def sf(d):
                 return d['rating']
             response.sort(key=sf)
+            if(rq['sort']==3):
+                response.reverse()
     #print(response)
     return jsonify(response)
 
