@@ -15,6 +15,7 @@ import ChangePassword from "./components/js/Sign/ChangePassword";
 import Notifications from "./components/js/Notifications";
 import NProfile from "./components/js/Profile/NProfile";
 import Chat from './components/js/Chat';
+import VerifyMail from './components/js/VerifyMail'
 
 function App() {
     const routes = [
@@ -27,7 +28,8 @@ function App() {
         {path: '/signUp', name: 'Sign Up', Component: SignUp},
         {path: '/signIn', name: 'Sign In', Component: SignIn},
         {path: '/notification', name: 'Notificări', Component: Notifications},
-        {path: '/chat/*', name: 'Chat', Component: Chat}
+        {path: '/chat/*', name: 'Chat', Component: Chat},
+        {path: '/VerifyMail/*', name: 'Verificare Mail', Component: VerifyMail}
 
     ];
 

@@ -52,14 +52,14 @@ s = URLSafeTimedSerializer('6398715B0D903F28D7BBF08370156D9557DDFAE4CBB1A610A9A5
                            '8325FCB6CD4C0D980469698435125C6359526E7D17B7BAFE89AA32B6B1361C73')
 PAS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 CHANGE_PASSWORD_URL = 'http://localhost:3000/#/changePassword/'
-VERIFY_MAIL_URL='http://localhost:3000/#/VerifyMail'
+VERIFY_MAIL_URL='http://localhost:3000/#/VerifyMail/'
 CACHE_PATH = "./assets/cache"
 CORS(app)
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '4tzainfo_root'
+app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'brainerdb'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 app.config['UPLOAD_FOLDER'] = CACHE_PATH
