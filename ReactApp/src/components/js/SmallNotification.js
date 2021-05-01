@@ -3,10 +3,13 @@ import '../css/SmallNotification.css';
 
 function SmallNotification(props) {
 
+    if (props.value === undefined || props.value === '')
+        return ('');
+
     let text = JSON.parse(props.value);
     let s = '';
-    for(let x of text) {
-        if(x['children'][0]['text'] != 'undefined')
+    for (let x of text) {
+        if (x['children'][0]['text'] != 'undefined')
             s += (x['children'][0]['text']);
     }
     return (

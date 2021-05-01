@@ -42,6 +42,13 @@
     background-color: rgb(var(--darkslateblue));
 }
 
+.filter > .inputContainer > input {
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
 .applyFilters {
     max-width: 160px;
     width: 100%;

@@ -5,7 +5,6 @@ import '../../css/Profile/Profile.css';
 import TextEdit from "./TextEdit";
 import CustomSelect from "../CustomSelect";
 import Loading from "../Loading";
-import NewPost from "./NewPost";
 import ProfilePicture from "./ProfilePicture";
 import Cookies from "universal-cookie";
 import Posts from "./Posts";
@@ -29,6 +28,8 @@ function Profile(props) {
 
     if (props.signedIn === false)
         return (<Redirect to='/'/>);
+    if (props.completedProfile === 0)
+        return (<Redirect to='/Profile'/>);
     if (waitingResponse === true)
         return (
             <div className={'profileContainer'}><Loading/></div>

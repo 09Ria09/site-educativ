@@ -1,9 +1,13 @@
 .smallNotificationContainer {
     background-color: rgb(10, 18, 42);
-    border-radius: 25px;
+    border-radius: 15px;
     width: auto;
     height: auto;
     transition-duration: 200ms;
+}
+
+.notVisible {
+    outline: none;
 }
 
 .smallNotificationContainer:hover {

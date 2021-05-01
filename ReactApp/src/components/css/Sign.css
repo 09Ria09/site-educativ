@@ -21,7 +21,6 @@
 }
 
 .sign {
-    font-size: 1rem !important;
     color: rgb(var(--greenblue));
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
