@@ -306,14 +306,18 @@ def check_profile():
 @app.route("/GetSummaries", methods=["POST"])
 def get_summaries():
     rq = request.get_json()
+    search=''
+    search='%'+ search + '%'
     #print(rq)
     if type(rq) != dict:
         return {}
     users = set()
     response = []
     cursor = mysql.connection.cursor()
-    cursor.execute('''SELECT id FROM brainerdb.users WHERE completed_profile=1''')
+    cursor.execute('''SELECT id FROM brainerdb.users WHERE completed_profile=1 and username like %s''',[search])
     tmp = cursor.fetchall()
+    print(tmp)
+    print('sus')
     for y in tmp:
         users.add(y['id'])
     if 'materii' in rq and type(rq['materii']) == list:
@@ -491,6 +495,7 @@ def send_messages():
 def get_notifications():
     if request.method =='POST':
         rq=a.get_notifications(session['user_id'],mysql)
+        print(rq)
         #a.give_rating(session,41,mysql ,4)
         #a.send_notification('message',session,39,mysql,'d')
     # return jsonify([])
