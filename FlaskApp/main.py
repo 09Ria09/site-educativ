@@ -59,7 +59,7 @@ CORS(app)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_PASSWORD'] = '4tzainfo_root'
 app.config['MYSQL_DB'] = 'brainerdb'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 app.config['UPLOAD_FOLDER'] = CACHE_PATH
@@ -307,6 +307,8 @@ def check_profile():
 def get_summaries():
     rq = request.get_json()
     search=''
+    if 'search' in rq:
+        search=rq['search']
     search='%'+ search + '%'
     #print(rq)
     if type(rq) != dict:
@@ -314,7 +316,7 @@ def get_summaries():
     users = set()
     response = []
     cursor = mysql.connection.cursor()
-    cursor.execute('''SELECT id FROM brainerdb.users WHERE completed_profile=1 and username like %s''',[search])
+    cursor.execute('''SELECT id FROM brainerdb.users WHERE completed_profile=1 and ( username like %s or nume like %s or prenume like %s) ''',(search,search,search))
     tmp = cursor.fetchall()
     print(tmp)
     print('sus')
