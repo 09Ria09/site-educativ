@@ -467,8 +467,9 @@ def new_post():
         data = a.upload_wrapper(app, request.files, 'postare', 'video')
         print(data)
         if title == '':
-            print('test')
-        if data ==[]:
+            response['noTitle']=True
+            return response
+        if data ==[] and text=='':
             response['gol']=True
             return response
         for d in data:
