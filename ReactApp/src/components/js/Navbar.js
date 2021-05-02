@@ -12,7 +12,8 @@ function Navbar(props) {
     const location = useLocation();
 
     useEffect(() => {
-        if (['/'].indexOf(location.pathname) === -1) {
+        console.log(location.pathname.indexOf('chat'))
+        if (['/', '/notifications'].indexOf(location.pathname) === -1 && location.pathname.indexOf('/chat') === -1) {
             changeScrolled(true);
             return;
         } else changeScrolled(false);
@@ -46,11 +47,14 @@ function Navbar(props) {
                 ) : (
                     <React.Fragment>
                         <NavLink to={'/discover'} className={'navbarObject'}
-                                 activeClassName={scrolled === true ? 'navbarActive' : ''}>Descoperă</NavLink>
-                        <NavLink to={'/notification'} className={'navbarObject'}
-                                 activeClassName={scrolled === true ? 'navbarActive' : ''}>Notificări</NavLink>
+                                 activeClassName={scrolled === true ? 'navbarActive' : ''}><i style={{fontSize: '36px'}}
+                                                                                              className={"ri-user-search-line"}/></NavLink>
+                        <NavLink to={'/notifications'} className={'navbarObject'}
+                                 activeClassName={scrolled === true ? 'navbarActive' : ''}><i style={{fontSize: '36px'}}
+                                                                                              className={"ri-notification-line"}/></NavLink>
                         <NavLink to={'/profile'} className={'navbarObject'}
-                                 activeClassName={scrolled === true ? 'navbarActive' : ''}>Profil</NavLink>
+                                 activeClassName={scrolled === true ? 'navbarActive' : ''}><i style={{fontSize: '36px'}}
+                                                                                              className={"ri-account-circle-line"}/></NavLink>
                         <button onClick={() => {
                             axios({
                                 method: 'post',
@@ -61,7 +65,8 @@ function Navbar(props) {
                                     cookies.remove('signed-in', {sameSite: true});
                                 }
                             })
-                        }} className={'navbarObject'}>Sign Out
+                        }} className={'navbarObject'}>
+                            <i style={{fontSize: '36px'}} className={"ri-logout-circle-r-line"}/>
                         </button>
                     </React.Fragment>
                 )}

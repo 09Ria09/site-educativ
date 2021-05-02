@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from "react";
 import axios from 'axios';
-import '../css/Loading.css';
-import '../css/Notifications.css'
+import '../../css/Loading.css';
+import '../../css/Notifications.css'
 import SmallNotification from "./SmallNotification";
 import BigNotification from "./BigNotification";
-import Loading from './Loading'
+import Loading from '../Loading'
 import {Redirect} from "react-router-dom";
 
 function Notifications(props) {
     const [notifications, setNotifications] = useState([]);
     const [waitingResponse, setWaitingResponse] = useState(true);
-    const [bigNotification, setBigNotification] = useState([]);
+    const [bigNotification, setBigNotification] = useState({});
 
     useEffect(() => update({}), []);
 
@@ -54,23 +54,24 @@ function Notifications(props) {
         );
     else
         return (
-            <div className='bg'>
-                <div className='smallContainer'>
+            <div className={'bg' + (Object.keys(bigNotification).length !== 0 ? ' notificationFocused' : '')}>
+                <div className={'smallContainer'}>
                     {notifications === null ? ('') :
-                        notifications.map((x) => {
+                        notifications.map((x, y) => {
                             return (
-                                <SmallNotification name={x['sender'].length > 40 ? x.substring(0, 40) : x['sender']}
+                                <SmallNotification key={y}
+                                                   name={x['sender'].length > 40 ? x.substring(0, 40) : x['sender']}
                                                    value={x['message']} time={x['delta']}
                                                    clicked={setBigNotification} dictionary={x} img={x['icon']}/>
-                        );
-                    })
-                }
-            </div>
+                            );
+                        })
+                    }
+                </div>
             {
                 <div className='bigContainer'>
                     <BigNotification name={bigNotification['sender']} value={bigNotification['message']}
                                      img={bigNotification['icon']} time={bigNotification['time']}
-                                     id={bigNotification['id']}/>
+                                     id={bigNotification['id']} setBigNotification={setBigNotification}/>
                 </div>
             }
         </div>

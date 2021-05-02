@@ -66,7 +66,7 @@
     box-sizing: border-box;
 }
 
-.applyFilters:hover, .applyFilters:focus-visible {
+.applyFilters:hover {
     transform: translateY(4px);
     box-shadow: 0 0 rgba(var(--darkslateblue), 0.4);
 }

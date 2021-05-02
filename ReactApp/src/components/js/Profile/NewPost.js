@@ -24,12 +24,12 @@ function NewPost() {
                       name={'title'}
                       setValue={valueHandler}
                       editing={true}
-                      errors={errors['invalidTitle']}
+                      errors={errors['noTitle']}
                       placeholder={'Titlu'}
                       maxlength={128}/>
-            <AddFiles preview={'video'} placeholder={'Video'} icon={'video-add-line.png'}
+            <AddFiles preview={'video'} placeholder={'Video'} icon={'ri-video-add-line'}
                       accept={'video/mp4,video/ogg,video/webm'} setValue={valueHandler} name={'video'}/>
-            <AddFiles preview={'img'} placeholder={'Imagini'} icon={'image-add-line.png'}
+            <AddFiles preview={'img'} placeholder={'Imagini'} icon={'ri-image-add-line'}
                       accept={'image/x-png,image/gif,image/jpeg'} setValue={valueHandler} name={'images'} multiple/>
 
             {text === true ? (
@@ -42,14 +42,16 @@ function NewPost() {
                               errors={errors}/>
 
                     <button onClick={() => setText(false)}>
-                        <img src={'close-circle-line.png'} alt={'reset images'}/>
+                        <i style={{fontSize: '32px', color: "rgb(var(--columbiablue))"}}
+                           className="ri-close-circle-line"/>
                     </button>
                 </div>
             ) : (
                 <button onClick={() => setText(true)} className={'newPostAdd'}>
-                    <img className={'addIcon'} src={'text.png'} alt={'add text'}/>Adaugă Text</button>)}
+                    <i className={'ri-text addIcon'}/>
+                    Adaugă Text</button>)}
 
-            <AddFiles preview={'a'} placeholder={'Documente'} icon={'file-add-line.png'}
+            <AddFiles preview={'a'} placeholder={'Documente'} icon={'ri-file-add-line'}
                       accept={'application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf'}
                       setValue={valueHandler} name={'docs'} multiple/>
             <button className={'btn personButton newPostBtn'} onClick={() => {
@@ -57,7 +59,7 @@ function NewPost() {
                 tmp.append('video', value['video'][0])
                 value['images'].forEach((x, y) =>
                     tmp.append('images', x))
-                 tmp.append('text', JSON.stringify(value['text']))
+                tmp.append('text', JSON.stringify(value['text']))
                 value['docs'].forEach((x, y) =>
                     tmp.append('docs', x))
                 tmp.append('title', value['title'])
@@ -67,8 +69,10 @@ function NewPost() {
                     data: tmp
 
                 }).then(res => {
-                    console.log(res)
-                    window.location.reload();
+                    let tmp = JSON.parse(res.request.response)
+                    setErrors(tmp);
+                    if (tmp['noTitle'] === undefined)
+                        window.location.reload();
                 });
             }}>
                 Submit

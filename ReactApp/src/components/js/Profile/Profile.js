@@ -9,6 +9,7 @@ import NewPost from "./NewPost";
 import ProfilePicture from "./ProfilePicture";
 import Cookies from "universal-cookie";
 import Posts from "./Posts";
+import Rating from "./Rating/Rating";
 
 function Profile(props) {
     const cookies = new Cookies();
@@ -90,12 +91,16 @@ function Profile(props) {
         );
     return (
         <div className={'profileContainer'}>
+            {props.completedProfile === 0 ? (
+                <div className={'cpw animate__animated animate__shakeX'}>Pentru a putea accesa restul site-ului, vă
+                    rugăm să vă completați profilul.</div>
+            ) : ''}
             <article className={'profile'}>
-                <button className={'cogwheelContainer'} onClick={() => {
+                <button className={'btn personButton profileButton cogwheelContainer'} onClick={() => {
                     setButton(true)
                 }}>
-                    <img className={'cogwheel' + (editing === true ? ' rotateCogwheel' : '')}
-                         src={'cogwheel.png'} alt={'edit'}/></button>
+                    <i className={'ri-settings-5-fill cogwheel' + (editing === true ? ' rotateCogwheel' : '')}/>
+                </button>
                 <div className={'profileFlex'}>
                     <div className={'profileFlexChild'}>
                         <h1><TextEdit type={'input'}
@@ -109,6 +114,7 @@ function Profile(props) {
                                       maxlength={32}/></h1>
                         <h2>{profile['prenume'] + ' ' + profile['nume']}</h2>
                         <h3>{profile['mail']}</h3>
+                        <Rating rating={profile['rating']}/>
                         <CustomSelect initialValue={profile['clasa']} setValue={valueHandler}
                                       editing={editing} errors={errors['invalidC']}
                                       marginOffset={'-25px'} name={'clasa'} ikw={'Clasa: '}

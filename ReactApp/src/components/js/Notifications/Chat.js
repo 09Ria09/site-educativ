@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react'
-import {Redirect, useHistory} from 'react-router-dom'
-import '../css/Chat.css';
+import {Redirect, useHistory, useParams} from 'react-router-dom'
+import '../../css/Chat.css';
 import axios from 'axios'
-import TextEdit from './Profile/TextEdit'
-import Loading from './Loading'
+import TextEdit from '../Profile/TextEdit'
+import Loading from '../Loading'
 
 function Chat(props) {
     const [data, setData] = useState();
     const [value, setValue] = useState({});
+    const [sent, setSent] = useState(false);
     const [waitingResponse, setResponse] = useState(true);
     let history = useHistory();
 
@@ -20,7 +21,7 @@ function Chat(props) {
         })
     }
 
-    useEffect(() => update({}), []);
+    useEffect(() => update({}), [useParams()]);
 
     function update() {
         axios({
@@ -46,9 +47,22 @@ function Chat(props) {
             method: 'post',
             url: '/SendMessage',
             data: tmp
+        }).then(res => {
+            setSent(true);
         })
     }
-    if(!waitingResponse)
+
+    if (sent === true)
+        return (<div className='bg' style={{
+            display: 'flex',
+            color: 'rgb(var(--columbiablue))',
+            fontSize: '1.5em',
+            alignItems: 'center',
+            justifyContent: 'center'
+        }}>
+            <h1>Mesajul a fost trimis.</h1>
+        </div>);
+    else if (!waitingResponse)
         return (
             <div className={'chatBox'}>
                 <div className={'messageBox'}>
@@ -67,8 +81,8 @@ function Chat(props) {
         )
     else
         return (
-            <div className={'chatBox'}>
-                <Loading />
+            <div className={'chatBox noBG'}>
+                <Loading/>
             </div>
         )
 }

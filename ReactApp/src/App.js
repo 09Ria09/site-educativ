@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {HashRouter, Route} from "react-router-dom";
+import 'remixicon/fonts/remixicon.css'
 import './App.css';
 import Home from "./components/js/Home/Home";
 import Discover from "./components/js/Discover/Discover";
@@ -12,24 +13,24 @@ import {CSSTransition} from "react-transition-group";
 import Cookies from 'universal-cookie';
 import axios from "axios";
 import ChangePassword from "./components/js/Sign/ChangePassword";
-import Notifications from "./components/js/Notifications";
+import Notifications from "./components/js/Notifications/Notifications";
 import NProfile from "./components/js/Profile/NProfile";
-import Chat from './components/js/Chat';
-import VerifyMail from './components/js/VerifyMail'
+import Chat from './components/js/Notifications/Chat';
+import VerifyMail from './components/js/Sign/VerifyMail'
 
 function App() {
     const routes = [
         {path: '/', name: 'Home', Component: Home},
         {path: '/discover', name: 'Descoperă', Component: Discover},
         {path: '/forgotPassword', name: 'Forgot Password', Component: ForgotPassword},
-        {path: '/changePassword/*', name: 'Change Password', Component: ChangePassword},
+        {path: '/changePassword/:id', name: 'Change Password', Component: ChangePassword},
         {path: '/profile', name: 'Profil', Component: Profile},
         {path: '/nProfile/*', name: 'Profil User', Component: NProfile},
         {path: '/signUp', name: 'Sign Up', Component: SignUp},
         {path: '/signIn', name: 'Sign In', Component: SignIn},
-        {path: '/notification', name: 'Notificări', Component: Notifications},
-        {path: '/chat/*', name: 'Chat', Component: Chat},
-        {path: '/VerifyMail/*', name: 'Verificare Mail', Component: VerifyMail}
+        {path: '/notifications', name: 'Notificări', Component: Notifications},
+        {path: '/chat/:id', name: 'Chat', Component: Chat},
+        {path: '/VerifyMail/:id', name: 'Verificare Mail', Component: VerifyMail}
 
     ];
 

@@ -1,5 +1,5 @@
 .chatBox {
-    margin-top: calc(15vh - 30px);
+    margin-top: calc(12vh - 30px);
     width: 70vw;
     max-width: 800px;
     margin-left: auto;
@@ -9,12 +9,17 @@
     position: relative;
     padding-bottom: 60px;
     padding-top: 15px;
+    padding-right: 50px;
+    padding-left: 50px;
 }
 
-.messageBox {
-    margin-left: auto;
-    margin-right: auto;
-    width: 85%;
+.noBG {
+    background: none;
+}
+
+.chatBox > .loadingContainer {
+    margin-top: 45px;
+    height: 60vh;
 }
 
 .messageBox > h1 {
@@ -23,7 +28,7 @@
 
 .send {
     position: absolute;
-    right: 54px;
+    right: 25px;
     bottom: 20px;
 }
 

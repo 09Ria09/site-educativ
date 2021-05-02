@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import '../../css/Discover/Discover.css';
 import {Redirect} from "react-router-dom";
 import axios from "axios";
-import Loading from "../Loading";
 import Post from "./Post";
 
 function Posts(props) {
@@ -30,21 +29,16 @@ function Posts(props) {
     if (props.completedProfile === 0)
         return (<Redirect to='/Profile'/>);
     if (waitingResponse === true)
-        return (
-            <div className={'postsContainer'}>
-                <div className={'posts'}>
-                    <Loading/>
-                </div>
-            </div>
-        );
+        return ('');
     return (
         <div className={'postsContainer'}>
             <div className={'posts'}>
                 {postsList === null ? ('') :
-                    postsList.map((x) => {
+                    postsList.map((x, y) => {
                         let dict = x;
                         return (
-                            <Post video={dict['video']} images={dict['images']} text={dict['text']} docs={dict['docs']}
+                            <Post key={y}
+                                  video={dict['video']} images={dict['images']} text={dict['text']} docs={dict['docs']}
                                   title={dict['title']}/>
                         );
                     })

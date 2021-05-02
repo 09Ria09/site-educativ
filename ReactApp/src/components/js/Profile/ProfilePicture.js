@@ -26,14 +26,14 @@ function AddFiles(props) {
     if (props.editing)
         return (
             <div className={'profilePicture'}>
-                <img className={'addIcon addIconModified'} src={'image-add-line.png'} style={{zIndex: 5}}
-                     alt={'Schimbă Imaginea de Profil'}/>
+                <i className={'addIcon addIconModified ri-image-add-line'} style={{zIndex: 5}}/>
                 <input ref={ref} type={'file'} onChange={valueHandler} accept={'image/x-png,image/gif,image/jpeg'}
                        name={'icon'}/>
                 {
                     <img className={'imagesSelected'} src={url}/>}
-                {value !== null ? (<button onClick={resetInput}><img
-                    src={'close-circle-line.png'} alt={'Șterge Imaginea de Profil'}/></button>) : ''}
+                {value !== null ? (<button onClick={resetInput}>
+                    <i className={'addIcon ri-close-circle-line'}/>
+                </button>) : ''}
             </div>
         );
     else return (<img className={'profileImg'} src={url}/>)

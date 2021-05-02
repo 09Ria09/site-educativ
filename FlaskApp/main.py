@@ -1,6 +1,11 @@
-import json ,smtplib , ssl, time, datetime
-from babel.dates import format_date, format_datetime, format_time
-from flask import Flask, jsonify, request, session, url_for,send_file
+import datetime
+import json
+import smtplib
+import ssl
+import time
+
+from babel.dates import format_date
+from flask import Flask, jsonify, request, session
 from flask_cors import CORS
 from flask_mysqldb import MySQL
 from itsdangerous import SignatureExpired, URLSafeTimedSerializer
@@ -21,9 +26,9 @@ def mail_verificare(recipient, code, subiect):
     try:
         if subiect == "cont":
             subiect = "Validare cont"
-        elif subiect=='parola':
+        elif subiect == 'parola':
             subiect = "Schimbare Parola"
-        else :
+        else:
             subiect = 'Raportare'
         server = smtplib.SMTP(smtp_server, port)
         server.starttls(context=context)
@@ -52,7 +57,7 @@ s = URLSafeTimedSerializer('6398715B0D903F28D7BBF08370156D9557DDFAE4CBB1A610A9A5
                            '8325FCB6CD4C0D980469698435125C6359526E7D17B7BAFE89AA32B6B1361C73')
 PAS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 CHANGE_PASSWORD_URL = 'http://localhost:3000/#/changePassword/'
-VERIFY_MAIL_URL='http://localhost:3000/#/VerifyMail/'
+VERIFY_MAIL_URL = 'http://localhost:3000/#/VerifyMail/'
 CACHE_PATH = "./assets/cache"
 CORS(app)
 
@@ -110,7 +115,7 @@ def sign_up():
             session['completed_profile'] = 0
             temp = s.dumps(email, salt="cont")
             url = VERIFY_MAIL_URL + temp
-            mail_verificare(email,url, "cont")
+            mail_verificare(email, url, "cont")
             print("Mail trimis catre {}".format(email))
             success = True
             return {'erori': erori, 'success': success, 'verified': session.get('verified'),
@@ -173,17 +178,18 @@ def sign_in():
 def get_profile():
     if session.get('user_id') is None:
         return {}
-    d=get_profile_helper(session['user_id'])
-    #print(d)
+    d = get_profile_helper(session['user_id'])
+    # print(d)
     return d
 
-@app.route('/nProfile/<token>',methods=["POST"])
+
+@app.route('/nProfile/<token>', methods=["POST"])
 def get_nprofile(token):
     print(token)
     if token is None:
         return {}
-    d=get_profile_helper(token)
-    #print(d)
+    d = get_profile_helper(token)
+    # print(d)
     return d
 
 
@@ -198,8 +204,8 @@ def get_profile_helper(user_id):
     cursor.execute('''SELECT * FROM brainerdb.extra WHERE user_id=%s;''', [user_id])
     tmp = cursor.fetchall()
     if tmp != ():
-        tmp[0]['ratingRounded']=round(tmp[0]['rating'])
-        #print(tmp)
+        tmp[0]['ratingRounded'] = round(tmp[0]['rating'])
+        # print(tmp)
         profile = {**tmp[0], **profile}
 
     cursor.execute('''SELECT materie_id FROM brainerdb.materii WHERE user_id=%s;''', [user_id])
@@ -207,10 +213,10 @@ def get_profile_helper(user_id):
     tmpm = []
     for x in tmp:
         tmpm.append(x['materie_id'])
-    #print(tmpm)
+    # print(tmpm)
     if tmp:
         profile['materii'] = tmpm
-    profile['id']=user_id
+    profile['id'] = user_id
     return profile
 
 
@@ -256,7 +262,7 @@ def submit_profile():
         con.commit()
 
     if 'descriere' in rq:
-        #print(rq['descriere'])
+        # print(rq['descriere'])
         cursor.execute('''update extra set descriere=%s where user_id=%s''',
                        (json.dumps(rq['descriere'], ensure_ascii=False), session.get('user_id')))
         con.commit()
@@ -279,11 +285,11 @@ def submit_profile():
         c = True
 
     if 'profilePicture' in request.files:
-        #print(request.files['profilePicture'])
-        data=a.upload_wrapper(app, request.files, 'profil', 'image')
+        # print(request.files['profilePicture'])
+        data = a.upload_wrapper(app, request.files, 'profil', 'image')
         # a.upload_wrapper(app,session,'profil')
-        path =data[0]['path']
-        #print(path)
+        path = data[0]['path']
+        # print(path)
         cursor.execute('''update extra set icon=%s where user_id=%s''',
                        (path, session.get('user_id')))
         con.commit()
@@ -294,7 +300,7 @@ def submit_profile():
         con.commit()
         session['completed_profile'] = 1
 
-    #print(session['completed_profile'])
+    # print(session['completed_profile'])
     return {'ver': ver, 'completed_profile': session['completed_profile']}
 
 
@@ -306,17 +312,19 @@ def check_profile():
 @app.route("/GetSummaries", methods=["POST"])
 def get_summaries():
     rq = request.get_json()
-    search=''
+    search = ''
     if 'search' in rq:
-        search=rq['search']
-    search='%'+ search + '%'
-    #print(rq)
+        search = rq['search']
+    search = '%' + search + '%'
+    # print(rq)
     if type(rq) != dict:
         return {}
     users = set()
     response = []
     cursor = mysql.connection.cursor()
-    cursor.execute('''SELECT id FROM brainerdb.users WHERE completed_profile=1 and ( username like %s or nume like %s or prenume like %s) ''',(search,search,search))
+    cursor.execute(
+        '''SELECT id FROM brainerdb.users WHERE completed_profile=1 and ( username like %s or nume like %s or prenume like %s) ''',
+        (search, search, search))
     tmp = cursor.fetchall()
     print(tmp)
     print('sus')
@@ -329,10 +337,10 @@ def get_summaries():
         users = get_summaries_helper(users, 'id', 'brainerdb.users', 'clasa', rq['clasa'])
 
     cu = session.get('user_id')
-    cursor.execute('''SELECT blocked FROM brainerdb.block WHERE blocker=%s''',[cu])
+    cursor.execute('''SELECT blocked FROM brainerdb.block WHERE blocker=%s''', [cu])
     blocati = cursor.fetchall()
-    btmp=[]
-    if not blocati== ():
+    btmp = []
+    if not blocati == ():
         for b in blocati:
             btmp.append(b['blocked'])
     print(btmp)
@@ -343,17 +351,19 @@ def get_summaries():
         tmp.pop('numar', None)
         tmp.pop('mail', None)
         response.append(tmp)
-    if 'sort' in rq :
-        if rq['sort']==1:
+    if 'sort' in rq:
+        if rq['sort'] == 1:
             response.reverse()
-        elif rq['sort']==2 or rq['sort']==3:
+        elif rq['sort'] == 2 or rq['sort'] == 3:
             def sf(d):
                 return d['rating']
+
             response.sort(key=sf)
-            if(rq['sort']==3):
+            if (rq['sort'] == 3):
                 response.reverse()
-    #print(response)
+    # print(response)
     return jsonify(response)
+
 
 def get_summaries_helper(users, what, table, column, rq):
     cursor = mysql.connection.cursor()
@@ -455,9 +465,10 @@ def schimbare_parola(token):
 
     return {'erori': erori, 'success': success}
 
+
 @app.route('/NewPost', methods=['POST'])
 def new_post():
-    response = {'title':'','video':'','images':[],'text':'','docs':[]}
+    response = {'title': '', 'video': '', 'images': [], 'text': '', 'docs': []}
     title = request.form['title']
     text = request.form['text']
     print(type(title))
@@ -467,72 +478,78 @@ def new_post():
         data = a.upload_wrapper(app, request.files, 'postare', 'video')
         print(data)
         if title == '':
-            response['noTitle']=True
+            response['noTitle'] = 'Lipsește titlul.'
             return response
-        if data ==[] and text=='':
-            response['gol']=True
+        if data == [] and text == '':
+            response['gol'] = True
             return response
         for d in data:
             if d['erori']['tipInvalid'] == True:
                 response['eroare'] = True
                 return response
-            
+
             if d['tip'] == 'vid':
                 response['video'] = d['path']
             elif d['tip'] == 'pic':
                 response['images'].append(d['path'])
             elif d['tip'] == 'doc':
-                response['docs'].append(dict(nume = d['nume'],url = d['path']))
-        
-        #print(8*'$',text, 8*'$')
+                response['docs'].append(dict(nume=d['nume'], url=d['path']))
+
+        # print(8*'$',text, 8*'$')
         response['title'] = title
         response['text'] = text
         cursor = mysql.connection.cursor()
         con = mysql.connection
-        #print(response)
+        # print(response)
         response['timp'] = format_date(datetime.datetime.fromtimestamp(time.time()), format='long', locale='ro')
         cursor.execute('''insert into posts values (NULL, %s, %s, %s, %s)''',
-                            (session['user_id'], text, title, response))
+                       (session['user_id'], text, title, response))
         con.commit()
     return response
 
+
 @app.route('/SendMessage', methods={'POST'})
 def send_messages():
-    if request.method=='POST':
-        rq=request.get_json()
-        data=a.send_notification('message', session,rq['id'], mysql,message = rq['text'])
+    if request.method == 'POST':
+        rq = request.get_json()
+        data = a.send_notification('message', session, rq['id'], mysql, message=rq['text'])
         print(rq)
     return data
 
-@app.route('/GetNotifications', methods={'GET','POST'})
+
+@app.route('/GetNotifications', methods={'GET', 'POST'})
 def get_notifications():
-    if request.method =='POST':
-        rq=a.get_notifications(session['user_id'],mysql)
+    if request.method == 'POST':
+        rq = a.get_notifications(session['user_id'], mysql)
         print(rq)
-        #a.give_rating(session,41,mysql ,4)
-        #a.send_notification('message',session,39,mysql,'d')
+        # a.give_rating(session,41,mysql ,4)
+        # a.send_notification('message',session,39,mysql,'d')
     # return jsonify([])
     return jsonify(rq)
 
+
 @app.route('/chat/<token>', methods={'POST'})
-def get_chat_data(token): 
-    if(request.method == 'POST'):
+def get_chat_data(token):
+    if (request.method == 'POST'):
         cursor = mysql.connection.cursor()
-        cursor.execute('''select username from users where id =%s ''',[token])
-        username=cursor.fetchall()[0]['username']
-        cursor.execute('''select icon from extra where user_id =%s ''',[token])
-        icon=cursor.fetchall()[0]['icon']
-        user_id=token
-        return {'username':username,'icon':icon,'id':user_id}
+        cursor.execute('''select username from users where id =%s ''', [token])
+        username = cursor.fetchall()[0]['username']
+        cursor.execute('''select icon from extra where user_id =%s ''', [token])
+        icon = cursor.fetchall()[0]['icon']
+        user_id = token
+        return {'username': username, 'icon': icon, 'id': user_id}
     return 0
-@app.route('/Hide',methods={'POST'})
+
+
+@app.route('/Hide', methods={'POST'})
 def hide():
-    if request.method=='POST':
-        blocked=request.get_json()['id']
-        a.ascunde(session,blocked,mysql)
+    if request.method == 'POST':
+        blocked = request.get_json()['id']
+        a.ascunde(session, blocked, mysql)
     return {}
 
-@app.route('/GetPosts',methods={'POST'})
+
+@app.route('/GetPosts', methods={'POST'})
 def get_posts():
     id = request.get_json()['id']
     cursor = mysql.connection.cursor()
@@ -543,23 +560,31 @@ def get_posts():
         # x['response'] = x['response'].replace('\'', '"')
         x['response'] = eval(x['response'])
         response.append(x['response'])
-    #print(response)
+    # print(response)
     response.reverse()
     return jsonify(response)
-@app.route('/Report',methods={'POST'})
+
+
+@app.route('/Report', methods={'POST'})
 def report():
-    if request.method=='POST':
-        reported=request.get_json()['id']
-        #message=request.get_json()['mesaj']
+    if request.method == 'POST':
+        reported = request.get_json()['id']
+        # message=request.get_json()['mesaj']
         cursor = mysql.connection.cursor()
-        cursor.execute('''select username from users where id =%s ''',[reported])
-        username=cursor.fetchall()[0]['username']
-        #a.ascunde(session,reported,mysql)
+        cursor.execute('''select username from users where id =%s ''', [reported])
+        username = cursor.fetchall()[0]['username']
+        # a.ascunde(session,reported,mysql)
         f = open("logs.txt", "a")
-        f.write('Userul {} a fost raportat de catre {}\n'.format(username,session['username']))
+        f.write('Userul {} a fost raportat de catre {}\n'.format(username, session['username']))
     return {}
-@app.route('/rateSubmit/<token>', methods={'POST'})
-def rate(token): 
+
+
+@app.route('/RateSubmit', methods={'POST'})
+def rate():
+    uid = request.get_json()['uid']
     stars = request.get_json()['rating']
-    give_rating(session,token,mysql ,stars)
+    a.give_rating(session, uid, mysql, stars)
+    return {}
+
+
 app.run(debug=True)

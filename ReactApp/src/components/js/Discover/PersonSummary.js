@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import '../../css/Discover/PersonSummary.css';
 import axios from "axios";
 import {Link} from "react-router-dom";
+import Rating from "../Profile/Rating/Rating";
 
 function PersonSummary(props) {
     const [hidden, setHidden] = useState(false);
@@ -24,9 +25,12 @@ function PersonSummary(props) {
         return (
             <article className={'person'}>
                 <div className={'personDiv1'}>
-                    <h1>{props.name}</h1>
-                    <h1>{props.rating}</h1>
-                    <img src={typeof props.image === 'string' ? props.image : 'placeholder.jpg'}/>
+                    <div className={'innerPersonDiv1'}>
+                        <h1>{props.name}</h1>
+                        <Rating rating={props.rating}/>
+                    </div>
+                    <img alt={'profile picture'}
+                         src={typeof props.image === 'string' ? props.image : 'placeholder.jpg'}/>
                 </div>
                 <div className={'personChildren'}>{props.children}</div>
                 <div className={'personDiv2'}>

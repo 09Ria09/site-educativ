@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css/SmallNotification.css';
+import '../../css/SmallNotification.css';
 
 function SmallNotification(props) {
 

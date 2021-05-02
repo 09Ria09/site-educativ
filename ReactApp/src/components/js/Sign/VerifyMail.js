@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Redirect, useHistory } from 'react-router-dom'
+import React, {useEffect, useState} from 'react';
+import {Redirect, useHistory, useParams} from 'react-router-dom'
 import axios from 'axios'
-import '../css/VerifyMail.css';
+import '../../css/VerifyMail.css';
 
 function VerifyMail() {
     const history = useHistory();
     const [toRedirect, setRedirect] = useState(false)
-    useEffect(() => update({}), []);
+    useEffect(() => update({}), [useParams()]);
 
     const redirect = () => {
         setRedirect(true);

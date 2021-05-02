@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Redirect, useHistory} from 'react-router-dom'
+import {Redirect, useHistory, useParams} from 'react-router-dom'
 import axios from "axios";
 import '../../css/Profile/Profile.css';
 import TextEdit from "./TextEdit";
@@ -8,6 +8,7 @@ import Loading from "../Loading";
 import ProfilePicture from "./ProfilePicture";
 import Cookies from "universal-cookie";
 import Posts from "./Posts";
+import Rating from "./Rating/Rating";
 
 function Profile(props) {
     let history = useHistory();
@@ -24,7 +25,7 @@ function Profile(props) {
             setProfile(JSON.parse(res.request.response))
             setWaitingResponse(false)
         });
-    }, []);
+    }, [useParams()]);
 
     if (props.signedIn === false)
         return (<Redirect to='/'/>);
@@ -44,6 +45,7 @@ function Profile(props) {
                                       editing={false}/></h1>
                         <h2>{profile['prenume'] + ' ' + profile['nume']}</h2>
                         <h3>{profile['mail']}</h3>
+                        <Rating rating={profile['rating']} id={profile['id']} active/>
                         <CustomSelect initialValue={profile['clasa']}
                                       editing={false}
                                       marginOffset={'-25px'} ikw={'Clasa: '}

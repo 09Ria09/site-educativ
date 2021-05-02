@@ -29,8 +29,7 @@
     transform: scale(1.75);
 }
 
-.personDiv1 > h1 {
-    margin-top: 35px;
+.personDiv1 > .innerPersonDiv1 {
     margin-left: 50px;
     margin-right: 20px;
 }
@@ -85,7 +84,7 @@
     text-align: center;
 }
 
-.personButton:hover, .personButton:focus-visible {
+.personButton:hover {
     transform: translateY(4px);
     box-shadow: 0 0 rgba(var(--darkslateblue), 0.4);
 }

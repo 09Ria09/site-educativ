@@ -7,10 +7,6 @@
     --mantis: 120, 188, 97;
 }
 
-body {
-    font-size: 0.5cm;
-}
-
 .displayNone {
     display: none;
 }
@@ -32,7 +28,7 @@ button {
     user-select: none;
 }
 
-.btn:hover, .btn:focus-visible {
+.btn:hover {
     background-color: rgb(var(--columbiablue));
     color: rgb(var(--oxfordblue));
 }
@@ -56,6 +52,6 @@ button {
 
 @media screen and (max-width: 769px) {
     body {
-        font-size: 13px;
+        font-size: 2em;
     }
 }

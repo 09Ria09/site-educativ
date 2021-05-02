@@ -24,11 +24,10 @@ function AddFiles(props) {
     console.log('sus')
     return (
         <div className={'newPostAdd'}>
-            <img className={'addIcon' + (value.length !== 0 ? ' addIconModified' : '')} src={props.icon}
-                 alt={'Adaugă ' + props.placeholder}/>
+            <i className={props.icon + ' addIcon' + (value.length !== 0 ? ' addIconModified' : '')}/>
             <input ref={ref} type={'file'} onChange={valueHandler} accept={props.accept} multiple={props.multiple}/>
             {value.length === 0 ? 'Adaugă ' + props.placeholder : ''}
-            
+
             {value.map((x, y) => {
                 if (props.preview === 'a')
                     return (<a className={'docsSelected'} key={y} href={URL.createObjectURL(x)}
@@ -39,8 +38,9 @@ function AddFiles(props) {
                 else if (props.preview === 'video')
                     return (<video className={'videoSelected'} key={y} src={URL.createObjectURL(x)} controls/>)
             })}
-            <button onClick={resetInput} style={{display: (value.length !== 0 ? 'unset' : 'none')}}><img
-                src={'close-circle-line.png'} alt={'Șterge ' + props.placeholder}/></button>
+            <button onClick={resetInput} style={{display: (value.length !== 0 ? 'unset' : 'none')}}>
+                <i style={{fontSize: '32px', color: "rgb(var(--columbiablue))"}} className="ri-close-circle-line"/>
+            </button>
         </div>
     );
 }

@@ -29,7 +29,6 @@
     padding: 1vw;
     padding-bottom: 0;
     color: rgb(201, 240, 255);
-    font-size: 1.2vw;
 }
 
 .smallNotificationImage {
@@ -41,7 +40,6 @@
 .smallNotificationText {
     padding: 1vw;
     color: rgb(201, 240, 255);
-    font-size: 0.9vw;
 }
 
 .notVisible {
@@ -55,39 +53,4 @@
 .smallNotificationTime {
     margin-top: 0;
     opacity: 0.3;
-    font-size: 0.8vw;
-}
-
-@media only screen and (max-width: 600px) {
-    .smallNotificationContainer {
-        height: 10vh;
-        border-radius: 2vh;
-    }
-
-    .smallNotificationText {
-        font-size: 1.8vh;
-    }
-
-    .smallNotificationName {
-        font-size: 2.2vh;
-    }
-
-    .smallNotificationImage {
-        height: 5vh;
-    }
-
-    .notVisible {
-        width: 68vw;
-        height: 10vh;
-    }
-
-    .smallNotificationTime {
-        font-size: 2vh;
-    }
-
-    .smallNotificationNameText {
-    }
-
-    .smallNotificationNameTime {
-    }
 }
