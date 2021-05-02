@@ -458,8 +458,19 @@ def schimbare_parola(token):
 @app.route('/NewPost', methods=['POST'])
 def new_post():
     response = {'title':'','video':'','images':[],'text':'','docs':[]}
+    title = request.form['title']
+    text = request.form['text']
+    print(type(title))
+    print(title)
+    print('sus')
     if request.method == 'POST':
         data = a.upload_wrapper(app, request.files, 'postare', 'video')
+        print(data)
+        if title == '':
+            print('test')
+        if data ==[]:
+            response['gol']=True
+            return response
         for d in data:
             if d['erori']['tipInvalid'] == True:
                 response['eroare'] = True
@@ -471,14 +482,13 @@ def new_post():
                 response['images'].append(d['path'])
             elif d['tip'] == 'doc':
                 response['docs'].append(dict(nume = d['nume'],url = d['path']))
-        title = request.form['title']
-        text = request.form['text']
+        
         #print(8*'$',text, 8*'$')
         response['title'] = title
         response['text'] = text
         cursor = mysql.connection.cursor()
         con = mysql.connection
-        print(response)
+        #print(response)
         response['timp'] = format_date(datetime.datetime.fromtimestamp(time.time()), format='long', locale='ro')
         cursor.execute('''insert into posts values (NULL, %s, %s, %s, %s)''',
                             (session['user_id'], text, title, response))
@@ -532,7 +542,7 @@ def get_posts():
         # x['response'] = x['response'].replace('\'', '"')
         x['response'] = eval(x['response'])
         response.append(x['response'])
-    print(response)
+    #print(response)
     response.reverse()
     return jsonify(response)
 @app.route('/Report',methods={'POST'})

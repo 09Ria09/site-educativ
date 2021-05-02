@@ -146,9 +146,13 @@ def get_notifications(id,mysql) :
     cursor = mysql.connection.cursor()
     cursor.execute('''select * from notifications where receiver =%s ''',[id])
     m=cursor.fetchall()
+    k=[]
     for x in m:
         cursor.execute('''select username from users where id =%s ''',[x['sender']])
-        a=cursor.fetchall()[0]['username']
+        a=cursor.fetchall()
+        if a == ():
+            return k
+        a=a[0]['username']
         cursor.execute('''select icon from extra where user_id =%s ''',[x['sender']])
         x['icon']=cursor.fetchall()[0]['icon']
         x['id'] = x['sender']
