@@ -6,7 +6,6 @@ function SmallNotification(props) {
     let text = JSON.parse(props.value);
     for (let x of text) {
         let k = x['children'][0];
-        console.log(k, 'data');
         if(k['children'] != undefined)
             k = k['children'][0];
         if (k['text'] != 'undefined') 
