@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../../css/SmallNotification.css';
 
 function SmallNotification(props) {
+    let s = ''
+    let text = JSON.parse(props.value);
+    for (let x of text) {
+        let k = x['children'][0];
+        console.log(k, 'data');
+        if(k['children'] != undefined)
+            k = k['children'][0];
+        if (k['text'] != 'undefined') 
+            s += (k['text']);
+    }
+
 
     if (props.value === undefined || props.value === '')
         return ('');
-
-    let text = JSON.parse(props.value);
-    let s = '';
-    for (let x of text) {
-        if (x['children'][0]['text'] != 'undefined')
-            s += (x['children'][0]['text']);
-    }
     return (
         <button className={'notVisible'} onClick={() => props.clicked(props.dictionary)}>
             <div className={'smallNotificationContainer'}>
