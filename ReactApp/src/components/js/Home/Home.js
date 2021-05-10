@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import Rellax from "rellax";
 import HomeStart from "./HomeStart";
 import Content from "./Content";
@@ -10,32 +10,23 @@ function Home(props) {
     });
     return (
         <React.Fragment>
-            <HomeStart signedIn={props.signedIn}/>
-            <Content type={'A'} style={{marginBottom: '20vh'}}>
-                <h3>Cops, another community I'm not part of.</h3>
-                <p>Tell him time is of the essence. Pretend. You pretend the feelings are there, for the world, for the
-                    people around you. Who knows? Maybe one day they will be. I'm going to tell you something that I've
-                    never told anyone before.</p>
-                <ul>
-                    <li>I'm real proud of you for coming, bro. I know you hate funerals.</li>
-                    <li>I'm Dexter, and I'm not sure what I am.</li>
-                    <li>I'm thinking two circus clowns dancing. You?</li>
-                </ul>
+            <HomeStart signedIn={props.signedIn} />
+            <Content type={'A'} style={{ marginBottom: '20vh' }}>
+                <h3>Scopul Nostru</h3>
+                <p>Asigurarea sprijinului de care ai nevoie
+	În cazul în care cantitatea de teme atribuită devine copleșitoare, comunitatea Brainer îți vine în ajutor.
+    Tot ceea ce îți cerem este sa îți impartășești la randul tău cunoștinșele despre domeniile tale preferate.
+    Ai ocazia de a intra in contact cu persoane motivate sa iți ofere suportul necesar pentru finalizarea  exercițiilor care iți dau batai de cap, iar tu contribui la dezvoltarea comunității noastre.
+    Daca ideea ți se pare interesanta, nu ezita si creează-ți un cont chiar acum pentru a da startul imbunătățirii aptitudinilor tale la disciplinele care ți s-au părut încă de la inceput imposibil de cucerit.
+    Brainer va fi in tot acest timp alături de tine!
+   </p>
+
             </Content>
-            <Content type={'E'} style={{marginBottom: '20vh'}}>
-                <p>God created pudding, and then he rested. Keep your mind limber. Makes me a … scientist. God created
-                    pudding, and then he rested. I'm doing mental jumping jacks.</p>
-                <p>Watching ice melt. This is fun. Oh I beg to differ, I think we have a lot to discuss. After all, you
-                    are a client. Pretend. You pretend the feelings are there, for the world, for the people around you.
-                    Who knows? Maybe one day they will be.</p>
-                <p>Pretend. You pretend the feelings are there, for the world, for the people around you. Who knows?
-                    Maybe one day they will be. Under normal circumstances, I'd take that as a compliment. You all
-                    right, Dexter?</p>
-                <p>I'm not the monster he wants me to be. So I'm neither man nor beast. I'm something new entirely. With
-                    my own set of rules. I'm Dexter. Boo. Somehow, I doubt that. You have a good heart, Dexter. You're a
-                    killer. I catch killers.</p>
+            <Content type={'E'} style={{ marginBottom: '20vh' }}>
+                <p> </p>
+        
             </Content>
-            <Features/>
+            <Features />
         </React.Fragment>
     );
 }
