@@ -1,3 +1,4 @@
+
 import datetime
 import json
 import smtplib
@@ -68,6 +69,8 @@ app.config['MYSQL_PASSWORD'] = '4tzainfo_root'
 app.config['MYSQL_DB'] = 'brainerdb'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 app.config['UPLOAD_FOLDER'] = CACHE_PATH
+#app.config['MYSQL_CHARSET'] = 'utf8_romanian_ci'
+app.config['MYSQL_USE_UNICODE'] = True
 
 
 # VARIABILE
@@ -469,7 +472,7 @@ def schimbare_parola(token):
 @app.route('/NewPost', methods=['POST'])
 def new_post():
     response = {'title': '', 'video': '', 'images': [], 'text': '', 'docs': []}
-    title = request.form['title']
+    title = v.nfc(request.form['title'])
     text = request.form['text']
     print(type(title))
     print(title)
@@ -503,7 +506,7 @@ def new_post():
         # print(response)
         response['timp'] = format_date(datetime.datetime.fromtimestamp(time.time()), format='long', locale='ro')
         cursor.execute('''insert into posts values (NULL, %s, %s, %s, %s)''',
-                       (session['user_id'], text, title, response))
+                       (session['user_id'], json.dumps(text, ensure_ascii=False), title, json.dumps(response, ensure_ascii=False)))
         con.commit()
     return response
 
@@ -558,6 +561,8 @@ def get_posts():
     response = []
     for x in tmp:
         # x['response'] = x['response'].replace('\'', '"')
+        if x['response'] == '':
+            continue
         x['response'] = eval(x['response'])
         response.append(x['response'])
     # print(response)

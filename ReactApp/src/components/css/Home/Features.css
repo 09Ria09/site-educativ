@@ -32,6 +32,7 @@
 
 .feature > div > img {
     border-radius: 25px;
+    max-height: 256px;
 }
 
 .feature > .dotAndText {
@@ -59,6 +60,13 @@
     margin: 0 50px;
     align-self: center;
 }
+.feature > .dotAndText > div  h1,.feature > .dotAndText > div  h2 { 
+    color: rgb(var(--columbiablue));
+    max-width: 25vw;
+    margin: 0 50px;
+    align-self: center;
+}
+
 
 .feature > .dotAndText > .dot {
     flex-shrink: 0;

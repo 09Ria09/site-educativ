@@ -1,0 +1,71 @@
+@app.route("/ForgotPassword/", methods=["GET", "POST"])
+def mail_parola():
+    if request.method == 'POST':
+		#initializam variabile
+        success = False
+        erori = {}
+        #ne conectam la baza de date 
+        cursor = mysql.connection.cursor()
+        con = mysql.connection
+        #preluam email-ul de pe front-end si il normalizam(litere mari -> litere mici; ignoram punctele) 
+        email = v.normalizare_email(request.form['email'])
+		#accesam baza de date si selectam userul al carui mail a fost introdus
+        cursor.execute('''select id from users where mail=%s''', [email])
+		#stocam rezultatul cautarii intr-o variabila
+        user_id = cursor.fetchall()
+		#verificam daca variabila user_id este un tuplu gol, iar daca este ridicam erori si nu aducem nicio modificare bazzei de date
+        if user_id == ():
+            erori["mailNonexistent"] = True
+            print("Nu s-a trimis mail-ul,nu exista")
+        else:
+			#cream un token care stocheaza in mod criptat si reversibil emailul folosind modulul itsdangerous pentru a fi utilizabil in url si sigur
+            temp = s.dumps(email, salt="parola")
+			#cream url-ul care va fi trimis user-ului prind concatenarea rutei principale si a tokenului
+            url = CHANGE_PASSWORD_URL + temp
+			#trimitem mail-ul cu linkul pentru schimbarea parolei
+            mail_verificare(email, url, "parola")
+            print("Mail trimis catre {}".format(email))
+            success = True
+	#erorile returnate vor fi solutionate de front-end
+    return {'erori': erori, 'success': success}
+
+#aceasta este ruta la care va duce linkul trimis prin email
+#preluam tokenul din url drept parametru al functiei
+@app.route("/changePassword/<token>", methods=["POST"])
+def schimbare_parola(token):
+    if request.method == 'POST':
+		#initializam variabile
+        success = False
+        erori = {}
+		#ne conectam la baza de date 
+        cursor = mysql.connection.cursor()
+        con = mysql.connection
+		#preluam parolele de pe front-end si le stocam intr-o variabila in urma normalizarii sub forma nfc(literele cu diacritice devin un singur caracter ) 
+		#pentru a evita confilcte de echivalienta
+        password = v.nfc(request.form['password'])
+        password_again = v.nfc(request.form['passwordAgain'])
+		#decriptam tokenul , iar daca au trecut mai mult de 5 minute transmitem front-endului ca tokenul a expirat si nu continuam cu schimbarea parolei
+        try:
+            email = s.loads(token, salt="parola", max_age=5 * 60 * 1000)
+        except SignatureExpired:
+            erori["tokenExpired"] = True
+            print("token expired")
+            return {'erori': erori, 'success': success}
+		#verificam daca parolele sunt identice , iar in caz contrar ridicam eroare pentru front-end
+        if password == password_again:
+		#verificam daca parola are lungimea corespunzatoare si contine caracterele corecte, iar in caz contrar ridicam eroare pentru front-end
+            if not v.valid(password, PAS) or len(password) < 6:
+                erori['passwordInvalid'] = True
+                return {'erori': erori, 'success': success}
+			#selectam id-ul userului cu mailul respectiv din baza de date
+            cursor.execute('''select id from users where mail=%s''', [email])
+            user_id = cursor.fetchall()[0]["id"]
+			#stocam o versiune criptata ireversibil cu sha512 a parolei in baza de date
+            cursor.execute('''update brainerdb.passwords set hash=%s where user_id=%s''',
+                           (v.hash_pas(password), user_id))
+            con.commit()
+            success = True
+        else:
+            erori["passwordMismatch"] = True
+	#erorile returnate vor fi solutionate de front-end
+    return {'erori': erori, 'success': success}
