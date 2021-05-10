@@ -54,6 +54,7 @@
     margin: 20px min(20px, 2%);
     margin-left: auto;
     color: rgb(201, 240, 255);
+    font-size: 20px;
 }
 
 .respond:hover {
