@@ -38,6 +38,6 @@
     font-size: 5vh;
 }
 
-.chatBox .textareaContainer > div:nth-child(3) {
+.chatBox .textareaContainer > div:nth-child(2) {
     min-height: 50vh;
 }

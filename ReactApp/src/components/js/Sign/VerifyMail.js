@@ -6,7 +6,9 @@ import '../../css/VerifyMail.css';
 function VerifyMail() {
     const history = useHistory();
     const [toRedirect, setRedirect] = useState(false)
-    useEffect(() => update({}), [useParams()]);
+    useEffect(() => {
+        if (history.location.pathname.substring(0, 11) === '/VerifyMail') update({})
+    }, [useParams()]);
 
     const redirect = () => {
         setRedirect(true);

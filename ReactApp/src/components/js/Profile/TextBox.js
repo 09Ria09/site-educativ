@@ -4,7 +4,6 @@ import {Editable, Slate, useSlate, withReact} from 'slate-react';
 import {createEditor, Editor, Transforms} from 'slate';
 import {withHistory} from 'slate-history';
 import Button from './Slate/CustomButton';
-import Icon from './Slate/Icon';
 import Toolbar from './Slate/ToolBar';
 
 const Hotkeys = {'mod+`': 'code', 'mod+i': 'italic', 'mod+u': 'underline', 'mod+b': 'bold'};
@@ -29,17 +28,16 @@ function TextBox(props) {
     return (
         <Slate value={text} editor={editor} onChange={text => setText(text)}
                className={(onFocus === true ? ' textareaEditorOnFocus' : '')}>
-            <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'/>
 
             <Toolbar style={{display: (props.readOnly === true ? 'none' : 'unset')}}>
-                <MButton format='bold' icon='format_bold'/>
-                <MButton format='italic' icon='format_italic'/>
-                <MButton format='underline' icon='format_underlined'/>
-                <MButton format='code' icon='code'/>
-                <BButton format='heading-one' icon='looks_one'/>
-                <BButton format='heading-two' icon='looks_two'/>
-                <BButton format='numbered-list' icon='format_list_numbered'/>
-                <BButton format='bulleted-list' icon='format_list_bulleted'/>
+                <MButton format='bold' icon='ri-bold'/>
+                <MButton format='italic' icon='ri-italic'/>
+                <MButton format='underline' icon='ri-underline'/>
+                <MButton format='code' icon='ri-code-view'/>
+                <BButton format='heading-one' icon='ri-h-1'/>
+                <BButton format='heading-two' icon='ri-h-2'/>
+                <BButton format='numbered-list' icon='ri-list-ordered'/>
+                <BButton format='bulleted-list' icon='ri-list-unordered'/>
             </Toolbar>
             <Editable
                 renderElement={renderElement}
@@ -105,8 +103,7 @@ function Leaf({attributes, children, leaf}) {
 
 function isBActive(editor, format) {
     const [match] = Editor.nodes(editor, {match: n => n.type === format});
-
-    return match;
+    return (match !== undefined);
 }
 
 function toggleB(editor, format) {
@@ -136,7 +133,8 @@ function BButton({format, icon}) {
             event.preventDefault();
             toggleB(editor, format);
         }}>
-            <Icon>{icon}</Icon>
+            <i className={icon + ' TextBoxIcon'}/>
+            {/*<Icon>{icon}</Icon>*/}
         </Button>
     )
 }
@@ -167,7 +165,8 @@ function MButton({format, icon}) {
             event.preventDefault();
             toggleM(editor, format);
         }}>
-            <Icon>{icon}</Icon>
+            <i className={icon + ' TextBoxIcon'}/>
+            {/*<Icon>{icon}</Icon>*/}
         </Button>
     );
 }

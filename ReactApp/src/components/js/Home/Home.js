@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import Rellax from "rellax";
 import HomeStart from "./HomeStart";
 import Content from "./Content";
@@ -21,10 +21,6 @@ function Home(props) {
     Brainer va fi in tot acest timp alături de tine!
    </p>
 
-            </Content>
-            <Content type={'E'} style={{ marginBottom: '20vh' }}>
-                <p> </p>
-        
             </Content>
             <Features />
         </React.Fragment>

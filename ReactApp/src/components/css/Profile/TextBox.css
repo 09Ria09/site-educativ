@@ -8,14 +8,21 @@
 }
 
 .TextBoxIcon {
-    font-size: 18px;
+    font-size: 28px;
+    overflow: hidden;
     vertical-align: text-bottom;
+    margin-right: 2px;
+    transition-duration: 100ms;
+}
+
+.TextBoxIcon:hover {
+    color: rgb(var(--columbiablue));
 }
 
 .ToolBar1 {
     display: inline-block;
     margin-left: 15px;
-    height: 24px;
+    height: 28px;
     font-size: 1rem;
 }
 

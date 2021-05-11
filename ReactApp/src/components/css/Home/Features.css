@@ -1,7 +1,12 @@
 .featuresContainer {
-    background-color: rgb(var(--oxfordblue));
-    padding-top: 50px;
+    background-color: rgb(var(--columbiablue));
+    padding-top: 25px;
     padding-bottom: 50px;
+}
+
+.featuresContainer > h1 {
+    color: rgb(var(--oxfordblue));
+    text-align: center;
 }
 
 .features {
@@ -54,17 +59,23 @@
     display: flex;
 }
 
+.feature > .dotAndText > div > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .feature > .dotAndText > div > p {
     color: rgb(var(--columbiablue));
     max-width: 25vw;
     margin: 0 50px;
     align-self: center;
 }
-.feature > .dotAndText > div  h1,.feature > .dotAndText > div  h2 { 
-    color: rgb(var(--columbiablue));
+
+.feature > .dotAndText > div h3, .feature > .dotAndText > div h2 {
+    color: rgb(var(--oxfordblue));
     max-width: 25vw;
     margin: 0 50px;
-    align-self: center;
 }
 
 

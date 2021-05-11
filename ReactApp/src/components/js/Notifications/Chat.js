@@ -21,7 +21,7 @@ function Chat(props) {
         })
     }
 
-    useEffect(() => update({}), [useParams()]);
+    useEffect(() => {if(history.location.pathname.substring(0,5)==='/chat') update({})}, [useParams()]);
 
     function update() {
         axios({

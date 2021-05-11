@@ -18,6 +18,8 @@ function Profile(props) {
     const [waitingResponse, setWaitingResponse] = useState(true);
 
     useEffect(() => {
+        if (history.location.pathname.substring(0, 9) !== '/nProfile')
+            return
         axios({
             method: 'post',
             url: history.location.pathname
