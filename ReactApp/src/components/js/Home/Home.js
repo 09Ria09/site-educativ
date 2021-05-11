@@ -6,8 +6,9 @@ import Features from "./Features";
 
 function Home(props) {
     useEffect(() => {
+        window.scrollTo(0, 0);
         new Rellax('.rellax');
-    });
+    }, []);
     return (
         <React.Fragment>
             <HomeStart signedIn={props.signedIn} />
